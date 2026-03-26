@@ -2,6 +2,7 @@ import { config } from '../../config';
 import { prisma } from '../../config/database';
 import type { AIProvider } from './ai.provider';
 import { ClaudeAdapter } from './claude.adapter';
+import { E3nAdapter } from './e3n.adapter';
 import { MockAdapter } from './mock.adapter';
 import type { SummarizeInput, GenerateInput, SuggestInput } from './ai.schema';
 
@@ -11,6 +12,8 @@ function getProvider(): AIProvider {
   if (!provider) {
     if (config.AI_PROVIDER === 'claude' && config.ANTHROPIC_API_KEY) {
       provider = new ClaudeAdapter(config.ANTHROPIC_API_KEY);
+    } else if (config.AI_PROVIDER === 'e3n') {
+      provider = new E3nAdapter(config.E3N_API_URL, config.E3N_TIMEOUT_MS);
     } else {
       provider = new MockAdapter();
     }
