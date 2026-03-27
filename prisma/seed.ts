@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient() as any;
+const prisma = new PrismaClient({
+  datasourceUrl: process.env.DATABASE_URL ?? 'postgresql://desklink:desklink@localhost:5432/desklink',
+}) as any;
 
 async function main() {
   console.log('Seeding database...');
