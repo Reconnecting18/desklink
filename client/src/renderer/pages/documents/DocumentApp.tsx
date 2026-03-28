@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import {
   Plus,
   FileText,
@@ -56,7 +56,8 @@ const TOOLBAR_ACTIONS = [
 ]
 
 export function DocumentApp() {
-  const { activePageId, updatePageTitle } = useUIStore()
+  const { activePageId, updatePageTitle, pendingDocumentAction, clearPendingDocumentAction, activeApp } =
+    useUIStore()
   const [docs, setDocs] = useState<Doc[]>(INITIAL_DOCS)
   const [selectedDocId, setSelectedDocId] = useState<string>('doc-1')
   const editorRef = useRef<HTMLDivElement>(null)
@@ -64,7 +65,7 @@ export function DocumentApp() {
 
   const selectedDoc = docs.find((d) => d.id === selectedDocId) ?? docs[0]
 
-  const handleNewDoc = () => {
+  const handleNewDoc = useCallback(() => {
     const id = `doc-${_nextDocId++}`
     const newDoc: Doc = {
       id,
@@ -74,7 +75,14 @@ export function DocumentApp() {
     }
     setDocs((prev) => [newDoc, ...prev])
     setSelectedDocId(id)
-  }
+    if (activePageId) updatePageTitle(activePageId, 'Untitled')
+  }, [activePageId, updatePageTitle])
+
+  useEffect(() => {
+    if (activeApp !== 'documents' || pendingDocumentAction !== 'new') return
+    handleNewDoc()
+    clearPendingDocumentAction()
+  }, [activeApp, pendingDocumentAction, handleNewDoc, clearPendingDocumentAction])
 
   const handleSelectDoc = (doc: Doc) => {
     // Save current editor content before switching

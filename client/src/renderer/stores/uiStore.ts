@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type AppId = 'home' | 'inbox' | 'whiteboard' | 'files'
+export type AppId = 'home' | 'inbox' | 'documents' | 'whiteboard' | 'files'
 
 export interface PageTab {
   id: string
@@ -26,9 +26,16 @@ interface UIState {
   commandPaletteOpen: boolean
   setCommandPaletteOpen: (open: boolean) => void
 
+  /** When set to `'new'`, DocumentApp creates a new doc then clears. */
+  pendingDocumentAction: 'new' | null
+  requestNewDocument: () => void
+  clearPendingDocumentAction: () => void
+
   // App switcher — which top-level app is currently shown
   activeApp: AppId
   setActiveApp: (app: AppId) => void
+  /** Focus an existing tab for the app or open a new one, then activate the app. */
+  openOrFocusApp: (appId: AppId) => void
 
   // Page tabs — browser-style tabs per session
   pages: PageTab[]
@@ -63,9 +70,24 @@ export const useUIStore = create<UIState>((set, get) => ({
   commandPaletteOpen: false,
   setCommandPaletteOpen: (commandPaletteOpen) => set({ commandPaletteOpen }),
 
+  pendingDocumentAction: null,
+  requestNewDocument: () => set({ pendingDocumentAction: 'new' }),
+  clearPendingDocumentAction: () => set({ pendingDocumentAction: null }),
+
   // App switcher
   activeApp: 'home',
   setActiveApp: (activeApp) => set({ activeApp }),
+
+  openOrFocusApp: (appId) => {
+    const { pages } = get()
+    const existing = pages.find((p) => p.appId === appId)
+    if (existing) {
+      set({ activePageId: existing.id, activeApp: appId })
+    } else {
+      get().addPage({ appId })
+      set({ activeApp: appId })
+    }
+  },
 
   // Page tabs
   pages: [defaultPage],
@@ -77,6 +99,7 @@ export const useUIStore = create<UIState>((set, get) => ({
     const titleMap: Record<AppId, string> = {
       home: 'New page',
       inbox: 'Inbox',
+      documents: 'New page',
       whiteboard: 'Whiteboard',
       files: 'Files'
     }

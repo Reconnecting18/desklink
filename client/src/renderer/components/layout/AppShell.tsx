@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Titlebar } from './Titlebar'
 import { Sidebar } from './Sidebar'
@@ -12,10 +12,12 @@ import { getMe } from '@/api/auth'
 import { InboxApp } from '@/pages/inbox/InboxApp'
 import { WhiteboardApp } from '@/pages/whiteboard/WhiteboardApp'
 import { FilesApp } from '@/pages/files/FilesApp'
+import { DocumentApp } from '@/pages/documents/DocumentApp'
 
 export function AppShell() {
   const navigate = useNavigate()
-  const { activeWorkspaceId, setActiveWorkspaceId, activeApp } = useUIStore()
+  const location = useLocation()
+  const { activeWorkspaceId, setActiveWorkspaceId, activeApp, setActiveApp } = useUIStore()
   const { setUser, accessToken } = useAuthStore()
 
   // Load user profile
@@ -43,6 +45,18 @@ export function AppShell() {
     }
   }, [workspaces, activeWorkspaceId, setActiveWorkspaceId, navigate])
 
+  // Routes under the workspace (projects, settings, …) use the Home shell + sidebar.
+  useEffect(() => {
+    const path = location.pathname
+    if (
+      path.includes('/projects') ||
+      path.includes('/settings') ||
+      path.includes('/members')
+    ) {
+      setActiveApp('home')
+    }
+  }, [location.pathname, setActiveApp])
+
   return (
     // Root shell: full viewport, column layout, no overflow
     <div className="flex h-screen flex-col overflow-hidden">
@@ -68,6 +82,7 @@ export function AppShell() {
             </div>
           )}
           {activeApp === 'inbox' && <InboxApp />}
+          {activeApp === 'documents' && <DocumentApp />}
           {activeApp === 'whiteboard' && <WhiteboardApp />}
           {activeApp === 'files' && <FilesApp />}
         </main>

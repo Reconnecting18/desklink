@@ -1,11 +1,12 @@
 import { useRef, useEffect } from 'react'
-import { X, Plus, Home, Inbox, PenTool, FolderOpen } from 'lucide-react'
+import { X, Plus, Home, Inbox, FileText, PenTool, FolderOpen } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useUIStore, type AppId, type PageTab } from '@/stores/uiStore'
 
 const APP_ICONS: Record<AppId, React.ElementType> = {
   home: Home,
   inbox: Inbox,
+  documents: FileText,
   whiteboard: PenTool,
   files: FolderOpen
 }
@@ -20,7 +21,7 @@ function Tab({ page, isActive }: { page: PageTab; isActive: boolean }) {
       type="button"
       onClick={() => setActivePage(page.id)}
       className={cn(
-        'group relative flex h-full max-w-[180px] min-w-[100px] items-center gap-1.5 border-r border-notion-border px-3 text-xs transition-colors select-none',
+        'group relative flex h-full max-w-[200px] min-w-[104px] items-center gap-1.5 border-r border-notion-border px-3 py-1 text-xs transition-colors select-none',
         isActive
           ? 'bg-notion-bg text-notion-text'
           : 'bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text'
@@ -33,7 +34,7 @@ function Tab({ page, isActive }: { page: PageTab; isActive: boolean }) {
 
       <Icon className="h-3 w-3 shrink-0 opacity-70" />
 
-      <span className="flex-1 truncate text-left leading-none">
+      <span className="min-w-0 flex-1 truncate text-left leading-snug">
         {page.title}
       </span>
 
@@ -77,7 +78,7 @@ export function PageTabBar() {
   }, [activePageId])
 
   return (
-    <div className="flex h-8 shrink-0 items-stretch border-b border-notion-border bg-notion-sidebar">
+    <div className="flex h-9 min-h-9 shrink-0 items-stretch border-b border-notion-border bg-notion-sidebar">
       {/* Scrollable tab list */}
       <div
         ref={scrollRef}

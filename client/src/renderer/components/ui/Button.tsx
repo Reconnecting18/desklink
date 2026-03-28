@@ -13,7 +13,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled}
         className={cn(
-          'inline-flex items-center justify-center rounded-md font-medium transition-colors',
+          'inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md font-medium transition-colors',
+          'whitespace-nowrap leading-normal',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-notion-accent',
           'disabled:pointer-events-none disabled:opacity-50',
           {
@@ -24,9 +25,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             'bg-notion-red text-white hover:bg-red-600': variant === 'danger'
           },
           {
-            'h-7 px-2 text-xs': size === 'sm',
-            'h-8 px-3 text-sm': size === 'md',
-            'h-10 px-4 text-sm': size === 'lg'
+            'min-h-8 px-3 py-1.5 text-xs': size === 'sm',
+            'min-h-9 px-4 py-2 text-sm': size === 'md',
+            'min-h-11 px-5 py-2.5 text-sm': size === 'lg'
           },
           className
         )}

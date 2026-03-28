@@ -3,9 +3,9 @@ import { NavLink, useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import {
   LayoutDashboard,
+  FileText,
   PenTool,
   Layers,
-  FolderOpen,
   Sparkles,
   Settings,
   ChevronDown,
@@ -15,20 +15,36 @@ import {
   Search,
   Home,
   Inbox,
-  Plus,
-  Calendar
+  FolderOpen,
+  SquarePen
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
-import { useUIStore } from '@/stores/uiStore'
+import { useUIStore, type AppId } from '@/stores/uiStore'
 import { useAuthStore } from '@/stores/authStore'
 import { Avatar } from '@/components/ui/Avatar'
 import { listWorkspaces, type Workspace } from '@/api/workspaces'
 import { listProjects, type Project } from '@/api/projects'
 
+interface AppShortcut {
+  id: AppId
+  label: string
+  icon: React.ElementType
+  /** Only these appear in the sidebar (home uses Home link). */
+  show: boolean
+}
+
+const APP_SHORTCUTS: AppShortcut[] = [
+  { id: 'inbox', label: 'Inbox', icon: Inbox, show: true },
+  { id: 'documents', label: 'Documents', icon: FileText, show: true },
+  { id: 'files', label: 'Files', icon: FolderOpen, show: true },
+  { id: 'whiteboard', label: 'Whiteboard', icon: PenTool, show: true }
+]
+
 export function Sidebar() {
   const { workspaceId } = useParams()
   const navigate = useNavigate()
-  const { sidebarOpen, toggleSidebar, setActiveWorkspaceId, setActiveApp, addPage, pages, setActivePage } = useUIStore()
+  const { sidebarOpen, toggleSidebar, setActiveWorkspaceId, openOrFocusApp, requestNewDocument } =
+    useUIStore()
   const { user, logout } = useAuthStore()
   const [plannerOpen, setPlannerOpen] = useState(true)
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false)
@@ -57,22 +73,16 @@ export function Sidebar() {
     navigate('/login')
   }
 
-  /** Switch to an app via the sidebar nav item */
-  const handleAppSwitch = (appId: 'inbox' | 'whiteboard' | 'files', path: string) => {
-    const existing = pages.find((p) => p.appId === appId)
-    if (existing) {
-      setActivePage(existing.id)
-    } else {
-      addPage({ appId, path })
-    }
-    setActiveApp(appId)
-    navigate(path)
+  const handleNewPage = () => {
+    openOrFocusApp('documents')
+    requestNewDocument()
   }
 
   if (!sidebarOpen) {
     return (
       <div className="flex w-10 shrink-0 flex-col items-center border-r border-notion-border bg-notion-sidebar py-2">
         <button
+          type="button"
           onClick={toggleSidebar}
           className="flex h-7 w-7 items-center justify-center rounded text-notion-text-secondary hover:bg-notion-sidebar-hover"
         >
@@ -83,14 +93,14 @@ export function Sidebar() {
   }
 
   return (
-    <div className="relative flex w-[248px] shrink-0 flex-col border-r border-notion-border bg-notion-sidebar overflow-hidden">
-      {/* Space switcher */}
-      <div className="relative px-2 pt-2 pb-1">
+    <div className="flex w-[248px] shrink-0 flex-col border-r border-notion-border bg-notion-sidebar">
+      <div className="relative flex items-center gap-1 px-2 pt-2 pb-1">
         <button
+          type="button"
           onClick={() => setWorkspaceMenuOpen(!workspaceMenuOpen)}
-          className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-notion-sidebar-hover"
+          className="flex min-w-0 flex-1 items-center gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-notion-sidebar-hover"
         >
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-notion-text text-xs font-semibold text-notion-bg">
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-notion-text text-xs font-semibold text-notion-bg">
             {currentWorkspace?.name?.charAt(0).toUpperCase() || 'D'}
           </div>
           <span className="min-w-0 flex-1 truncate text-left text-sm font-medium text-notion-text">
@@ -98,12 +108,21 @@ export function Sidebar() {
           </span>
           <ChevronDown className="h-3.5 w-3.5 shrink-0 text-notion-text-secondary" />
         </button>
+        <button
+          type="button"
+          title="New page"
+          onClick={handleNewPage}
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
+        >
+          <SquarePen className="h-4 w-4" />
+        </button>
 
         {workspaceMenuOpen && (
           <div className="absolute left-2 right-2 top-full z-50 mt-1 rounded-md border border-notion-border bg-notion-bg py-1 shadow-lg">
             {workspaces.map((ws: Workspace) => (
               <button
                 key={ws.id}
+                type="button"
                 onClick={() => handleWorkspaceSwitch(ws)}
                 className={cn(
                   'flex w-full items-center gap-2 px-3 py-1.5 text-sm hover:bg-notion-sidebar-hover',
@@ -130,25 +149,22 @@ export function Sidebar() {
       </div>
 
       <nav className="flex flex-1 flex-col overflow-y-auto px-2 pb-2 pt-1">
-        {/* Search (stub) */}
         <button
           type="button"
           disabled
-          className="mb-1 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-tertiary"
+          className="mb-1 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-secondary opacity-90"
           title="Coming soon"
         >
-          <Search className="h-4 w-4 shrink-0 opacity-70" />
+          <Search className="h-4 w-4 shrink-0 opacity-80" />
           <span>Search</span>
         </button>
 
-        {/* Home */}
         <NavLink
           to={`/w/${workspaceId}/projects`}
           end
-          onClick={() => setActiveApp('home')}
           className={({ isActive }) =>
             cn(
-              'mb-1 flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
+              'mb-2 flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
               isActive
                 ? 'bg-notion-sidebar-hover font-medium text-notion-text'
                 : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
@@ -159,38 +175,23 @@ export function Sidebar() {
           Home
         </NavLink>
 
-        {/* Inbox */}
-        <button
-          type="button"
-          onClick={() => handleAppSwitch('inbox', `/w/${workspaceId}/inbox`)}
-          className="mb-1 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover"
-        >
-          <Inbox className="h-4 w-4 shrink-0" />
-          <span className="flex-1">Inbox</span>
-          {/* Unread badge */}
-          <span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-notion-accent px-1 text-[10px] font-semibold text-white">
-            3
-          </span>
-        </button>
+        <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary">
+          Apps
+        </p>
+        <div className="mb-3 space-y-0.5">
+          {APP_SHORTCUTS.filter((a) => a.show).map((app) => (
+            <button
+              key={app.id}
+              type="button"
+              onClick={() => openOrFocusApp(app.id)}
+              className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
+            >
+              <app.icon className="h-4 w-4 shrink-0 opacity-90" />
+              {app.label}
+            </button>
+          ))}
+        </div>
 
-        {/* Calendar */}
-        <NavLink
-          to={`/w/${workspaceId}/projects`}
-          onClick={() => setActiveApp('home')}
-          className={({ isActive }) =>
-            cn(
-              'mb-3 flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
-              isActive
-                ? 'bg-notion-sidebar-hover font-medium text-notion-text'
-                : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
-            )
-          }
-        >
-          <Calendar className="h-4 w-4 shrink-0" />
-          Calendar
-        </NavLink>
-
-        {/* Tasks section */}
         <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary">
           Tasks
         </p>
@@ -210,7 +211,6 @@ export function Sidebar() {
                 <NavLink
                   key={project.id}
                   to={`/w/${workspaceId}/projects/${project.id}`}
-                  onClick={() => setActiveApp('home')}
                   className={({ isActive }) =>
                     cn(
                       'flex items-center gap-2 rounded-md px-2 py-1 text-sm transition-colors',
@@ -224,58 +224,23 @@ export function Sidebar() {
                   <span className="truncate">{project.name}</span>
                 </NavLink>
               ))}
-
-              {/* New project shortcut */}
-              <NavLink
-                to={`/w/${workspaceId}/projects`}
-                onClick={() => setActiveApp('home')}
-                className="flex items-center gap-2 rounded-md px-2 py-1 text-sm text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
-              >
-                <Plus className="h-3.5 w-3.5 shrink-0" />
-                <span>New project</span>
-              </NavLink>
             </div>
           )}
         </div>
 
-        {/* Library section */}
         <p className="mb-1 mt-3 px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary">
-          Library
+          More
         </p>
         <div className="space-y-0.5">
-          {/* Whiteboard — enabled */}
-          <button
-            type="button"
-            onClick={() => handleAppSwitch('whiteboard', `/w/${workspaceId}/whiteboard`)}
-            className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
-          >
-            <PenTool className="h-4 w-4 shrink-0" />
-            Whiteboard
-          </button>
-
-          {/* Mockups — under Whiteboard app */}
-          <button
-            type="button"
-            onClick={() => handleAppSwitch('whiteboard', `/w/${workspaceId}/whiteboard`)}
-            className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
+          <div
+            className="flex items-center gap-2 rounded-md px-2 py-1 text-sm text-notion-text-secondary opacity-75"
+            title="Coming soon"
           >
             <Layers className="h-4 w-4 shrink-0" />
             Mockups
-          </button>
-
-          {/* Files — enabled */}
-          <button
-            type="button"
-            onClick={() => handleAppSwitch('files', `/w/${workspaceId}/files`)}
-            className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
-          >
-            <FolderOpen className="h-4 w-4 shrink-0" />
-            Files
-          </button>
-
-          {/* AI assistant — coming soon */}
+          </div>
           <div
-            className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm cursor-not-allowed text-notion-text-tertiary opacity-50"
+            className="flex items-center gap-2 rounded-md px-2 py-1 text-sm text-notion-text-secondary opacity-75"
             title="Coming soon"
           >
             <Sparkles className="h-4 w-4 shrink-0" />
@@ -284,14 +249,11 @@ export function Sidebar() {
         </div>
       </nav>
 
-      {/* Footer */}
       <div className="border-t border-notion-border px-2 py-2">
         <div className="flex items-center justify-between gap-2">
           <div className="flex min-w-0 flex-1 items-center gap-2 px-1">
-            {user && (
-              <Avatar name={user.displayName} src={user.avatarUrl} size="sm" />
-            )}
-            <span className="truncate text-xs text-notion-text-secondary">{user?.displayName}</span>
+            {user && <Avatar name={user.displayName} src={user.avatarUrl} size="sm" />}
+            <span className="truncate text-xs leading-snug text-notion-text-secondary">{user?.displayName}</span>
           </div>
           <div className="flex shrink-0 items-center gap-0.5">
             <button
