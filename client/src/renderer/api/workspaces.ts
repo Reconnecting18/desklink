@@ -17,7 +17,7 @@ export interface WorkspaceMember {
   role: 'ADMIN' | 'MEMBER' | 'VIEWER'
   user: {
     id: string
-    name: string
+    displayName: string
     email: string
     avatarUrl?: string | null
   }

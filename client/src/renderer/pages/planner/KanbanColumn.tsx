@@ -3,18 +3,33 @@ import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
+import { cn } from '@/lib/cn'
 import type { BoardColumn, Task } from '@/api/boards'
 import { createTask } from '@/api/boards'
 import { TaskCard } from './TaskCard'
 
+const COLUMN_ACCENTS = [
+  'bg-notion-purple',
+  'bg-notion-yellow',
+  'bg-notion-blue',
+  'bg-notion-green'
+] as const
+
 interface KanbanColumnProps {
   column: BoardColumn
+  columnIndex: number
   projectId: string
   boardId: string
   onTaskClick: (taskId: string) => void
 }
 
-export function KanbanColumn({ column, projectId, boardId, onTaskClick }: KanbanColumnProps) {
+export function KanbanColumn({
+  column,
+  columnIndex,
+  projectId,
+  boardId,
+  onTaskClick
+}: KanbanColumnProps) {
   const queryClient = useQueryClient()
   const [showNewTask, setShowNewTask] = useState(false)
   const [newTitle, setNewTitle] = useState('')
@@ -33,15 +48,15 @@ export function KanbanColumn({ column, projectId, boardId, onTaskClick }: Kanban
 
   const tasks = column.tasks || []
 
+  const accent = COLUMN_ACCENTS[columnIndex % COLUMN_ACCENTS.length]
+
   return (
-    <div className="flex w-64 shrink-0 flex-col">
-      {/* Column header */}
+    <div className="flex w-[272px] shrink-0 flex-col">
       <div className="mb-2 flex items-center justify-between px-1">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-notion-text-secondary">
-            {column.name}
-          </span>
-          <span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-notion-sidebar px-1 text-[10px] text-notion-text-tertiary">
+        <div className="flex min-w-0 items-center gap-2">
+          <span className={cn('h-2 w-2 shrink-0 rounded-full', accent)} aria-hidden />
+          <span className="truncate text-[13px] font-semibold text-notion-text">{column.name}</span>
+          <span className="flex h-5 min-w-[20px] shrink-0 items-center justify-center rounded-full bg-notion-sidebar px-1.5 text-[11px] font-medium tabular-nums text-notion-text-secondary">
             {tasks.length}
           </span>
         </div>
@@ -56,9 +71,10 @@ export function KanbanColumn({ column, projectId, boardId, onTaskClick }: Kanban
       {/* Task list */}
       <div
         ref={setNodeRef}
-        className={`flex flex-1 flex-col gap-1.5 rounded-lg p-1 transition-colors ${
-          isOver ? 'bg-notion-accent/5' : ''
-        }`}
+        className={cn(
+          'flex min-h-[120px] flex-1 flex-col gap-2 rounded-xl border border-transparent bg-notion-sidebar/40 p-1.5 transition-colors',
+          isOver && 'border-notion-accent/25 bg-notion-accent/5'
+        )}
       >
         <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
           {tasks.map((task: Task) => (
@@ -68,7 +84,7 @@ export function KanbanColumn({ column, projectId, boardId, onTaskClick }: Kanban
 
         {/* New task inline form */}
         {showNewTask && (
-          <div className="rounded-lg border border-notion-border bg-white p-2">
+          <div className="rounded-lg border border-notion-border bg-notion-bg p-2 shadow-sm">
             <input
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { Titlebar } from '@/components/layout/Titlebar'
 import { useAuthStore } from '@/stores/authStore'
 import { login } from '@/api/auth'
 
@@ -32,35 +33,10 @@ export function LoginPage() {
 
   return (
     <div className="flex h-screen flex-col">
-      {/* Minimal titlebar for auth pages */}
-      <div className="drag-region flex h-9 shrink-0 items-center border-b border-notion-border bg-notion-sidebar px-3">
-        <span className="text-xs font-semibold text-notion-text-secondary tracking-wide">
-          DeskLink
-        </span>
-        <div className="no-drag ml-auto flex h-full">
-          <button
-            onClick={() => window.api.minimize()}
-            className="flex h-full w-11 items-center justify-center text-notion-text-secondary hover:bg-notion-sidebar-hover"
-          >
-            <span className="text-xs">&#x2014;</span>
-          </button>
-          <button
-            onClick={() => window.api.maximize()}
-            className="flex h-full w-11 items-center justify-center text-notion-text-secondary hover:bg-notion-sidebar-hover"
-          >
-            <span className="text-xs">&#x25A1;</span>
-          </button>
-          <button
-            onClick={() => window.api.close()}
-            className="flex h-full w-11 items-center justify-center text-notion-text-secondary hover:bg-notion-red hover:text-white"
-          >
-            <span className="text-xs">&#x2715;</span>
-          </button>
-        </div>
-      </div>
+      <Titlebar />
 
-      <div className="flex flex-1 items-center justify-center bg-notion-sidebar">
-        <div className="w-full max-w-sm rounded-lg border border-notion-border bg-white p-8 shadow-sm">
+      <div className="flex flex-1 items-center justify-center bg-gradient-to-b from-notion-sidebar to-notion-bg px-4">
+        <div className="w-full max-w-sm rounded-xl border border-notion-border/80 bg-notion-bg/95 p-8 shadow-lg shadow-neutral-900/[0.06] ring-1 ring-black/[0.03] backdrop-blur-sm">
           <div className="mb-6 text-center">
             <h1 className="text-xl font-semibold text-notion-text">Welcome back</h1>
             <p className="mt-1 text-sm text-notion-text-secondary">

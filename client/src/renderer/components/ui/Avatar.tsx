@@ -1,19 +1,18 @@
 import { cn } from '@/lib/cn'
 
 interface AvatarProps {
-  name: string
+  /** Display name; falls back to "?" if missing (API often uses `displayName`). */
+  name?: string | null
   src?: string | null
   size?: 'sm' | 'md' | 'lg'
   className?: string
 }
 
 function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '?'
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
 
 const colors = [
@@ -40,11 +39,13 @@ export function Avatar({ name, src, size = 'md', className }: AvatarProps) {
     lg: 'h-9 w-9 text-sm'
   }
 
+  const label = (name ?? '').trim() || '?'
+
   if (src) {
     return (
       <img
         src={src}
-        alt={name}
+        alt={label}
         className={cn('rounded-full object-cover', sizeClasses[size], className)}
       />
     )
@@ -55,11 +56,11 @@ export function Avatar({ name, src, size = 'md', className }: AvatarProps) {
       className={cn(
         'flex items-center justify-center rounded-full font-medium text-white',
         sizeClasses[size],
-        getColor(name),
+        getColor(label),
         className
       )}
     >
-      {getInitials(name)}
+      {getInitials(label)}
     </div>
   )
 }

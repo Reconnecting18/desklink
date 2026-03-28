@@ -42,8 +42,8 @@ export function TaskCard({ task, isDragging, onClick }: TaskCardProps) {
       {...listeners}
       onClick={onClick}
       className={cn(
-        'cursor-pointer rounded-lg border border-notion-border bg-white p-3 transition-shadow',
-        'hover:shadow-sm',
+        'cursor-pointer rounded-lg border border-notion-border/90 bg-notion-bg p-3 shadow-sm transition-shadow',
+        'hover:shadow-md',
         isDragging && 'rotate-2 shadow-lg',
         isSortDragging && 'opacity-50'
       )}
@@ -85,7 +85,11 @@ export function TaskCard({ task, isDragging, onClick }: TaskCardProps) {
           )}
         </div>
         {task.assignee && (
-          <Avatar name={task.assignee.name} src={task.assignee.avatarUrl} size="sm" />
+          <Avatar
+            name={task.assignee.displayName ?? task.assignee.name}
+            src={task.assignee.avatarUrl}
+            size="sm"
+          />
         )}
       </div>
     </div>

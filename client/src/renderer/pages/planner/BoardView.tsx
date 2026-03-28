@@ -143,14 +143,15 @@ export function BoardView({ projectId }: BoardViewProps) {
   return (
     <div className="flex h-full flex-col">
       {/* Board tabs */}
-      <div className="flex shrink-0 items-center gap-2 border-b border-notion-border px-6 py-2">
+      <div className="flex shrink-0 flex-wrap items-center gap-1 border-b border-notion-border bg-notion-bg px-6 py-2">
         {boards.map((b: Board) => (
           <button
             key={b.id}
+            type="button"
             onClick={() => setSelectedBoardId(b.id)}
-            className={`rounded px-2 py-1 text-xs transition-colors ${
+            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
               b.id === activeBoardId
-                ? 'bg-notion-sidebar-hover font-medium text-notion-text'
+                ? 'bg-notion-sidebar text-notion-text'
                 : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
             }`}
           >
@@ -189,10 +190,11 @@ export function BoardView({ projectId }: BoardViewProps) {
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          {columns.map((column: BoardColumn) => (
+          {columns.map((column: BoardColumn, index: number) => (
             <KanbanColumn
               key={column.id}
               column={column}
+              columnIndex={index}
               projectId={projectId}
               boardId={activeBoardId!}
               onTaskClick={(taskId) => setSelectedTaskId(taskId)}

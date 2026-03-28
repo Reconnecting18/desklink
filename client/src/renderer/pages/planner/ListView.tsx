@@ -153,7 +153,11 @@ export function ListView({ projectId }: ListViewProps) {
                   </td>
                   <td className="px-3 py-2.5">
                     {task.assignee && (
-                      <Avatar name={task.assignee.name} src={task.assignee.avatarUrl} size="sm" />
+                      <Avatar
+                        name={task.assignee.displayName ?? task.assignee.name}
+                        src={task.assignee.avatarUrl}
+                        size="sm"
+                      />
                     )}
                   </td>
                 </tr>

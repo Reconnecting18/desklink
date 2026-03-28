@@ -3,15 +3,20 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Titlebar } from './Titlebar'
 import { Sidebar } from './Sidebar'
+import { AppSwitcherRail } from './AppSwitcherRail'
+import { PageTabBar } from './PageTabBar'
 import { useUIStore } from '@/stores/uiStore'
 import { useAuthStore } from '@/stores/authStore'
 import { listWorkspaces } from '@/api/workspaces'
 import { getMe } from '@/api/auth'
+import { InboxApp } from '@/pages/inbox/InboxApp'
+import { WhiteboardApp } from '@/pages/whiteboard/WhiteboardApp'
+import { FilesApp } from '@/pages/files/FilesApp'
 
 export function AppShell() {
   const navigate = useNavigate()
-  const { activeWorkspaceId, setActiveWorkspaceId } = useUIStore()
-  const { setUser, setAuth, accessToken, isLoading, setLoading } = useAuthStore()
+  const { activeWorkspaceId, setActiveWorkspaceId, activeApp } = useUIStore()
+  const { setUser, accessToken } = useAuthStore()
 
   // Load user profile
   useQuery({
@@ -39,12 +44,32 @@ export function AppShell() {
   }, [workspaces, activeWorkspaceId, setActiveWorkspaceId, navigate])
 
   return (
-    <div className="flex h-screen flex-col">
+    // Root shell: full viewport, column layout, no overflow
+    <div className="flex h-screen flex-col overflow-hidden">
+      {/* Window chrome */}
       <Titlebar />
+
+      {/* Page tab bar — sits below titlebar, above content */}
+      <PageTabBar />
+
+      {/* Body row: app switcher rail + sidebar + main content */}
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto bg-notion-bg">
-          <Outlet />
+        {/* Narrow app-switcher icon rail */}
+        <AppSwitcherRail />
+
+        {/* Sidebar — only shown for the home/projects app */}
+        {activeApp === 'home' && <Sidebar />}
+
+        {/* Main content area — strictly contained, no overflow bleed */}
+        <main className="relative flex flex-1 flex-col overflow-hidden">
+          {activeApp === 'home' && (
+            <div className="flex-1 overflow-y-auto overflow-x-hidden">
+              <Outlet />
+            </div>
+          )}
+          {activeApp === 'inbox' && <InboxApp />}
+          {activeApp === 'whiteboard' && <WhiteboardApp />}
+          {activeApp === 'files' && <FilesApp />}
         </main>
       </div>
     </div>

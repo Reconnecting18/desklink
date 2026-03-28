@@ -229,11 +229,15 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
           <div className="flex flex-col gap-3">
             {comments.map((comment: Comment) => (
               <div key={comment.id} className="flex gap-2">
-                <Avatar name={comment.author.name} src={comment.author.avatarUrl} size="sm" />
+                <Avatar
+                  name={comment.author?.displayName ?? comment.author?.name}
+                  src={comment.author?.avatarUrl}
+                  size="sm"
+                />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-medium text-notion-text">
-                      {comment.author.name}
+                      {comment.author?.displayName ?? comment.author?.name ?? 'You'}
                     </span>
                     <span className="text-[10px] text-notion-text-tertiary">
                       {new Date(comment.createdAt).toLocaleDateString()}

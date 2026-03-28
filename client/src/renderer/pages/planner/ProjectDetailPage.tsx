@@ -16,6 +16,12 @@ const tabs: { key: ViewTab; label: string; icon: React.ElementType }[] = [
   { key: 'calendar', label: 'Calendar', icon: Calendar }
 ]
 
+const tabHint: Record<ViewTab, string> = {
+  board: 'Kanban',
+  list: 'Table',
+  calendar: 'Schedule'
+}
+
 export function ProjectDetailPage() {
   const { projectId } = useParams<{ projectId: string }>()
   const [activeTab, setActiveTab] = useState<ViewTab>('board')
@@ -28,32 +34,41 @@ export function ProjectDetailPage() {
 
   return (
     <div className="flex h-full flex-col">
-      {/* Header */}
-      <div className="shrink-0 border-b border-notion-border px-6 pt-6 pb-0">
-        <h1 className="text-lg font-semibold text-notion-text">
-          {project?.name || 'Loading...'}
-        </h1>
-        {project?.description && (
-          <p className="mt-1 text-sm text-notion-text-secondary">{project.description}</p>
-        )}
+      <div className="shrink-0 border-b border-notion-border bg-notion-bg px-8 pb-3 pt-8">
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-notion-sidebar text-lg font-semibold text-notion-text">
+            {(project?.name || 'P').charAt(0).toUpperCase()}
+          </div>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xl font-semibold tracking-tight text-notion-text">
+              {project?.name || 'Loading...'}
+            </h1>
+            {project?.description && (
+              <p className="mt-1 text-sm leading-relaxed text-notion-text-secondary">{project.description}</p>
+            )}
+          </div>
+        </div>
 
-        {/* Tabs */}
-        <div className="mt-4 flex gap-0">
-          {tabs.map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className={cn(
-                'flex items-center gap-1.5 border-b-2 px-3 pb-2 text-sm transition-colors',
-                activeTab === tab.key
-                  ? 'border-notion-text font-medium text-notion-text'
-                  : 'border-transparent text-notion-text-secondary hover:text-notion-text'
-              )}
-            >
-              <tab.icon className="h-3.5 w-3.5" />
-              {tab.label}
-            </button>
-          ))}
+        <div className="mt-6 flex flex-wrap items-center gap-2">
+          <div className="inline-flex rounded-lg bg-notion-sidebar p-1">
+            {tabs.map((tab) => (
+              <button
+                key={tab.key}
+                type="button"
+                title={tabHint[tab.key]}
+                onClick={() => setActiveTab(tab.key)}
+                className={cn(
+                  'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-all',
+                  activeTab === tab.key
+                    ? 'bg-notion-bg font-medium text-notion-text shadow-sm'
+                    : 'text-notion-text-secondary hover:text-notion-text'
+                )}
+              >
+                <tab.icon className="h-3.5 w-3.5 opacity-80" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

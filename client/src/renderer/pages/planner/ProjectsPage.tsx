@@ -41,10 +41,15 @@ export function ProjectsPage() {
   })
 
   return (
-    <div className="mx-auto max-w-3xl px-12 py-10">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-notion-text">Projects</h1>
-        <Button size="sm" onClick={() => setShowCreate(true)}>
+    <div className="mx-auto max-w-3xl px-8 py-10 md:px-12">
+      <div className="mb-8 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight text-notion-text">Projects</h1>
+          <p className="mt-1 text-sm text-notion-text-secondary">
+            Your personal initiatives — boards, lists, and calendar in one place.
+          </p>
+        </div>
+        <Button size="sm" className="mt-4 shrink-0 sm:mt-0" onClick={() => setShowCreate(true)}>
           <Plus className="mr-1.5 h-3.5 w-3.5" />
           New project
         </Button>
@@ -99,7 +104,7 @@ export function ProjectsPage() {
         <EmptyState
           icon={FolderKanban}
           title="No projects yet"
-          description="Create a project to organize your tasks, boards, and calendar events."
+          description="Create a project to capture a goal, then plan it on a board, list, or calendar."
           actionLabel="New project"
           onAction={() => setShowCreate(true)}
         />
@@ -109,7 +114,7 @@ export function ProjectsPage() {
             <div
               key={project.id}
               onClick={() => navigate(`/w/${workspaceId}/projects/${project.id}`)}
-              className="group cursor-pointer rounded-lg border border-notion-border bg-white p-4 transition-colors hover:border-notion-text-tertiary"
+              className="group cursor-pointer rounded-xl border border-notion-border bg-notion-bg p-4 shadow-sm transition-all hover:border-notion-text-tertiary/60 hover:shadow-md"
             >
               <div className="flex items-start justify-between">
                 <div className="min-w-0 flex-1">

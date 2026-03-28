@@ -7,6 +7,9 @@ import { ProjectsPage } from '@/pages/planner/ProjectsPage'
 import { ProjectDetailPage } from '@/pages/planner/ProjectDetailPage'
 import { WorkspaceSettingsPage } from '@/pages/workspace/WorkspaceSettingsPage'
 import { MembersPage } from '@/pages/workspace/MembersPage'
+import { InboxApp } from '@/pages/inbox/InboxApp'
+import { WhiteboardApp } from '@/pages/whiteboard/WhiteboardApp'
+import { FilesApp } from '@/pages/files/FilesApp'
 
 export const router = createHashRouter([
   {
@@ -49,6 +52,22 @@ export const router = createHashRouter([
               {
                 path: 'projects/:projectId',
                 element: <ProjectDetailPage />
+              },
+              {
+                path: 'inbox',
+                element: <InboxApp />
+              },
+              {
+                path: 'whiteboard',
+                element: <WhiteboardApp />
+              },
+              {
+                path: 'files',
+                element: <FilesApp />
+              },
+              {
+                path: 'files/:folderId',
+                element: <FilesApp />
               }
             ]
           }

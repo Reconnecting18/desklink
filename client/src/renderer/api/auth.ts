@@ -18,17 +18,17 @@ export async function login(email: string, password: string): Promise<LoginRespo
 }
 
 export async function register(
-  name: string,
+  displayName: string,
   email: string,
   password: string
 ): Promise<RegisterResponse> {
-  return apiClient.post('/auth/register', { name, email, password })
+  return apiClient.post('/auth/register', { displayName, email, password })
 }
 
 export async function getMe(): Promise<User> {
   return apiClient.get('/auth/me')
 }
 
-export async function updateProfile(data: { name?: string; avatarUrl?: string }): Promise<User> {
+export async function updateProfile(data: { displayName?: string; avatarUrl?: string }): Promise<User> {
   return apiClient.patch('/auth/me', data)
 }

@@ -1,9 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import 'dotenv/config';
 import bcrypt from 'bcryptjs';
-
-const prisma = new PrismaClient({
-  datasourceUrl: process.env.DATABASE_URL ?? 'postgresql://desklink:desklink@localhost:5432/desklink',
-}) as any;
+import { prisma } from '../src/config/database';
 
 async function main() {
   console.log('Seeding database...');

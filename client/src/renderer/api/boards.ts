@@ -32,7 +32,8 @@ export interface Task {
   updatedAt: string
   assignee?: {
     id: string
-    name: string
+    displayName?: string
+    name?: string
     email: string
     avatarUrl?: string | null
   } | null
@@ -53,9 +54,10 @@ export interface Comment {
   content: string
   taskId: string
   authorId: string
-  author: {
+  author?: {
     id: string
-    name: string
+    displayName?: string
+    name?: string
     avatarUrl?: string | null
   }
   createdAt: string
@@ -125,7 +127,11 @@ export async function listTasks(
   projectId: string,
   params?: { status?: string; priority?: string; assigneeId?: string }
 ): Promise<Task[]> {
-  return apiClient.get(`/projects/${projectId}/tasks`, { params })
+  const res = await apiClient.get<{ data: Task[]; pagination: unknown }>(
+    `/projects/${projectId}/tasks`,
+    { params }
+  )
+  return res.data
 }
 
 export async function getTask(id: string): Promise<Task> {

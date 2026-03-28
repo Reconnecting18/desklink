@@ -15,7 +15,10 @@ export interface Project {
 }
 
 export async function listProjects(workspaceId: string): Promise<Project[]> {
-  return apiClient.get(`/workspaces/${workspaceId}/projects`)
+  const res = await apiClient.get<{ data: Project[]; pagination: unknown }>(
+    `/workspaces/${workspaceId}/projects`
+  )
+  return res.data
 }
 
 export async function getProject(id: string): Promise<Project> {

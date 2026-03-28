@@ -110,6 +110,13 @@ export async function getBoard(boardId: string) {
         include: {
           tasks: {
             orderBy: { sortOrder: 'asc' },
+            include: {
+              assignee: {
+                select: { id: true, email: true, displayName: true, avatarUrl: true },
+              },
+              labels: true,
+              _count: { select: { comments: true } },
+            },
           },
         },
       },
@@ -223,6 +230,11 @@ export async function listTasks(projectId: string, query: ListTasksQuery) {
       skip,
       take,
       orderBy: { createdAt: 'desc' },
+      include: {
+        assignee: {
+          select: { id: true, email: true, displayName: true, avatarUrl: true },
+        },
+      },
     }),
     prisma.task.count({ where }),
   ]);
@@ -234,8 +246,15 @@ export async function getTask(taskId: string) {
     where: { id: taskId },
     include: {
       labels: true,
+      assignee: {
+        select: { id: true, email: true, displayName: true, avatarUrl: true },
+      },
+      _count: { select: { comments: true } },
       comments: {
         orderBy: { createdAt: 'asc' },
+        include: {
+          author: { select: { id: true, displayName: true, avatarUrl: true } },
+        },
       },
     },
   });
@@ -303,6 +322,9 @@ export async function listComments(taskId: string) {
   return prisma.comment.findMany({
     where: { taskId },
     orderBy: { createdAt: 'asc' },
+    include: {
+      author: { select: { id: true, displayName: true, avatarUrl: true } },
+    },
   });
 }
 

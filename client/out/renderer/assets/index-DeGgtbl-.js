@@ -21862,3764 +21862,6 @@ const useAuthStore = create((set) => ({
   },
   setLoading: (isLoading) => set({ isLoading })
 }));
-function ProtectedRoute() {
-  const { isAuthenticated, isLoading } = useAuthStore();
-  if (isLoading) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-screen items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 w-8 animate-spin rounded-full border-2 border-notion-accent border-t-transparent" }) });
-  }
-  if (!isAuthenticated) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/login", replace: true });
-  }
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {});
-}
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const toKebabCase = (string) => string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
-const mergeClasses = (...classes) => classes.filter((className, index, array) => {
-  return Boolean(className) && className.trim() !== "" && array.indexOf(className) === index;
-}).join(" ").trim();
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-var defaultAttributes$1 = {
-  xmlns: "http://www.w3.org/2000/svg",
-  width: 24,
-  height: 24,
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 2,
-  strokeLinecap: "round",
-  strokeLinejoin: "round"
-};
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const Icon = reactExports.forwardRef(
-  ({
-    color = "currentColor",
-    size = 24,
-    strokeWidth = 2,
-    absoluteStrokeWidth,
-    className = "",
-    children,
-    iconNode,
-    ...rest
-  }, ref) => {
-    return reactExports.createElement(
-      "svg",
-      {
-        ref,
-        ...defaultAttributes$1,
-        width: size,
-        height: size,
-        stroke: color,
-        strokeWidth: absoluteStrokeWidth ? Number(strokeWidth) * 24 / Number(size) : strokeWidth,
-        className: mergeClasses("lucide", className),
-        ...rest
-      },
-      [
-        ...iconNode.map(([tag, attrs]) => reactExports.createElement(tag, attrs)),
-        ...Array.isArray(children) ? children : [children]
-      ]
-    );
-  }
-);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const createLucideIcon = (iconName, iconNode) => {
-  const Component = reactExports.forwardRef(
-    ({ className, ...props }, ref) => reactExports.createElement(Icon, {
-      ref,
-      iconNode,
-      className: mergeClasses(`lucide-${toKebabCase(iconName)}`, className),
-      ...props
-    })
-  );
-  Component.displayName = `${iconName}`;
-  return Component;
-};
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$q = [
-  ["path", { d: "M8 2v4", key: "1cmpym" }],
-  ["path", { d: "M16 2v4", key: "4m81vk" }],
-  ["rect", { width: "18", height: "18", x: "3", y: "4", rx: "2", key: "1hopcy" }],
-  ["path", { d: "M3 10h18", key: "8toen8" }]
-];
-const Calendar = createLucideIcon("Calendar", __iconNode$q);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$p = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
-const ChevronDown = createLucideIcon("ChevronDown", __iconNode$p);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$o = [["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]];
-const ChevronLeft = createLucideIcon("ChevronLeft", __iconNode$o);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$n = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
-const ChevronRight = createLucideIcon("ChevronRight", __iconNode$n);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$m = [
-  ["path", { d: "m11 17-5-5 5-5", key: "13zhaf" }],
-  ["path", { d: "m18 17-5-5 5-5", key: "h8a8et" }]
-];
-const ChevronsLeft = createLucideIcon("ChevronsLeft", __iconNode$m);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$l = [
-  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
-  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
-];
-const Copy = createLucideIcon("Copy", __iconNode$l);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$k = [
-  ["path", { d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z", key: "1rqfz7" }],
-  ["path", { d: "M14 2v4a2 2 0 0 0 2 2h4", key: "tnqrlb" }],
-  ["path", { d: "M10 9H8", key: "b1mrlr" }],
-  ["path", { d: "M16 13H8", key: "t4e002" }],
-  ["path", { d: "M16 17H8", key: "z1uh3a" }]
-];
-const FileText = createLucideIcon("FileText", __iconNode$k);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$j = [
-  ["path", { d: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z", key: "i9b6wo" }],
-  ["line", { x1: "4", x2: "4", y1: "22", y2: "15", key: "1cm3nv" }]
-];
-const Flag = createLucideIcon("Flag", __iconNode$j);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$i = [
-  [
-    "path",
-    {
-      d: "M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z",
-      key: "1fr9dc"
-    }
-  ],
-  ["path", { d: "M8 10v4", key: "tgpxqk" }],
-  ["path", { d: "M12 10v2", key: "hh53o1" }],
-  ["path", { d: "M16 10v6", key: "1d6xys" }]
-];
-const FolderKanban = createLucideIcon("FolderKanban", __iconNode$i);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$h = [
-  [
-    "path",
-    {
-      d: "m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2",
-      key: "usdka0"
-    }
-  ]
-];
-const FolderOpen = createLucideIcon("FolderOpen", __iconNode$h);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$g = [
-  [
-    "path",
-    {
-      d: "M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z",
-      key: "zw3jo"
-    }
-  ],
-  [
-    "path",
-    {
-      d: "M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12",
-      key: "1wduqc"
-    }
-  ],
-  [
-    "path",
-    {
-      d: "M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17",
-      key: "kqbvx6"
-    }
-  ]
-];
-const Layers = createLucideIcon("Layers", __iconNode$g);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$f = [
-  ["rect", { width: "7", height: "9", x: "3", y: "3", rx: "1", key: "10lvy0" }],
-  ["rect", { width: "7", height: "5", x: "14", y: "3", rx: "1", key: "16une8" }],
-  ["rect", { width: "7", height: "9", x: "14", y: "12", rx: "1", key: "1hutg5" }],
-  ["rect", { width: "7", height: "5", x: "3", y: "16", rx: "1", key: "ldoo1y" }]
-];
-const LayoutDashboard = createLucideIcon("LayoutDashboard", __iconNode$f);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$e = [
-  ["path", { d: "M3 12h.01", key: "nlz23k" }],
-  ["path", { d: "M3 18h.01", key: "1tta3j" }],
-  ["path", { d: "M3 6h.01", key: "1rqtza" }],
-  ["path", { d: "M8 12h13", key: "1za7za" }],
-  ["path", { d: "M8 18h13", key: "1lx6n3" }],
-  ["path", { d: "M8 6h13", key: "ik3vkj" }]
-];
-const List = createLucideIcon("List", __iconNode$e);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$d = [
-  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }],
-  ["polyline", { points: "16 17 21 12 16 7", key: "1gabdz" }],
-  ["line", { x1: "21", x2: "9", y1: "12", y2: "12", key: "1uyos4" }]
-];
-const LogOut = createLucideIcon("LogOut", __iconNode$d);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$c = [
-  ["path", { d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z", key: "1lielz" }]
-];
-const MessageSquare = createLucideIcon("MessageSquare", __iconNode$c);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$b = [["path", { d: "M5 12h14", key: "1ays0h" }]];
-const Minus = createLucideIcon("Minus", __iconNode$b);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$a = [
-  [
-    "path",
-    {
-      d: "M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z",
-      key: "nt11vn"
-    }
-  ],
-  [
-    "path",
-    {
-      d: "m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18",
-      key: "15qc1e"
-    }
-  ],
-  ["path", { d: "m2.3 2.3 7.286 7.286", key: "1wuzzi" }],
-  ["circle", { cx: "11", cy: "11", r: "2", key: "xmgehs" }]
-];
-const PenTool = createLucideIcon("PenTool", __iconNode$a);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$9 = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "M12 5v14", key: "s699le" }]
-];
-const Plus = createLucideIcon("Plus", __iconNode$9);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$8 = [
-  [
-    "path",
-    {
-      d: "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z",
-      key: "1ffxy3"
-    }
-  ],
-  ["path", { d: "m21.854 2.147-10.94 10.939", key: "12cjpa" }]
-];
-const Send = createLucideIcon("Send", __iconNode$8);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$7 = [
-  [
-    "path",
-    {
-      d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z",
-      key: "1qme2f"
-    }
-  ],
-  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
-];
-const Settings = createLucideIcon("Settings", __iconNode$7);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$6 = [
-  [
-    "path",
-    {
-      d: "M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z",
-      key: "4pj2yx"
-    }
-  ],
-  ["path", { d: "M20 3v4", key: "1olli1" }],
-  ["path", { d: "M22 5h-4", key: "1gvqau" }],
-  ["path", { d: "M4 17v2", key: "vumght" }],
-  ["path", { d: "M5 18H3", key: "zchphs" }]
-];
-const Sparkles = createLucideIcon("Sparkles", __iconNode$6);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$5 = [
-  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }]
-];
-const Square = createLucideIcon("Square", __iconNode$5);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$4 = [
-  [
-    "path",
-    {
-      d: "M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z",
-      key: "vktsd0"
-    }
-  ],
-  ["circle", { cx: "7.5", cy: "7.5", r: ".5", fill: "currentColor", key: "kqv944" }]
-];
-const Tag = createLucideIcon("Tag", __iconNode$4);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$3 = [
-  ["path", { d: "M3 6h18", key: "d0wm0j" }],
-  ["path", { d: "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6", key: "4alrt4" }],
-  ["path", { d: "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2", key: "v07s0e" }],
-  ["line", { x1: "10", x2: "10", y1: "11", y2: "17", key: "1uufr5" }],
-  ["line", { x1: "14", x2: "14", y1: "11", y2: "17", key: "xtxkd" }]
-];
-const Trash2 = createLucideIcon("Trash2", __iconNode$3);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$2 = [
-  ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
-  ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }],
-  ["line", { x1: "19", x2: "19", y1: "8", y2: "14", key: "1bvyxn" }],
-  ["line", { x1: "22", x2: "16", y1: "11", y2: "11", key: "1shjgl" }]
-];
-const UserPlus = createLucideIcon("UserPlus", __iconNode$2);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$1 = [
-  ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
-  ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }],
-  ["path", { d: "M22 21v-2a4 4 0 0 0-3-3.87", key: "kshegd" }],
-  ["path", { d: "M16 3.13a4 4 0 0 1 0 7.75", key: "1da9ce" }]
-];
-const Users = createLucideIcon("Users", __iconNode$1);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode = [
-  ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
-  ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
-];
-const X = createLucideIcon("X", __iconNode);
-function r(e) {
-  var t, f, n = "";
-  if ("string" == typeof e || "number" == typeof e) n += e;
-  else if ("object" == typeof e) if (Array.isArray(e)) {
-    var o = e.length;
-    for (t = 0; t < o; t++) e[t] && (f = r(e[t])) && (n && (n += " "), n += f);
-  } else for (f in e) e[f] && (n && (n += " "), n += f);
-  return n;
-}
-function clsx() {
-  for (var e, t, f = 0, n = "", o = arguments.length; f < o; f++) (e = arguments[f]) && (t = r(e)) && (n && (n += " "), n += t);
-  return n;
-}
-const concatArrays = (array1, array2) => {
-  const combinedArray = new Array(array1.length + array2.length);
-  for (let i = 0; i < array1.length; i++) {
-    combinedArray[i] = array1[i];
-  }
-  for (let i = 0; i < array2.length; i++) {
-    combinedArray[array1.length + i] = array2[i];
-  }
-  return combinedArray;
-};
-const createClassValidatorObject = (classGroupId, validator2) => ({
-  classGroupId,
-  validator: validator2
-});
-const createClassPartObject = (nextPart = /* @__PURE__ */ new Map(), validators2 = null, classGroupId) => ({
-  nextPart,
-  validators: validators2,
-  classGroupId
-});
-const CLASS_PART_SEPARATOR = "-";
-const EMPTY_CONFLICTS = [];
-const ARBITRARY_PROPERTY_PREFIX = "arbitrary..";
-const createClassGroupUtils = (config) => {
-  const classMap = createClassMap(config);
-  const {
-    conflictingClassGroups,
-    conflictingClassGroupModifiers
-  } = config;
-  const getClassGroupId = (className) => {
-    if (className.startsWith("[") && className.endsWith("]")) {
-      return getGroupIdForArbitraryProperty(className);
-    }
-    const classParts = className.split(CLASS_PART_SEPARATOR);
-    const startIndex = classParts[0] === "" && classParts.length > 1 ? 1 : 0;
-    return getGroupRecursive(classParts, startIndex, classMap);
-  };
-  const getConflictingClassGroupIds = (classGroupId, hasPostfixModifier) => {
-    if (hasPostfixModifier) {
-      const modifierConflicts = conflictingClassGroupModifiers[classGroupId];
-      const baseConflicts = conflictingClassGroups[classGroupId];
-      if (modifierConflicts) {
-        if (baseConflicts) {
-          return concatArrays(baseConflicts, modifierConflicts);
-        }
-        return modifierConflicts;
-      }
-      return baseConflicts || EMPTY_CONFLICTS;
-    }
-    return conflictingClassGroups[classGroupId] || EMPTY_CONFLICTS;
-  };
-  return {
-    getClassGroupId,
-    getConflictingClassGroupIds
-  };
-};
-const getGroupRecursive = (classParts, startIndex, classPartObject) => {
-  const classPathsLength = classParts.length - startIndex;
-  if (classPathsLength === 0) {
-    return classPartObject.classGroupId;
-  }
-  const currentClassPart = classParts[startIndex];
-  const nextClassPartObject = classPartObject.nextPart.get(currentClassPart);
-  if (nextClassPartObject) {
-    const result = getGroupRecursive(classParts, startIndex + 1, nextClassPartObject);
-    if (result) return result;
-  }
-  const validators2 = classPartObject.validators;
-  if (validators2 === null) {
-    return void 0;
-  }
-  const classRest = startIndex === 0 ? classParts.join(CLASS_PART_SEPARATOR) : classParts.slice(startIndex).join(CLASS_PART_SEPARATOR);
-  const validatorsLength = validators2.length;
-  for (let i = 0; i < validatorsLength; i++) {
-    const validatorObj = validators2[i];
-    if (validatorObj.validator(classRest)) {
-      return validatorObj.classGroupId;
-    }
-  }
-  return void 0;
-};
-const getGroupIdForArbitraryProperty = (className) => className.slice(1, -1).indexOf(":") === -1 ? void 0 : (() => {
-  const content = className.slice(1, -1);
-  const colonIndex = content.indexOf(":");
-  const property = content.slice(0, colonIndex);
-  return property ? ARBITRARY_PROPERTY_PREFIX + property : void 0;
-})();
-const createClassMap = (config) => {
-  const {
-    theme,
-    classGroups
-  } = config;
-  return processClassGroups(classGroups, theme);
-};
-const processClassGroups = (classGroups, theme) => {
-  const classMap = createClassPartObject();
-  for (const classGroupId in classGroups) {
-    const group = classGroups[classGroupId];
-    processClassesRecursively(group, classMap, classGroupId, theme);
-  }
-  return classMap;
-};
-const processClassesRecursively = (classGroup, classPartObject, classGroupId, theme) => {
-  const len = classGroup.length;
-  for (let i = 0; i < len; i++) {
-    const classDefinition = classGroup[i];
-    processClassDefinition(classDefinition, classPartObject, classGroupId, theme);
-  }
-};
-const processClassDefinition = (classDefinition, classPartObject, classGroupId, theme) => {
-  if (typeof classDefinition === "string") {
-    processStringDefinition(classDefinition, classPartObject, classGroupId);
-    return;
-  }
-  if (typeof classDefinition === "function") {
-    processFunctionDefinition(classDefinition, classPartObject, classGroupId, theme);
-    return;
-  }
-  processObjectDefinition(classDefinition, classPartObject, classGroupId, theme);
-};
-const processStringDefinition = (classDefinition, classPartObject, classGroupId) => {
-  const classPartObjectToEdit = classDefinition === "" ? classPartObject : getPart(classPartObject, classDefinition);
-  classPartObjectToEdit.classGroupId = classGroupId;
-};
-const processFunctionDefinition = (classDefinition, classPartObject, classGroupId, theme) => {
-  if (isThemeGetter(classDefinition)) {
-    processClassesRecursively(classDefinition(theme), classPartObject, classGroupId, theme);
-    return;
-  }
-  if (classPartObject.validators === null) {
-    classPartObject.validators = [];
-  }
-  classPartObject.validators.push(createClassValidatorObject(classGroupId, classDefinition));
-};
-const processObjectDefinition = (classDefinition, classPartObject, classGroupId, theme) => {
-  const entries = Object.entries(classDefinition);
-  const len = entries.length;
-  for (let i = 0; i < len; i++) {
-    const [key2, value] = entries[i];
-    processClassesRecursively(value, getPart(classPartObject, key2), classGroupId, theme);
-  }
-};
-const getPart = (classPartObject, path) => {
-  let current = classPartObject;
-  const parts = path.split(CLASS_PART_SEPARATOR);
-  const len = parts.length;
-  for (let i = 0; i < len; i++) {
-    const part = parts[i];
-    let next = current.nextPart.get(part);
-    if (!next) {
-      next = createClassPartObject();
-      current.nextPart.set(part, next);
-    }
-    current = next;
-  }
-  return current;
-};
-const isThemeGetter = (func) => "isThemeGetter" in func && func.isThemeGetter === true;
-const createLruCache = (maxCacheSize) => {
-  if (maxCacheSize < 1) {
-    return {
-      get: () => void 0,
-      set: () => {
-      }
-    };
-  }
-  let cacheSize = 0;
-  let cache = /* @__PURE__ */ Object.create(null);
-  let previousCache = /* @__PURE__ */ Object.create(null);
-  const update = (key2, value) => {
-    cache[key2] = value;
-    cacheSize++;
-    if (cacheSize > maxCacheSize) {
-      cacheSize = 0;
-      previousCache = cache;
-      cache = /* @__PURE__ */ Object.create(null);
-    }
-  };
-  return {
-    get(key2) {
-      let value = cache[key2];
-      if (value !== void 0) {
-        return value;
-      }
-      if ((value = previousCache[key2]) !== void 0) {
-        update(key2, value);
-        return value;
-      }
-    },
-    set(key2, value) {
-      if (key2 in cache) {
-        cache[key2] = value;
-      } else {
-        update(key2, value);
-      }
-    }
-  };
-};
-const IMPORTANT_MODIFIER = "!";
-const MODIFIER_SEPARATOR = ":";
-const EMPTY_MODIFIERS = [];
-const createResultObject = (modifiers, hasImportantModifier, baseClassName, maybePostfixModifierPosition, isExternal) => ({
-  modifiers,
-  hasImportantModifier,
-  baseClassName,
-  maybePostfixModifierPosition,
-  isExternal
-});
-const createParseClassName = (config) => {
-  const {
-    prefix,
-    experimentalParseClassName
-  } = config;
-  let parseClassName = (className) => {
-    const modifiers = [];
-    let bracketDepth = 0;
-    let parenDepth = 0;
-    let modifierStart = 0;
-    let postfixModifierPosition;
-    const len = className.length;
-    for (let index = 0; index < len; index++) {
-      const currentCharacter = className[index];
-      if (bracketDepth === 0 && parenDepth === 0) {
-        if (currentCharacter === MODIFIER_SEPARATOR) {
-          modifiers.push(className.slice(modifierStart, index));
-          modifierStart = index + 1;
-          continue;
-        }
-        if (currentCharacter === "/") {
-          postfixModifierPosition = index;
-          continue;
-        }
-      }
-      if (currentCharacter === "[") bracketDepth++;
-      else if (currentCharacter === "]") bracketDepth--;
-      else if (currentCharacter === "(") parenDepth++;
-      else if (currentCharacter === ")") parenDepth--;
-    }
-    const baseClassNameWithImportantModifier = modifiers.length === 0 ? className : className.slice(modifierStart);
-    let baseClassName = baseClassNameWithImportantModifier;
-    let hasImportantModifier = false;
-    if (baseClassNameWithImportantModifier.endsWith(IMPORTANT_MODIFIER)) {
-      baseClassName = baseClassNameWithImportantModifier.slice(0, -1);
-      hasImportantModifier = true;
-    } else if (
-      /**
-       * In Tailwind CSS v3 the important modifier was at the start of the base class name. This is still supported for legacy reasons.
-       * @see https://github.com/dcastil/tailwind-merge/issues/513#issuecomment-2614029864
-       */
-      baseClassNameWithImportantModifier.startsWith(IMPORTANT_MODIFIER)
-    ) {
-      baseClassName = baseClassNameWithImportantModifier.slice(1);
-      hasImportantModifier = true;
-    }
-    const maybePostfixModifierPosition = postfixModifierPosition && postfixModifierPosition > modifierStart ? postfixModifierPosition - modifierStart : void 0;
-    return createResultObject(modifiers, hasImportantModifier, baseClassName, maybePostfixModifierPosition);
-  };
-  if (prefix) {
-    const fullPrefix = prefix + MODIFIER_SEPARATOR;
-    const parseClassNameOriginal = parseClassName;
-    parseClassName = (className) => className.startsWith(fullPrefix) ? parseClassNameOriginal(className.slice(fullPrefix.length)) : createResultObject(EMPTY_MODIFIERS, false, className, void 0, true);
-  }
-  if (experimentalParseClassName) {
-    const parseClassNameOriginal = parseClassName;
-    parseClassName = (className) => experimentalParseClassName({
-      className,
-      parseClassName: parseClassNameOriginal
-    });
-  }
-  return parseClassName;
-};
-const createSortModifiers = (config) => {
-  const modifierWeights = /* @__PURE__ */ new Map();
-  config.orderSensitiveModifiers.forEach((mod, index) => {
-    modifierWeights.set(mod, 1e6 + index);
-  });
-  return (modifiers) => {
-    const result = [];
-    let currentSegment = [];
-    for (let i = 0; i < modifiers.length; i++) {
-      const modifier = modifiers[i];
-      const isArbitrary = modifier[0] === "[";
-      const isOrderSensitive = modifierWeights.has(modifier);
-      if (isArbitrary || isOrderSensitive) {
-        if (currentSegment.length > 0) {
-          currentSegment.sort();
-          result.push(...currentSegment);
-          currentSegment = [];
-        }
-        result.push(modifier);
-      } else {
-        currentSegment.push(modifier);
-      }
-    }
-    if (currentSegment.length > 0) {
-      currentSegment.sort();
-      result.push(...currentSegment);
-    }
-    return result;
-  };
-};
-const createConfigUtils = (config) => ({
-  cache: createLruCache(config.cacheSize),
-  parseClassName: createParseClassName(config),
-  sortModifiers: createSortModifiers(config),
-  ...createClassGroupUtils(config)
-});
-const SPLIT_CLASSES_REGEX = /\s+/;
-const mergeClassList = (classList, configUtils) => {
-  const {
-    parseClassName,
-    getClassGroupId,
-    getConflictingClassGroupIds,
-    sortModifiers
-  } = configUtils;
-  const classGroupsInConflict = [];
-  const classNames = classList.trim().split(SPLIT_CLASSES_REGEX);
-  let result = "";
-  for (let index = classNames.length - 1; index >= 0; index -= 1) {
-    const originalClassName = classNames[index];
-    const {
-      isExternal,
-      modifiers,
-      hasImportantModifier,
-      baseClassName,
-      maybePostfixModifierPosition
-    } = parseClassName(originalClassName);
-    if (isExternal) {
-      result = originalClassName + (result.length > 0 ? " " + result : result);
-      continue;
-    }
-    let hasPostfixModifier = !!maybePostfixModifierPosition;
-    let classGroupId = getClassGroupId(hasPostfixModifier ? baseClassName.substring(0, maybePostfixModifierPosition) : baseClassName);
-    if (!classGroupId) {
-      if (!hasPostfixModifier) {
-        result = originalClassName + (result.length > 0 ? " " + result : result);
-        continue;
-      }
-      classGroupId = getClassGroupId(baseClassName);
-      if (!classGroupId) {
-        result = originalClassName + (result.length > 0 ? " " + result : result);
-        continue;
-      }
-      hasPostfixModifier = false;
-    }
-    const variantModifier = modifiers.length === 0 ? "" : modifiers.length === 1 ? modifiers[0] : sortModifiers(modifiers).join(":");
-    const modifierId = hasImportantModifier ? variantModifier + IMPORTANT_MODIFIER : variantModifier;
-    const classId = modifierId + classGroupId;
-    if (classGroupsInConflict.indexOf(classId) > -1) {
-      continue;
-    }
-    classGroupsInConflict.push(classId);
-    const conflictGroups = getConflictingClassGroupIds(classGroupId, hasPostfixModifier);
-    for (let i = 0; i < conflictGroups.length; ++i) {
-      const group = conflictGroups[i];
-      classGroupsInConflict.push(modifierId + group);
-    }
-    result = originalClassName + (result.length > 0 ? " " + result : result);
-  }
-  return result;
-};
-const twJoin = (...classLists) => {
-  let index = 0;
-  let argument;
-  let resolvedValue;
-  let string = "";
-  while (index < classLists.length) {
-    if (argument = classLists[index++]) {
-      if (resolvedValue = toValue(argument)) {
-        string && (string += " ");
-        string += resolvedValue;
-      }
-    }
-  }
-  return string;
-};
-const toValue = (mix) => {
-  if (typeof mix === "string") {
-    return mix;
-  }
-  let resolvedValue;
-  let string = "";
-  for (let k = 0; k < mix.length; k++) {
-    if (mix[k]) {
-      if (resolvedValue = toValue(mix[k])) {
-        string && (string += " ");
-        string += resolvedValue;
-      }
-    }
-  }
-  return string;
-};
-const createTailwindMerge = (createConfigFirst, ...createConfigRest) => {
-  let configUtils;
-  let cacheGet;
-  let cacheSet;
-  let functionToCall;
-  const initTailwindMerge = (classList) => {
-    const config = createConfigRest.reduce((previousConfig, createConfigCurrent) => createConfigCurrent(previousConfig), createConfigFirst());
-    configUtils = createConfigUtils(config);
-    cacheGet = configUtils.cache.get;
-    cacheSet = configUtils.cache.set;
-    functionToCall = tailwindMerge;
-    return tailwindMerge(classList);
-  };
-  const tailwindMerge = (classList) => {
-    const cachedResult = cacheGet(classList);
-    if (cachedResult) {
-      return cachedResult;
-    }
-    const result = mergeClassList(classList, configUtils);
-    cacheSet(classList, result);
-    return result;
-  };
-  functionToCall = initTailwindMerge;
-  return (...args) => functionToCall(twJoin(...args));
-};
-const fallbackThemeArr = [];
-const fromTheme = (key2) => {
-  const themeGetter = (theme) => theme[key2] || fallbackThemeArr;
-  themeGetter.isThemeGetter = true;
-  return themeGetter;
-};
-const arbitraryValueRegex = /^\[(?:(\w[\w-]*):)?(.+)\]$/i;
-const arbitraryVariableRegex = /^\((?:(\w[\w-]*):)?(.+)\)$/i;
-const fractionRegex = /^\d+(?:\.\d+)?\/\d+(?:\.\d+)?$/;
-const tshirtUnitRegex = /^(\d+(\.\d+)?)?(xs|sm|md|lg|xl)$/;
-const lengthUnitRegex = /\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|ch|ex|r?lh|cq(w|h|i|b|min|max))|\b(calc|min|max|clamp)\(.+\)|^0$/;
-const colorFunctionRegex = /^(rgba?|hsla?|hwb|(ok)?(lab|lch)|color-mix)\(.+\)$/;
-const shadowRegex = /^(inset_)?-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)/;
-const imageRegex = /^(url|image|image-set|cross-fade|element|(repeating-)?(linear|radial|conic)-gradient)\(.+\)$/;
-const isFraction = (value) => fractionRegex.test(value);
-const isNumber$1 = (value) => !!value && !Number.isNaN(Number(value));
-const isInteger = (value) => !!value && Number.isInteger(Number(value));
-const isPercent = (value) => value.endsWith("%") && isNumber$1(value.slice(0, -1));
-const isTshirtSize = (value) => tshirtUnitRegex.test(value);
-const isAny = () => true;
-const isLengthOnly = (value) => (
-  // `colorFunctionRegex` check is necessary because color functions can have percentages in them which which would be incorrectly classified as lengths.
-  // For example, `hsl(0 0% 0%)` would be classified as a length without this check.
-  // I could also use lookbehind assertion in `lengthUnitRegex` but that isn't supported widely enough.
-  lengthUnitRegex.test(value) && !colorFunctionRegex.test(value)
-);
-const isNever = () => false;
-const isShadow = (value) => shadowRegex.test(value);
-const isImage = (value) => imageRegex.test(value);
-const isAnyNonArbitrary = (value) => !isArbitraryValue(value) && !isArbitraryVariable(value);
-const isArbitrarySize = (value) => getIsArbitraryValue(value, isLabelSize, isNever);
-const isArbitraryValue = (value) => arbitraryValueRegex.test(value);
-const isArbitraryLength = (value) => getIsArbitraryValue(value, isLabelLength, isLengthOnly);
-const isArbitraryNumber = (value) => getIsArbitraryValue(value, isLabelNumber, isNumber$1);
-const isArbitraryWeight = (value) => getIsArbitraryValue(value, isLabelWeight, isAny);
-const isArbitraryFamilyName = (value) => getIsArbitraryValue(value, isLabelFamilyName, isNever);
-const isArbitraryPosition = (value) => getIsArbitraryValue(value, isLabelPosition, isNever);
-const isArbitraryImage = (value) => getIsArbitraryValue(value, isLabelImage, isImage);
-const isArbitraryShadow = (value) => getIsArbitraryValue(value, isLabelShadow, isShadow);
-const isArbitraryVariable = (value) => arbitraryVariableRegex.test(value);
-const isArbitraryVariableLength = (value) => getIsArbitraryVariable(value, isLabelLength);
-const isArbitraryVariableFamilyName = (value) => getIsArbitraryVariable(value, isLabelFamilyName);
-const isArbitraryVariablePosition = (value) => getIsArbitraryVariable(value, isLabelPosition);
-const isArbitraryVariableSize = (value) => getIsArbitraryVariable(value, isLabelSize);
-const isArbitraryVariableImage = (value) => getIsArbitraryVariable(value, isLabelImage);
-const isArbitraryVariableShadow = (value) => getIsArbitraryVariable(value, isLabelShadow, true);
-const isArbitraryVariableWeight = (value) => getIsArbitraryVariable(value, isLabelWeight, true);
-const getIsArbitraryValue = (value, testLabel, testValue) => {
-  const result = arbitraryValueRegex.exec(value);
-  if (result) {
-    if (result[1]) {
-      return testLabel(result[1]);
-    }
-    return testValue(result[2]);
-  }
-  return false;
-};
-const getIsArbitraryVariable = (value, testLabel, shouldMatchNoLabel = false) => {
-  const result = arbitraryVariableRegex.exec(value);
-  if (result) {
-    if (result[1]) {
-      return testLabel(result[1]);
-    }
-    return shouldMatchNoLabel;
-  }
-  return false;
-};
-const isLabelPosition = (label) => label === "position" || label === "percentage";
-const isLabelImage = (label) => label === "image" || label === "url";
-const isLabelSize = (label) => label === "length" || label === "size" || label === "bg-size";
-const isLabelLength = (label) => label === "length";
-const isLabelNumber = (label) => label === "number";
-const isLabelFamilyName = (label) => label === "family-name";
-const isLabelWeight = (label) => label === "number" || label === "weight";
-const isLabelShadow = (label) => label === "shadow";
-const getDefaultConfig = () => {
-  const themeColor = fromTheme("color");
-  const themeFont = fromTheme("font");
-  const themeText = fromTheme("text");
-  const themeFontWeight = fromTheme("font-weight");
-  const themeTracking = fromTheme("tracking");
-  const themeLeading = fromTheme("leading");
-  const themeBreakpoint = fromTheme("breakpoint");
-  const themeContainer = fromTheme("container");
-  const themeSpacing = fromTheme("spacing");
-  const themeRadius = fromTheme("radius");
-  const themeShadow = fromTheme("shadow");
-  const themeInsetShadow = fromTheme("inset-shadow");
-  const themeTextShadow = fromTheme("text-shadow");
-  const themeDropShadow = fromTheme("drop-shadow");
-  const themeBlur = fromTheme("blur");
-  const themePerspective = fromTheme("perspective");
-  const themeAspect = fromTheme("aspect");
-  const themeEase = fromTheme("ease");
-  const themeAnimate = fromTheme("animate");
-  const scaleBreak = () => ["auto", "avoid", "all", "avoid-page", "page", "left", "right", "column"];
-  const scalePosition = () => [
-    "center",
-    "top",
-    "bottom",
-    "left",
-    "right",
-    "top-left",
-    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
-    "left-top",
-    "top-right",
-    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
-    "right-top",
-    "bottom-right",
-    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
-    "right-bottom",
-    "bottom-left",
-    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
-    "left-bottom"
-  ];
-  const scalePositionWithArbitrary = () => [...scalePosition(), isArbitraryVariable, isArbitraryValue];
-  const scaleOverflow = () => ["auto", "hidden", "clip", "visible", "scroll"];
-  const scaleOverscroll = () => ["auto", "contain", "none"];
-  const scaleUnambiguousSpacing = () => [isArbitraryVariable, isArbitraryValue, themeSpacing];
-  const scaleInset = () => [isFraction, "full", "auto", ...scaleUnambiguousSpacing()];
-  const scaleGridTemplateColsRows = () => [isInteger, "none", "subgrid", isArbitraryVariable, isArbitraryValue];
-  const scaleGridColRowStartAndEnd = () => ["auto", {
-    span: ["full", isInteger, isArbitraryVariable, isArbitraryValue]
-  }, isInteger, isArbitraryVariable, isArbitraryValue];
-  const scaleGridColRowStartOrEnd = () => [isInteger, "auto", isArbitraryVariable, isArbitraryValue];
-  const scaleGridAutoColsRows = () => ["auto", "min", "max", "fr", isArbitraryVariable, isArbitraryValue];
-  const scaleAlignPrimaryAxis = () => ["start", "end", "center", "between", "around", "evenly", "stretch", "baseline", "center-safe", "end-safe"];
-  const scaleAlignSecondaryAxis = () => ["start", "end", "center", "stretch", "center-safe", "end-safe"];
-  const scaleMargin = () => ["auto", ...scaleUnambiguousSpacing()];
-  const scaleSizing = () => [isFraction, "auto", "full", "dvw", "dvh", "lvw", "lvh", "svw", "svh", "min", "max", "fit", ...scaleUnambiguousSpacing()];
-  const scaleSizingInline = () => [isFraction, "screen", "full", "dvw", "lvw", "svw", "min", "max", "fit", ...scaleUnambiguousSpacing()];
-  const scaleSizingBlock = () => [isFraction, "screen", "full", "lh", "dvh", "lvh", "svh", "min", "max", "fit", ...scaleUnambiguousSpacing()];
-  const scaleColor = () => [themeColor, isArbitraryVariable, isArbitraryValue];
-  const scaleBgPosition = () => [...scalePosition(), isArbitraryVariablePosition, isArbitraryPosition, {
-    position: [isArbitraryVariable, isArbitraryValue]
-  }];
-  const scaleBgRepeat = () => ["no-repeat", {
-    repeat: ["", "x", "y", "space", "round"]
-  }];
-  const scaleBgSize = () => ["auto", "cover", "contain", isArbitraryVariableSize, isArbitrarySize, {
-    size: [isArbitraryVariable, isArbitraryValue]
-  }];
-  const scaleGradientStopPosition = () => [isPercent, isArbitraryVariableLength, isArbitraryLength];
-  const scaleRadius = () => [
-    // Deprecated since Tailwind CSS v4.0.0
-    "",
-    "none",
-    "full",
-    themeRadius,
-    isArbitraryVariable,
-    isArbitraryValue
-  ];
-  const scaleBorderWidth = () => ["", isNumber$1, isArbitraryVariableLength, isArbitraryLength];
-  const scaleLineStyle = () => ["solid", "dashed", "dotted", "double"];
-  const scaleBlendMode = () => ["normal", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity"];
-  const scaleMaskImagePosition = () => [isNumber$1, isPercent, isArbitraryVariablePosition, isArbitraryPosition];
-  const scaleBlur = () => [
-    // Deprecated since Tailwind CSS v4.0.0
-    "",
-    "none",
-    themeBlur,
-    isArbitraryVariable,
-    isArbitraryValue
-  ];
-  const scaleRotate = () => ["none", isNumber$1, isArbitraryVariable, isArbitraryValue];
-  const scaleScale = () => ["none", isNumber$1, isArbitraryVariable, isArbitraryValue];
-  const scaleSkew = () => [isNumber$1, isArbitraryVariable, isArbitraryValue];
-  const scaleTranslate = () => [isFraction, "full", ...scaleUnambiguousSpacing()];
-  return {
-    cacheSize: 500,
-    theme: {
-      animate: ["spin", "ping", "pulse", "bounce"],
-      aspect: ["video"],
-      blur: [isTshirtSize],
-      breakpoint: [isTshirtSize],
-      color: [isAny],
-      container: [isTshirtSize],
-      "drop-shadow": [isTshirtSize],
-      ease: ["in", "out", "in-out"],
-      font: [isAnyNonArbitrary],
-      "font-weight": ["thin", "extralight", "light", "normal", "medium", "semibold", "bold", "extrabold", "black"],
-      "inset-shadow": [isTshirtSize],
-      leading: ["none", "tight", "snug", "normal", "relaxed", "loose"],
-      perspective: ["dramatic", "near", "normal", "midrange", "distant", "none"],
-      radius: [isTshirtSize],
-      shadow: [isTshirtSize],
-      spacing: ["px", isNumber$1],
-      text: [isTshirtSize],
-      "text-shadow": [isTshirtSize],
-      tracking: ["tighter", "tight", "normal", "wide", "wider", "widest"]
-    },
-    classGroups: {
-      // --------------
-      // --- Layout ---
-      // --------------
-      /**
-       * Aspect Ratio
-       * @see https://tailwindcss.com/docs/aspect-ratio
-       */
-      aspect: [{
-        aspect: ["auto", "square", isFraction, isArbitraryValue, isArbitraryVariable, themeAspect]
-      }],
-      /**
-       * Container
-       * @see https://tailwindcss.com/docs/container
-       * @deprecated since Tailwind CSS v4.0.0
-       */
-      container: ["container"],
-      /**
-       * Columns
-       * @see https://tailwindcss.com/docs/columns
-       */
-      columns: [{
-        columns: [isNumber$1, isArbitraryValue, isArbitraryVariable, themeContainer]
-      }],
-      /**
-       * Break After
-       * @see https://tailwindcss.com/docs/break-after
-       */
-      "break-after": [{
-        "break-after": scaleBreak()
-      }],
-      /**
-       * Break Before
-       * @see https://tailwindcss.com/docs/break-before
-       */
-      "break-before": [{
-        "break-before": scaleBreak()
-      }],
-      /**
-       * Break Inside
-       * @see https://tailwindcss.com/docs/break-inside
-       */
-      "break-inside": [{
-        "break-inside": ["auto", "avoid", "avoid-page", "avoid-column"]
-      }],
-      /**
-       * Box Decoration Break
-       * @see https://tailwindcss.com/docs/box-decoration-break
-       */
-      "box-decoration": [{
-        "box-decoration": ["slice", "clone"]
-      }],
-      /**
-       * Box Sizing
-       * @see https://tailwindcss.com/docs/box-sizing
-       */
-      box: [{
-        box: ["border", "content"]
-      }],
-      /**
-       * Display
-       * @see https://tailwindcss.com/docs/display
-       */
-      display: ["block", "inline-block", "inline", "flex", "inline-flex", "table", "inline-table", "table-caption", "table-cell", "table-column", "table-column-group", "table-footer-group", "table-header-group", "table-row-group", "table-row", "flow-root", "grid", "inline-grid", "contents", "list-item", "hidden"],
-      /**
-       * Screen Reader Only
-       * @see https://tailwindcss.com/docs/display#screen-reader-only
-       */
-      sr: ["sr-only", "not-sr-only"],
-      /**
-       * Floats
-       * @see https://tailwindcss.com/docs/float
-       */
-      float: [{
-        float: ["right", "left", "none", "start", "end"]
-      }],
-      /**
-       * Clear
-       * @see https://tailwindcss.com/docs/clear
-       */
-      clear: [{
-        clear: ["left", "right", "both", "none", "start", "end"]
-      }],
-      /**
-       * Isolation
-       * @see https://tailwindcss.com/docs/isolation
-       */
-      isolation: ["isolate", "isolation-auto"],
-      /**
-       * Object Fit
-       * @see https://tailwindcss.com/docs/object-fit
-       */
-      "object-fit": [{
-        object: ["contain", "cover", "fill", "none", "scale-down"]
-      }],
-      /**
-       * Object Position
-       * @see https://tailwindcss.com/docs/object-position
-       */
-      "object-position": [{
-        object: scalePositionWithArbitrary()
-      }],
-      /**
-       * Overflow
-       * @see https://tailwindcss.com/docs/overflow
-       */
-      overflow: [{
-        overflow: scaleOverflow()
-      }],
-      /**
-       * Overflow X
-       * @see https://tailwindcss.com/docs/overflow
-       */
-      "overflow-x": [{
-        "overflow-x": scaleOverflow()
-      }],
-      /**
-       * Overflow Y
-       * @see https://tailwindcss.com/docs/overflow
-       */
-      "overflow-y": [{
-        "overflow-y": scaleOverflow()
-      }],
-      /**
-       * Overscroll Behavior
-       * @see https://tailwindcss.com/docs/overscroll-behavior
-       */
-      overscroll: [{
-        overscroll: scaleOverscroll()
-      }],
-      /**
-       * Overscroll Behavior X
-       * @see https://tailwindcss.com/docs/overscroll-behavior
-       */
-      "overscroll-x": [{
-        "overscroll-x": scaleOverscroll()
-      }],
-      /**
-       * Overscroll Behavior Y
-       * @see https://tailwindcss.com/docs/overscroll-behavior
-       */
-      "overscroll-y": [{
-        "overscroll-y": scaleOverscroll()
-      }],
-      /**
-       * Position
-       * @see https://tailwindcss.com/docs/position
-       */
-      position: ["static", "fixed", "absolute", "relative", "sticky"],
-      /**
-       * Inset
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      inset: [{
-        inset: scaleInset()
-      }],
-      /**
-       * Inset Inline
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      "inset-x": [{
-        "inset-x": scaleInset()
-      }],
-      /**
-       * Inset Block
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      "inset-y": [{
-        "inset-y": scaleInset()
-      }],
-      /**
-       * Inset Inline Start
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       * @todo class group will be renamed to `inset-s` in next major release
-       */
-      start: [{
-        "inset-s": scaleInset(),
-        /**
-         * @deprecated since Tailwind CSS v4.2.0 in favor of `inset-s-*` utilities.
-         * @see https://github.com/tailwindlabs/tailwindcss/pull/19613
-         */
-        start: scaleInset()
-      }],
-      /**
-       * Inset Inline End
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       * @todo class group will be renamed to `inset-e` in next major release
-       */
-      end: [{
-        "inset-e": scaleInset(),
-        /**
-         * @deprecated since Tailwind CSS v4.2.0 in favor of `inset-e-*` utilities.
-         * @see https://github.com/tailwindlabs/tailwindcss/pull/19613
-         */
-        end: scaleInset()
-      }],
-      /**
-       * Inset Block Start
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      "inset-bs": [{
-        "inset-bs": scaleInset()
-      }],
-      /**
-       * Inset Block End
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      "inset-be": [{
-        "inset-be": scaleInset()
-      }],
-      /**
-       * Top
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      top: [{
-        top: scaleInset()
-      }],
-      /**
-       * Right
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      right: [{
-        right: scaleInset()
-      }],
-      /**
-       * Bottom
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      bottom: [{
-        bottom: scaleInset()
-      }],
-      /**
-       * Left
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      left: [{
-        left: scaleInset()
-      }],
-      /**
-       * Visibility
-       * @see https://tailwindcss.com/docs/visibility
-       */
-      visibility: ["visible", "invisible", "collapse"],
-      /**
-       * Z-Index
-       * @see https://tailwindcss.com/docs/z-index
-       */
-      z: [{
-        z: [isInteger, "auto", isArbitraryVariable, isArbitraryValue]
-      }],
-      // ------------------------
-      // --- Flexbox and Grid ---
-      // ------------------------
-      /**
-       * Flex Basis
-       * @see https://tailwindcss.com/docs/flex-basis
-       */
-      basis: [{
-        basis: [isFraction, "full", "auto", themeContainer, ...scaleUnambiguousSpacing()]
-      }],
-      /**
-       * Flex Direction
-       * @see https://tailwindcss.com/docs/flex-direction
-       */
-      "flex-direction": [{
-        flex: ["row", "row-reverse", "col", "col-reverse"]
-      }],
-      /**
-       * Flex Wrap
-       * @see https://tailwindcss.com/docs/flex-wrap
-       */
-      "flex-wrap": [{
-        flex: ["nowrap", "wrap", "wrap-reverse"]
-      }],
-      /**
-       * Flex
-       * @see https://tailwindcss.com/docs/flex
-       */
-      flex: [{
-        flex: [isNumber$1, isFraction, "auto", "initial", "none", isArbitraryValue]
-      }],
-      /**
-       * Flex Grow
-       * @see https://tailwindcss.com/docs/flex-grow
-       */
-      grow: [{
-        grow: ["", isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Flex Shrink
-       * @see https://tailwindcss.com/docs/flex-shrink
-       */
-      shrink: [{
-        shrink: ["", isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Order
-       * @see https://tailwindcss.com/docs/order
-       */
-      order: [{
-        order: [isInteger, "first", "last", "none", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Grid Template Columns
-       * @see https://tailwindcss.com/docs/grid-template-columns
-       */
-      "grid-cols": [{
-        "grid-cols": scaleGridTemplateColsRows()
-      }],
-      /**
-       * Grid Column Start / End
-       * @see https://tailwindcss.com/docs/grid-column
-       */
-      "col-start-end": [{
-        col: scaleGridColRowStartAndEnd()
-      }],
-      /**
-       * Grid Column Start
-       * @see https://tailwindcss.com/docs/grid-column
-       */
-      "col-start": [{
-        "col-start": scaleGridColRowStartOrEnd()
-      }],
-      /**
-       * Grid Column End
-       * @see https://tailwindcss.com/docs/grid-column
-       */
-      "col-end": [{
-        "col-end": scaleGridColRowStartOrEnd()
-      }],
-      /**
-       * Grid Template Rows
-       * @see https://tailwindcss.com/docs/grid-template-rows
-       */
-      "grid-rows": [{
-        "grid-rows": scaleGridTemplateColsRows()
-      }],
-      /**
-       * Grid Row Start / End
-       * @see https://tailwindcss.com/docs/grid-row
-       */
-      "row-start-end": [{
-        row: scaleGridColRowStartAndEnd()
-      }],
-      /**
-       * Grid Row Start
-       * @see https://tailwindcss.com/docs/grid-row
-       */
-      "row-start": [{
-        "row-start": scaleGridColRowStartOrEnd()
-      }],
-      /**
-       * Grid Row End
-       * @see https://tailwindcss.com/docs/grid-row
-       */
-      "row-end": [{
-        "row-end": scaleGridColRowStartOrEnd()
-      }],
-      /**
-       * Grid Auto Flow
-       * @see https://tailwindcss.com/docs/grid-auto-flow
-       */
-      "grid-flow": [{
-        "grid-flow": ["row", "col", "dense", "row-dense", "col-dense"]
-      }],
-      /**
-       * Grid Auto Columns
-       * @see https://tailwindcss.com/docs/grid-auto-columns
-       */
-      "auto-cols": [{
-        "auto-cols": scaleGridAutoColsRows()
-      }],
-      /**
-       * Grid Auto Rows
-       * @see https://tailwindcss.com/docs/grid-auto-rows
-       */
-      "auto-rows": [{
-        "auto-rows": scaleGridAutoColsRows()
-      }],
-      /**
-       * Gap
-       * @see https://tailwindcss.com/docs/gap
-       */
-      gap: [{
-        gap: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Gap X
-       * @see https://tailwindcss.com/docs/gap
-       */
-      "gap-x": [{
-        "gap-x": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Gap Y
-       * @see https://tailwindcss.com/docs/gap
-       */
-      "gap-y": [{
-        "gap-y": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Justify Content
-       * @see https://tailwindcss.com/docs/justify-content
-       */
-      "justify-content": [{
-        justify: [...scaleAlignPrimaryAxis(), "normal"]
-      }],
-      /**
-       * Justify Items
-       * @see https://tailwindcss.com/docs/justify-items
-       */
-      "justify-items": [{
-        "justify-items": [...scaleAlignSecondaryAxis(), "normal"]
-      }],
-      /**
-       * Justify Self
-       * @see https://tailwindcss.com/docs/justify-self
-       */
-      "justify-self": [{
-        "justify-self": ["auto", ...scaleAlignSecondaryAxis()]
-      }],
-      /**
-       * Align Content
-       * @see https://tailwindcss.com/docs/align-content
-       */
-      "align-content": [{
-        content: ["normal", ...scaleAlignPrimaryAxis()]
-      }],
-      /**
-       * Align Items
-       * @see https://tailwindcss.com/docs/align-items
-       */
-      "align-items": [{
-        items: [...scaleAlignSecondaryAxis(), {
-          baseline: ["", "last"]
-        }]
-      }],
-      /**
-       * Align Self
-       * @see https://tailwindcss.com/docs/align-self
-       */
-      "align-self": [{
-        self: ["auto", ...scaleAlignSecondaryAxis(), {
-          baseline: ["", "last"]
-        }]
-      }],
-      /**
-       * Place Content
-       * @see https://tailwindcss.com/docs/place-content
-       */
-      "place-content": [{
-        "place-content": scaleAlignPrimaryAxis()
-      }],
-      /**
-       * Place Items
-       * @see https://tailwindcss.com/docs/place-items
-       */
-      "place-items": [{
-        "place-items": [...scaleAlignSecondaryAxis(), "baseline"]
-      }],
-      /**
-       * Place Self
-       * @see https://tailwindcss.com/docs/place-self
-       */
-      "place-self": [{
-        "place-self": ["auto", ...scaleAlignSecondaryAxis()]
-      }],
-      // Spacing
-      /**
-       * Padding
-       * @see https://tailwindcss.com/docs/padding
-       */
-      p: [{
-        p: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Inline
-       * @see https://tailwindcss.com/docs/padding
-       */
-      px: [{
-        px: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Block
-       * @see https://tailwindcss.com/docs/padding
-       */
-      py: [{
-        py: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Inline Start
-       * @see https://tailwindcss.com/docs/padding
-       */
-      ps: [{
-        ps: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Inline End
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pe: [{
-        pe: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Block Start
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pbs: [{
-        pbs: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Block End
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pbe: [{
-        pbe: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Top
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pt: [{
-        pt: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Right
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pr: [{
-        pr: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Bottom
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pb: [{
-        pb: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Padding Left
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pl: [{
-        pl: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Margin
-       * @see https://tailwindcss.com/docs/margin
-       */
-      m: [{
-        m: scaleMargin()
-      }],
-      /**
-       * Margin Inline
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mx: [{
-        mx: scaleMargin()
-      }],
-      /**
-       * Margin Block
-       * @see https://tailwindcss.com/docs/margin
-       */
-      my: [{
-        my: scaleMargin()
-      }],
-      /**
-       * Margin Inline Start
-       * @see https://tailwindcss.com/docs/margin
-       */
-      ms: [{
-        ms: scaleMargin()
-      }],
-      /**
-       * Margin Inline End
-       * @see https://tailwindcss.com/docs/margin
-       */
-      me: [{
-        me: scaleMargin()
-      }],
-      /**
-       * Margin Block Start
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mbs: [{
-        mbs: scaleMargin()
-      }],
-      /**
-       * Margin Block End
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mbe: [{
-        mbe: scaleMargin()
-      }],
-      /**
-       * Margin Top
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mt: [{
-        mt: scaleMargin()
-      }],
-      /**
-       * Margin Right
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mr: [{
-        mr: scaleMargin()
-      }],
-      /**
-       * Margin Bottom
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mb: [{
-        mb: scaleMargin()
-      }],
-      /**
-       * Margin Left
-       * @see https://tailwindcss.com/docs/margin
-       */
-      ml: [{
-        ml: scaleMargin()
-      }],
-      /**
-       * Space Between X
-       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
-       */
-      "space-x": [{
-        "space-x": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Space Between X Reverse
-       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
-       */
-      "space-x-reverse": ["space-x-reverse"],
-      /**
-       * Space Between Y
-       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
-       */
-      "space-y": [{
-        "space-y": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Space Between Y Reverse
-       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
-       */
-      "space-y-reverse": ["space-y-reverse"],
-      // --------------
-      // --- Sizing ---
-      // --------------
-      /**
-       * Size
-       * @see https://tailwindcss.com/docs/width#setting-both-width-and-height
-       */
-      size: [{
-        size: scaleSizing()
-      }],
-      /**
-       * Inline Size
-       * @see https://tailwindcss.com/docs/width
-       */
-      "inline-size": [{
-        inline: ["auto", ...scaleSizingInline()]
-      }],
-      /**
-       * Min-Inline Size
-       * @see https://tailwindcss.com/docs/min-width
-       */
-      "min-inline-size": [{
-        "min-inline": ["auto", ...scaleSizingInline()]
-      }],
-      /**
-       * Max-Inline Size
-       * @see https://tailwindcss.com/docs/max-width
-       */
-      "max-inline-size": [{
-        "max-inline": ["none", ...scaleSizingInline()]
-      }],
-      /**
-       * Block Size
-       * @see https://tailwindcss.com/docs/height
-       */
-      "block-size": [{
-        block: ["auto", ...scaleSizingBlock()]
-      }],
-      /**
-       * Min-Block Size
-       * @see https://tailwindcss.com/docs/min-height
-       */
-      "min-block-size": [{
-        "min-block": ["auto", ...scaleSizingBlock()]
-      }],
-      /**
-       * Max-Block Size
-       * @see https://tailwindcss.com/docs/max-height
-       */
-      "max-block-size": [{
-        "max-block": ["none", ...scaleSizingBlock()]
-      }],
-      /**
-       * Width
-       * @see https://tailwindcss.com/docs/width
-       */
-      w: [{
-        w: [themeContainer, "screen", ...scaleSizing()]
-      }],
-      /**
-       * Min-Width
-       * @see https://tailwindcss.com/docs/min-width
-       */
-      "min-w": [{
-        "min-w": [
-          themeContainer,
-          "screen",
-          /** Deprecated. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
-          "none",
-          ...scaleSizing()
-        ]
-      }],
-      /**
-       * Max-Width
-       * @see https://tailwindcss.com/docs/max-width
-       */
-      "max-w": [{
-        "max-w": [
-          themeContainer,
-          "screen",
-          "none",
-          /** Deprecated since Tailwind CSS v4.0.0. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
-          "prose",
-          /** Deprecated since Tailwind CSS v4.0.0. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
-          {
-            screen: [themeBreakpoint]
-          },
-          ...scaleSizing()
-        ]
-      }],
-      /**
-       * Height
-       * @see https://tailwindcss.com/docs/height
-       */
-      h: [{
-        h: ["screen", "lh", ...scaleSizing()]
-      }],
-      /**
-       * Min-Height
-       * @see https://tailwindcss.com/docs/min-height
-       */
-      "min-h": [{
-        "min-h": ["screen", "lh", "none", ...scaleSizing()]
-      }],
-      /**
-       * Max-Height
-       * @see https://tailwindcss.com/docs/max-height
-       */
-      "max-h": [{
-        "max-h": ["screen", "lh", ...scaleSizing()]
-      }],
-      // ------------------
-      // --- Typography ---
-      // ------------------
-      /**
-       * Font Size
-       * @see https://tailwindcss.com/docs/font-size
-       */
-      "font-size": [{
-        text: ["base", themeText, isArbitraryVariableLength, isArbitraryLength]
-      }],
-      /**
-       * Font Smoothing
-       * @see https://tailwindcss.com/docs/font-smoothing
-       */
-      "font-smoothing": ["antialiased", "subpixel-antialiased"],
-      /**
-       * Font Style
-       * @see https://tailwindcss.com/docs/font-style
-       */
-      "font-style": ["italic", "not-italic"],
-      /**
-       * Font Weight
-       * @see https://tailwindcss.com/docs/font-weight
-       */
-      "font-weight": [{
-        font: [themeFontWeight, isArbitraryVariableWeight, isArbitraryWeight]
-      }],
-      /**
-       * Font Stretch
-       * @see https://tailwindcss.com/docs/font-stretch
-       */
-      "font-stretch": [{
-        "font-stretch": ["ultra-condensed", "extra-condensed", "condensed", "semi-condensed", "normal", "semi-expanded", "expanded", "extra-expanded", "ultra-expanded", isPercent, isArbitraryValue]
-      }],
-      /**
-       * Font Family
-       * @see https://tailwindcss.com/docs/font-family
-       */
-      "font-family": [{
-        font: [isArbitraryVariableFamilyName, isArbitraryFamilyName, themeFont]
-      }],
-      /**
-       * Font Feature Settings
-       * @see https://tailwindcss.com/docs/font-feature-settings
-       */
-      "font-features": [{
-        "font-features": [isArbitraryValue]
-      }],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-normal": ["normal-nums"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-ordinal": ["ordinal"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-slashed-zero": ["slashed-zero"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-figure": ["lining-nums", "oldstyle-nums"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-spacing": ["proportional-nums", "tabular-nums"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-fraction": ["diagonal-fractions", "stacked-fractions"],
-      /**
-       * Letter Spacing
-       * @see https://tailwindcss.com/docs/letter-spacing
-       */
-      tracking: [{
-        tracking: [themeTracking, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Line Clamp
-       * @see https://tailwindcss.com/docs/line-clamp
-       */
-      "line-clamp": [{
-        "line-clamp": [isNumber$1, "none", isArbitraryVariable, isArbitraryNumber]
-      }],
-      /**
-       * Line Height
-       * @see https://tailwindcss.com/docs/line-height
-       */
-      leading: [{
-        leading: [
-          /** Deprecated since Tailwind CSS v4.0.0. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
-          themeLeading,
-          ...scaleUnambiguousSpacing()
-        ]
-      }],
-      /**
-       * List Style Image
-       * @see https://tailwindcss.com/docs/list-style-image
-       */
-      "list-image": [{
-        "list-image": ["none", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * List Style Position
-       * @see https://tailwindcss.com/docs/list-style-position
-       */
-      "list-style-position": [{
-        list: ["inside", "outside"]
-      }],
-      /**
-       * List Style Type
-       * @see https://tailwindcss.com/docs/list-style-type
-       */
-      "list-style-type": [{
-        list: ["disc", "decimal", "none", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Text Alignment
-       * @see https://tailwindcss.com/docs/text-align
-       */
-      "text-alignment": [{
-        text: ["left", "center", "right", "justify", "start", "end"]
-      }],
-      /**
-       * Placeholder Color
-       * @deprecated since Tailwind CSS v3.0.0
-       * @see https://v3.tailwindcss.com/docs/placeholder-color
-       */
-      "placeholder-color": [{
-        placeholder: scaleColor()
-      }],
-      /**
-       * Text Color
-       * @see https://tailwindcss.com/docs/text-color
-       */
-      "text-color": [{
-        text: scaleColor()
-      }],
-      /**
-       * Text Decoration
-       * @see https://tailwindcss.com/docs/text-decoration
-       */
-      "text-decoration": ["underline", "overline", "line-through", "no-underline"],
-      /**
-       * Text Decoration Style
-       * @see https://tailwindcss.com/docs/text-decoration-style
-       */
-      "text-decoration-style": [{
-        decoration: [...scaleLineStyle(), "wavy"]
-      }],
-      /**
-       * Text Decoration Thickness
-       * @see https://tailwindcss.com/docs/text-decoration-thickness
-       */
-      "text-decoration-thickness": [{
-        decoration: [isNumber$1, "from-font", "auto", isArbitraryVariable, isArbitraryLength]
-      }],
-      /**
-       * Text Decoration Color
-       * @see https://tailwindcss.com/docs/text-decoration-color
-       */
-      "text-decoration-color": [{
-        decoration: scaleColor()
-      }],
-      /**
-       * Text Underline Offset
-       * @see https://tailwindcss.com/docs/text-underline-offset
-       */
-      "underline-offset": [{
-        "underline-offset": [isNumber$1, "auto", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Text Transform
-       * @see https://tailwindcss.com/docs/text-transform
-       */
-      "text-transform": ["uppercase", "lowercase", "capitalize", "normal-case"],
-      /**
-       * Text Overflow
-       * @see https://tailwindcss.com/docs/text-overflow
-       */
-      "text-overflow": ["truncate", "text-ellipsis", "text-clip"],
-      /**
-       * Text Wrap
-       * @see https://tailwindcss.com/docs/text-wrap
-       */
-      "text-wrap": [{
-        text: ["wrap", "nowrap", "balance", "pretty"]
-      }],
-      /**
-       * Text Indent
-       * @see https://tailwindcss.com/docs/text-indent
-       */
-      indent: [{
-        indent: scaleUnambiguousSpacing()
-      }],
-      /**
-       * Vertical Alignment
-       * @see https://tailwindcss.com/docs/vertical-align
-       */
-      "vertical-align": [{
-        align: ["baseline", "top", "middle", "bottom", "text-top", "text-bottom", "sub", "super", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Whitespace
-       * @see https://tailwindcss.com/docs/whitespace
-       */
-      whitespace: [{
-        whitespace: ["normal", "nowrap", "pre", "pre-line", "pre-wrap", "break-spaces"]
-      }],
-      /**
-       * Word Break
-       * @see https://tailwindcss.com/docs/word-break
-       */
-      break: [{
-        break: ["normal", "words", "all", "keep"]
-      }],
-      /**
-       * Overflow Wrap
-       * @see https://tailwindcss.com/docs/overflow-wrap
-       */
-      wrap: [{
-        wrap: ["break-word", "anywhere", "normal"]
-      }],
-      /**
-       * Hyphens
-       * @see https://tailwindcss.com/docs/hyphens
-       */
-      hyphens: [{
-        hyphens: ["none", "manual", "auto"]
-      }],
-      /**
-       * Content
-       * @see https://tailwindcss.com/docs/content
-       */
-      content: [{
-        content: ["none", isArbitraryVariable, isArbitraryValue]
-      }],
-      // -------------------
-      // --- Backgrounds ---
-      // -------------------
-      /**
-       * Background Attachment
-       * @see https://tailwindcss.com/docs/background-attachment
-       */
-      "bg-attachment": [{
-        bg: ["fixed", "local", "scroll"]
-      }],
-      /**
-       * Background Clip
-       * @see https://tailwindcss.com/docs/background-clip
-       */
-      "bg-clip": [{
-        "bg-clip": ["border", "padding", "content", "text"]
-      }],
-      /**
-       * Background Origin
-       * @see https://tailwindcss.com/docs/background-origin
-       */
-      "bg-origin": [{
-        "bg-origin": ["border", "padding", "content"]
-      }],
-      /**
-       * Background Position
-       * @see https://tailwindcss.com/docs/background-position
-       */
-      "bg-position": [{
-        bg: scaleBgPosition()
-      }],
-      /**
-       * Background Repeat
-       * @see https://tailwindcss.com/docs/background-repeat
-       */
-      "bg-repeat": [{
-        bg: scaleBgRepeat()
-      }],
-      /**
-       * Background Size
-       * @see https://tailwindcss.com/docs/background-size
-       */
-      "bg-size": [{
-        bg: scaleBgSize()
-      }],
-      /**
-       * Background Image
-       * @see https://tailwindcss.com/docs/background-image
-       */
-      "bg-image": [{
-        bg: ["none", {
-          linear: [{
-            to: ["t", "tr", "r", "br", "b", "bl", "l", "tl"]
-          }, isInteger, isArbitraryVariable, isArbitraryValue],
-          radial: ["", isArbitraryVariable, isArbitraryValue],
-          conic: [isInteger, isArbitraryVariable, isArbitraryValue]
-        }, isArbitraryVariableImage, isArbitraryImage]
-      }],
-      /**
-       * Background Color
-       * @see https://tailwindcss.com/docs/background-color
-       */
-      "bg-color": [{
-        bg: scaleColor()
-      }],
-      /**
-       * Gradient Color Stops From Position
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-from-pos": [{
-        from: scaleGradientStopPosition()
-      }],
-      /**
-       * Gradient Color Stops Via Position
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-via-pos": [{
-        via: scaleGradientStopPosition()
-      }],
-      /**
-       * Gradient Color Stops To Position
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-to-pos": [{
-        to: scaleGradientStopPosition()
-      }],
-      /**
-       * Gradient Color Stops From
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-from": [{
-        from: scaleColor()
-      }],
-      /**
-       * Gradient Color Stops Via
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-via": [{
-        via: scaleColor()
-      }],
-      /**
-       * Gradient Color Stops To
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-to": [{
-        to: scaleColor()
-      }],
-      // ---------------
-      // --- Borders ---
-      // ---------------
-      /**
-       * Border Radius
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      rounded: [{
-        rounded: scaleRadius()
-      }],
-      /**
-       * Border Radius Start
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-s": [{
-        "rounded-s": scaleRadius()
-      }],
-      /**
-       * Border Radius End
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-e": [{
-        "rounded-e": scaleRadius()
-      }],
-      /**
-       * Border Radius Top
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-t": [{
-        "rounded-t": scaleRadius()
-      }],
-      /**
-       * Border Radius Right
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-r": [{
-        "rounded-r": scaleRadius()
-      }],
-      /**
-       * Border Radius Bottom
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-b": [{
-        "rounded-b": scaleRadius()
-      }],
-      /**
-       * Border Radius Left
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-l": [{
-        "rounded-l": scaleRadius()
-      }],
-      /**
-       * Border Radius Start Start
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-ss": [{
-        "rounded-ss": scaleRadius()
-      }],
-      /**
-       * Border Radius Start End
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-se": [{
-        "rounded-se": scaleRadius()
-      }],
-      /**
-       * Border Radius End End
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-ee": [{
-        "rounded-ee": scaleRadius()
-      }],
-      /**
-       * Border Radius End Start
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-es": [{
-        "rounded-es": scaleRadius()
-      }],
-      /**
-       * Border Radius Top Left
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-tl": [{
-        "rounded-tl": scaleRadius()
-      }],
-      /**
-       * Border Radius Top Right
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-tr": [{
-        "rounded-tr": scaleRadius()
-      }],
-      /**
-       * Border Radius Bottom Right
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-br": [{
-        "rounded-br": scaleRadius()
-      }],
-      /**
-       * Border Radius Bottom Left
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-bl": [{
-        "rounded-bl": scaleRadius()
-      }],
-      /**
-       * Border Width
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w": [{
-        border: scaleBorderWidth()
-      }],
-      /**
-       * Border Width Inline
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-x": [{
-        "border-x": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Block
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-y": [{
-        "border-y": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Inline Start
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-s": [{
-        "border-s": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Inline End
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-e": [{
-        "border-e": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Block Start
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-bs": [{
-        "border-bs": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Block End
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-be": [{
-        "border-be": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Top
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-t": [{
-        "border-t": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Right
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-r": [{
-        "border-r": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Bottom
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-b": [{
-        "border-b": scaleBorderWidth()
-      }],
-      /**
-       * Border Width Left
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-l": [{
-        "border-l": scaleBorderWidth()
-      }],
-      /**
-       * Divide Width X
-       * @see https://tailwindcss.com/docs/border-width#between-children
-       */
-      "divide-x": [{
-        "divide-x": scaleBorderWidth()
-      }],
-      /**
-       * Divide Width X Reverse
-       * @see https://tailwindcss.com/docs/border-width#between-children
-       */
-      "divide-x-reverse": ["divide-x-reverse"],
-      /**
-       * Divide Width Y
-       * @see https://tailwindcss.com/docs/border-width#between-children
-       */
-      "divide-y": [{
-        "divide-y": scaleBorderWidth()
-      }],
-      /**
-       * Divide Width Y Reverse
-       * @see https://tailwindcss.com/docs/border-width#between-children
-       */
-      "divide-y-reverse": ["divide-y-reverse"],
-      /**
-       * Border Style
-       * @see https://tailwindcss.com/docs/border-style
-       */
-      "border-style": [{
-        border: [...scaleLineStyle(), "hidden", "none"]
-      }],
-      /**
-       * Divide Style
-       * @see https://tailwindcss.com/docs/border-style#setting-the-divider-style
-       */
-      "divide-style": [{
-        divide: [...scaleLineStyle(), "hidden", "none"]
-      }],
-      /**
-       * Border Color
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color": [{
-        border: scaleColor()
-      }],
-      /**
-       * Border Color Inline
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-x": [{
-        "border-x": scaleColor()
-      }],
-      /**
-       * Border Color Block
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-y": [{
-        "border-y": scaleColor()
-      }],
-      /**
-       * Border Color Inline Start
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-s": [{
-        "border-s": scaleColor()
-      }],
-      /**
-       * Border Color Inline End
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-e": [{
-        "border-e": scaleColor()
-      }],
-      /**
-       * Border Color Block Start
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-bs": [{
-        "border-bs": scaleColor()
-      }],
-      /**
-       * Border Color Block End
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-be": [{
-        "border-be": scaleColor()
-      }],
-      /**
-       * Border Color Top
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-t": [{
-        "border-t": scaleColor()
-      }],
-      /**
-       * Border Color Right
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-r": [{
-        "border-r": scaleColor()
-      }],
-      /**
-       * Border Color Bottom
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-b": [{
-        "border-b": scaleColor()
-      }],
-      /**
-       * Border Color Left
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-l": [{
-        "border-l": scaleColor()
-      }],
-      /**
-       * Divide Color
-       * @see https://tailwindcss.com/docs/divide-color
-       */
-      "divide-color": [{
-        divide: scaleColor()
-      }],
-      /**
-       * Outline Style
-       * @see https://tailwindcss.com/docs/outline-style
-       */
-      "outline-style": [{
-        outline: [...scaleLineStyle(), "none", "hidden"]
-      }],
-      /**
-       * Outline Offset
-       * @see https://tailwindcss.com/docs/outline-offset
-       */
-      "outline-offset": [{
-        "outline-offset": [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Outline Width
-       * @see https://tailwindcss.com/docs/outline-width
-       */
-      "outline-w": [{
-        outline: ["", isNumber$1, isArbitraryVariableLength, isArbitraryLength]
-      }],
-      /**
-       * Outline Color
-       * @see https://tailwindcss.com/docs/outline-color
-       */
-      "outline-color": [{
-        outline: scaleColor()
-      }],
-      // ---------------
-      // --- Effects ---
-      // ---------------
-      /**
-       * Box Shadow
-       * @see https://tailwindcss.com/docs/box-shadow
-       */
-      shadow: [{
-        shadow: [
-          // Deprecated since Tailwind CSS v4.0.0
-          "",
-          "none",
-          themeShadow,
-          isArbitraryVariableShadow,
-          isArbitraryShadow
-        ]
-      }],
-      /**
-       * Box Shadow Color
-       * @see https://tailwindcss.com/docs/box-shadow#setting-the-shadow-color
-       */
-      "shadow-color": [{
-        shadow: scaleColor()
-      }],
-      /**
-       * Inset Box Shadow
-       * @see https://tailwindcss.com/docs/box-shadow#adding-an-inset-shadow
-       */
-      "inset-shadow": [{
-        "inset-shadow": ["none", themeInsetShadow, isArbitraryVariableShadow, isArbitraryShadow]
-      }],
-      /**
-       * Inset Box Shadow Color
-       * @see https://tailwindcss.com/docs/box-shadow#setting-the-inset-shadow-color
-       */
-      "inset-shadow-color": [{
-        "inset-shadow": scaleColor()
-      }],
-      /**
-       * Ring Width
-       * @see https://tailwindcss.com/docs/box-shadow#adding-a-ring
-       */
-      "ring-w": [{
-        ring: scaleBorderWidth()
-      }],
-      /**
-       * Ring Width Inset
-       * @see https://v3.tailwindcss.com/docs/ring-width#inset-rings
-       * @deprecated since Tailwind CSS v4.0.0
-       * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
-       */
-      "ring-w-inset": ["ring-inset"],
-      /**
-       * Ring Color
-       * @see https://tailwindcss.com/docs/box-shadow#setting-the-ring-color
-       */
-      "ring-color": [{
-        ring: scaleColor()
-      }],
-      /**
-       * Ring Offset Width
-       * @see https://v3.tailwindcss.com/docs/ring-offset-width
-       * @deprecated since Tailwind CSS v4.0.0
-       * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
-       */
-      "ring-offset-w": [{
-        "ring-offset": [isNumber$1, isArbitraryLength]
-      }],
-      /**
-       * Ring Offset Color
-       * @see https://v3.tailwindcss.com/docs/ring-offset-color
-       * @deprecated since Tailwind CSS v4.0.0
-       * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
-       */
-      "ring-offset-color": [{
-        "ring-offset": scaleColor()
-      }],
-      /**
-       * Inset Ring Width
-       * @see https://tailwindcss.com/docs/box-shadow#adding-an-inset-ring
-       */
-      "inset-ring-w": [{
-        "inset-ring": scaleBorderWidth()
-      }],
-      /**
-       * Inset Ring Color
-       * @see https://tailwindcss.com/docs/box-shadow#setting-the-inset-ring-color
-       */
-      "inset-ring-color": [{
-        "inset-ring": scaleColor()
-      }],
-      /**
-       * Text Shadow
-       * @see https://tailwindcss.com/docs/text-shadow
-       */
-      "text-shadow": [{
-        "text-shadow": ["none", themeTextShadow, isArbitraryVariableShadow, isArbitraryShadow]
-      }],
-      /**
-       * Text Shadow Color
-       * @see https://tailwindcss.com/docs/text-shadow#setting-the-shadow-color
-       */
-      "text-shadow-color": [{
-        "text-shadow": scaleColor()
-      }],
-      /**
-       * Opacity
-       * @see https://tailwindcss.com/docs/opacity
-       */
-      opacity: [{
-        opacity: [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Mix Blend Mode
-       * @see https://tailwindcss.com/docs/mix-blend-mode
-       */
-      "mix-blend": [{
-        "mix-blend": [...scaleBlendMode(), "plus-darker", "plus-lighter"]
-      }],
-      /**
-       * Background Blend Mode
-       * @see https://tailwindcss.com/docs/background-blend-mode
-       */
-      "bg-blend": [{
-        "bg-blend": scaleBlendMode()
-      }],
-      /**
-       * Mask Clip
-       * @see https://tailwindcss.com/docs/mask-clip
-       */
-      "mask-clip": [{
-        "mask-clip": ["border", "padding", "content", "fill", "stroke", "view"]
-      }, "mask-no-clip"],
-      /**
-       * Mask Composite
-       * @see https://tailwindcss.com/docs/mask-composite
-       */
-      "mask-composite": [{
-        mask: ["add", "subtract", "intersect", "exclude"]
-      }],
-      /**
-       * Mask Image
-       * @see https://tailwindcss.com/docs/mask-image
-       */
-      "mask-image-linear-pos": [{
-        "mask-linear": [isNumber$1]
-      }],
-      "mask-image-linear-from-pos": [{
-        "mask-linear-from": scaleMaskImagePosition()
-      }],
-      "mask-image-linear-to-pos": [{
-        "mask-linear-to": scaleMaskImagePosition()
-      }],
-      "mask-image-linear-from-color": [{
-        "mask-linear-from": scaleColor()
-      }],
-      "mask-image-linear-to-color": [{
-        "mask-linear-to": scaleColor()
-      }],
-      "mask-image-t-from-pos": [{
-        "mask-t-from": scaleMaskImagePosition()
-      }],
-      "mask-image-t-to-pos": [{
-        "mask-t-to": scaleMaskImagePosition()
-      }],
-      "mask-image-t-from-color": [{
-        "mask-t-from": scaleColor()
-      }],
-      "mask-image-t-to-color": [{
-        "mask-t-to": scaleColor()
-      }],
-      "mask-image-r-from-pos": [{
-        "mask-r-from": scaleMaskImagePosition()
-      }],
-      "mask-image-r-to-pos": [{
-        "mask-r-to": scaleMaskImagePosition()
-      }],
-      "mask-image-r-from-color": [{
-        "mask-r-from": scaleColor()
-      }],
-      "mask-image-r-to-color": [{
-        "mask-r-to": scaleColor()
-      }],
-      "mask-image-b-from-pos": [{
-        "mask-b-from": scaleMaskImagePosition()
-      }],
-      "mask-image-b-to-pos": [{
-        "mask-b-to": scaleMaskImagePosition()
-      }],
-      "mask-image-b-from-color": [{
-        "mask-b-from": scaleColor()
-      }],
-      "mask-image-b-to-color": [{
-        "mask-b-to": scaleColor()
-      }],
-      "mask-image-l-from-pos": [{
-        "mask-l-from": scaleMaskImagePosition()
-      }],
-      "mask-image-l-to-pos": [{
-        "mask-l-to": scaleMaskImagePosition()
-      }],
-      "mask-image-l-from-color": [{
-        "mask-l-from": scaleColor()
-      }],
-      "mask-image-l-to-color": [{
-        "mask-l-to": scaleColor()
-      }],
-      "mask-image-x-from-pos": [{
-        "mask-x-from": scaleMaskImagePosition()
-      }],
-      "mask-image-x-to-pos": [{
-        "mask-x-to": scaleMaskImagePosition()
-      }],
-      "mask-image-x-from-color": [{
-        "mask-x-from": scaleColor()
-      }],
-      "mask-image-x-to-color": [{
-        "mask-x-to": scaleColor()
-      }],
-      "mask-image-y-from-pos": [{
-        "mask-y-from": scaleMaskImagePosition()
-      }],
-      "mask-image-y-to-pos": [{
-        "mask-y-to": scaleMaskImagePosition()
-      }],
-      "mask-image-y-from-color": [{
-        "mask-y-from": scaleColor()
-      }],
-      "mask-image-y-to-color": [{
-        "mask-y-to": scaleColor()
-      }],
-      "mask-image-radial": [{
-        "mask-radial": [isArbitraryVariable, isArbitraryValue]
-      }],
-      "mask-image-radial-from-pos": [{
-        "mask-radial-from": scaleMaskImagePosition()
-      }],
-      "mask-image-radial-to-pos": [{
-        "mask-radial-to": scaleMaskImagePosition()
-      }],
-      "mask-image-radial-from-color": [{
-        "mask-radial-from": scaleColor()
-      }],
-      "mask-image-radial-to-color": [{
-        "mask-radial-to": scaleColor()
-      }],
-      "mask-image-radial-shape": [{
-        "mask-radial": ["circle", "ellipse"]
-      }],
-      "mask-image-radial-size": [{
-        "mask-radial": [{
-          closest: ["side", "corner"],
-          farthest: ["side", "corner"]
-        }]
-      }],
-      "mask-image-radial-pos": [{
-        "mask-radial-at": scalePosition()
-      }],
-      "mask-image-conic-pos": [{
-        "mask-conic": [isNumber$1]
-      }],
-      "mask-image-conic-from-pos": [{
-        "mask-conic-from": scaleMaskImagePosition()
-      }],
-      "mask-image-conic-to-pos": [{
-        "mask-conic-to": scaleMaskImagePosition()
-      }],
-      "mask-image-conic-from-color": [{
-        "mask-conic-from": scaleColor()
-      }],
-      "mask-image-conic-to-color": [{
-        "mask-conic-to": scaleColor()
-      }],
-      /**
-       * Mask Mode
-       * @see https://tailwindcss.com/docs/mask-mode
-       */
-      "mask-mode": [{
-        mask: ["alpha", "luminance", "match"]
-      }],
-      /**
-       * Mask Origin
-       * @see https://tailwindcss.com/docs/mask-origin
-       */
-      "mask-origin": [{
-        "mask-origin": ["border", "padding", "content", "fill", "stroke", "view"]
-      }],
-      /**
-       * Mask Position
-       * @see https://tailwindcss.com/docs/mask-position
-       */
-      "mask-position": [{
-        mask: scaleBgPosition()
-      }],
-      /**
-       * Mask Repeat
-       * @see https://tailwindcss.com/docs/mask-repeat
-       */
-      "mask-repeat": [{
-        mask: scaleBgRepeat()
-      }],
-      /**
-       * Mask Size
-       * @see https://tailwindcss.com/docs/mask-size
-       */
-      "mask-size": [{
-        mask: scaleBgSize()
-      }],
-      /**
-       * Mask Type
-       * @see https://tailwindcss.com/docs/mask-type
-       */
-      "mask-type": [{
-        "mask-type": ["alpha", "luminance"]
-      }],
-      /**
-       * Mask Image
-       * @see https://tailwindcss.com/docs/mask-image
-       */
-      "mask-image": [{
-        mask: ["none", isArbitraryVariable, isArbitraryValue]
-      }],
-      // ---------------
-      // --- Filters ---
-      // ---------------
-      /**
-       * Filter
-       * @see https://tailwindcss.com/docs/filter
-       */
-      filter: [{
-        filter: [
-          // Deprecated since Tailwind CSS v3.0.0
-          "",
-          "none",
-          isArbitraryVariable,
-          isArbitraryValue
-        ]
-      }],
-      /**
-       * Blur
-       * @see https://tailwindcss.com/docs/blur
-       */
-      blur: [{
-        blur: scaleBlur()
-      }],
-      /**
-       * Brightness
-       * @see https://tailwindcss.com/docs/brightness
-       */
-      brightness: [{
-        brightness: [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Contrast
-       * @see https://tailwindcss.com/docs/contrast
-       */
-      contrast: [{
-        contrast: [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Drop Shadow
-       * @see https://tailwindcss.com/docs/drop-shadow
-       */
-      "drop-shadow": [{
-        "drop-shadow": [
-          // Deprecated since Tailwind CSS v4.0.0
-          "",
-          "none",
-          themeDropShadow,
-          isArbitraryVariableShadow,
-          isArbitraryShadow
-        ]
-      }],
-      /**
-       * Drop Shadow Color
-       * @see https://tailwindcss.com/docs/filter-drop-shadow#setting-the-shadow-color
-       */
-      "drop-shadow-color": [{
-        "drop-shadow": scaleColor()
-      }],
-      /**
-       * Grayscale
-       * @see https://tailwindcss.com/docs/grayscale
-       */
-      grayscale: [{
-        grayscale: ["", isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Hue Rotate
-       * @see https://tailwindcss.com/docs/hue-rotate
-       */
-      "hue-rotate": [{
-        "hue-rotate": [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Invert
-       * @see https://tailwindcss.com/docs/invert
-       */
-      invert: [{
-        invert: ["", isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Saturate
-       * @see https://tailwindcss.com/docs/saturate
-       */
-      saturate: [{
-        saturate: [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Sepia
-       * @see https://tailwindcss.com/docs/sepia
-       */
-      sepia: [{
-        sepia: ["", isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Filter
-       * @see https://tailwindcss.com/docs/backdrop-filter
-       */
-      "backdrop-filter": [{
-        "backdrop-filter": [
-          // Deprecated since Tailwind CSS v3.0.0
-          "",
-          "none",
-          isArbitraryVariable,
-          isArbitraryValue
-        ]
-      }],
-      /**
-       * Backdrop Blur
-       * @see https://tailwindcss.com/docs/backdrop-blur
-       */
-      "backdrop-blur": [{
-        "backdrop-blur": scaleBlur()
-      }],
-      /**
-       * Backdrop Brightness
-       * @see https://tailwindcss.com/docs/backdrop-brightness
-       */
-      "backdrop-brightness": [{
-        "backdrop-brightness": [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Contrast
-       * @see https://tailwindcss.com/docs/backdrop-contrast
-       */
-      "backdrop-contrast": [{
-        "backdrop-contrast": [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Grayscale
-       * @see https://tailwindcss.com/docs/backdrop-grayscale
-       */
-      "backdrop-grayscale": [{
-        "backdrop-grayscale": ["", isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Hue Rotate
-       * @see https://tailwindcss.com/docs/backdrop-hue-rotate
-       */
-      "backdrop-hue-rotate": [{
-        "backdrop-hue-rotate": [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Invert
-       * @see https://tailwindcss.com/docs/backdrop-invert
-       */
-      "backdrop-invert": [{
-        "backdrop-invert": ["", isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Opacity
-       * @see https://tailwindcss.com/docs/backdrop-opacity
-       */
-      "backdrop-opacity": [{
-        "backdrop-opacity": [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Saturate
-       * @see https://tailwindcss.com/docs/backdrop-saturate
-       */
-      "backdrop-saturate": [{
-        "backdrop-saturate": [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Backdrop Sepia
-       * @see https://tailwindcss.com/docs/backdrop-sepia
-       */
-      "backdrop-sepia": [{
-        "backdrop-sepia": ["", isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      // --------------
-      // --- Tables ---
-      // --------------
-      /**
-       * Border Collapse
-       * @see https://tailwindcss.com/docs/border-collapse
-       */
-      "border-collapse": [{
-        border: ["collapse", "separate"]
-      }],
-      /**
-       * Border Spacing
-       * @see https://tailwindcss.com/docs/border-spacing
-       */
-      "border-spacing": [{
-        "border-spacing": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Border Spacing X
-       * @see https://tailwindcss.com/docs/border-spacing
-       */
-      "border-spacing-x": [{
-        "border-spacing-x": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Border Spacing Y
-       * @see https://tailwindcss.com/docs/border-spacing
-       */
-      "border-spacing-y": [{
-        "border-spacing-y": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Table Layout
-       * @see https://tailwindcss.com/docs/table-layout
-       */
-      "table-layout": [{
-        table: ["auto", "fixed"]
-      }],
-      /**
-       * Caption Side
-       * @see https://tailwindcss.com/docs/caption-side
-       */
-      caption: [{
-        caption: ["top", "bottom"]
-      }],
-      // ---------------------------------
-      // --- Transitions and Animation ---
-      // ---------------------------------
-      /**
-       * Transition Property
-       * @see https://tailwindcss.com/docs/transition-property
-       */
-      transition: [{
-        transition: ["", "all", "colors", "opacity", "shadow", "transform", "none", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Transition Behavior
-       * @see https://tailwindcss.com/docs/transition-behavior
-       */
-      "transition-behavior": [{
-        transition: ["normal", "discrete"]
-      }],
-      /**
-       * Transition Duration
-       * @see https://tailwindcss.com/docs/transition-duration
-       */
-      duration: [{
-        duration: [isNumber$1, "initial", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Transition Timing Function
-       * @see https://tailwindcss.com/docs/transition-timing-function
-       */
-      ease: [{
-        ease: ["linear", "initial", themeEase, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Transition Delay
-       * @see https://tailwindcss.com/docs/transition-delay
-       */
-      delay: [{
-        delay: [isNumber$1, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Animation
-       * @see https://tailwindcss.com/docs/animation
-       */
-      animate: [{
-        animate: ["none", themeAnimate, isArbitraryVariable, isArbitraryValue]
-      }],
-      // ------------------
-      // --- Transforms ---
-      // ------------------
-      /**
-       * Backface Visibility
-       * @see https://tailwindcss.com/docs/backface-visibility
-       */
-      backface: [{
-        backface: ["hidden", "visible"]
-      }],
-      /**
-       * Perspective
-       * @see https://tailwindcss.com/docs/perspective
-       */
-      perspective: [{
-        perspective: [themePerspective, isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Perspective Origin
-       * @see https://tailwindcss.com/docs/perspective-origin
-       */
-      "perspective-origin": [{
-        "perspective-origin": scalePositionWithArbitrary()
-      }],
-      /**
-       * Rotate
-       * @see https://tailwindcss.com/docs/rotate
-       */
-      rotate: [{
-        rotate: scaleRotate()
-      }],
-      /**
-       * Rotate X
-       * @see https://tailwindcss.com/docs/rotate
-       */
-      "rotate-x": [{
-        "rotate-x": scaleRotate()
-      }],
-      /**
-       * Rotate Y
-       * @see https://tailwindcss.com/docs/rotate
-       */
-      "rotate-y": [{
-        "rotate-y": scaleRotate()
-      }],
-      /**
-       * Rotate Z
-       * @see https://tailwindcss.com/docs/rotate
-       */
-      "rotate-z": [{
-        "rotate-z": scaleRotate()
-      }],
-      /**
-       * Scale
-       * @see https://tailwindcss.com/docs/scale
-       */
-      scale: [{
-        scale: scaleScale()
-      }],
-      /**
-       * Scale X
-       * @see https://tailwindcss.com/docs/scale
-       */
-      "scale-x": [{
-        "scale-x": scaleScale()
-      }],
-      /**
-       * Scale Y
-       * @see https://tailwindcss.com/docs/scale
-       */
-      "scale-y": [{
-        "scale-y": scaleScale()
-      }],
-      /**
-       * Scale Z
-       * @see https://tailwindcss.com/docs/scale
-       */
-      "scale-z": [{
-        "scale-z": scaleScale()
-      }],
-      /**
-       * Scale 3D
-       * @see https://tailwindcss.com/docs/scale
-       */
-      "scale-3d": ["scale-3d"],
-      /**
-       * Skew
-       * @see https://tailwindcss.com/docs/skew
-       */
-      skew: [{
-        skew: scaleSkew()
-      }],
-      /**
-       * Skew X
-       * @see https://tailwindcss.com/docs/skew
-       */
-      "skew-x": [{
-        "skew-x": scaleSkew()
-      }],
-      /**
-       * Skew Y
-       * @see https://tailwindcss.com/docs/skew
-       */
-      "skew-y": [{
-        "skew-y": scaleSkew()
-      }],
-      /**
-       * Transform
-       * @see https://tailwindcss.com/docs/transform
-       */
-      transform: [{
-        transform: [isArbitraryVariable, isArbitraryValue, "", "none", "gpu", "cpu"]
-      }],
-      /**
-       * Transform Origin
-       * @see https://tailwindcss.com/docs/transform-origin
-       */
-      "transform-origin": [{
-        origin: scalePositionWithArbitrary()
-      }],
-      /**
-       * Transform Style
-       * @see https://tailwindcss.com/docs/transform-style
-       */
-      "transform-style": [{
-        transform: ["3d", "flat"]
-      }],
-      /**
-       * Translate
-       * @see https://tailwindcss.com/docs/translate
-       */
-      translate: [{
-        translate: scaleTranslate()
-      }],
-      /**
-       * Translate X
-       * @see https://tailwindcss.com/docs/translate
-       */
-      "translate-x": [{
-        "translate-x": scaleTranslate()
-      }],
-      /**
-       * Translate Y
-       * @see https://tailwindcss.com/docs/translate
-       */
-      "translate-y": [{
-        "translate-y": scaleTranslate()
-      }],
-      /**
-       * Translate Z
-       * @see https://tailwindcss.com/docs/translate
-       */
-      "translate-z": [{
-        "translate-z": scaleTranslate()
-      }],
-      /**
-       * Translate None
-       * @see https://tailwindcss.com/docs/translate
-       */
-      "translate-none": ["translate-none"],
-      // ---------------------
-      // --- Interactivity ---
-      // ---------------------
-      /**
-       * Accent Color
-       * @see https://tailwindcss.com/docs/accent-color
-       */
-      accent: [{
-        accent: scaleColor()
-      }],
-      /**
-       * Appearance
-       * @see https://tailwindcss.com/docs/appearance
-       */
-      appearance: [{
-        appearance: ["none", "auto"]
-      }],
-      /**
-       * Caret Color
-       * @see https://tailwindcss.com/docs/just-in-time-mode#caret-color-utilities
-       */
-      "caret-color": [{
-        caret: scaleColor()
-      }],
-      /**
-       * Color Scheme
-       * @see https://tailwindcss.com/docs/color-scheme
-       */
-      "color-scheme": [{
-        scheme: ["normal", "dark", "light", "light-dark", "only-dark", "only-light"]
-      }],
-      /**
-       * Cursor
-       * @see https://tailwindcss.com/docs/cursor
-       */
-      cursor: [{
-        cursor: ["auto", "default", "pointer", "wait", "text", "move", "help", "not-allowed", "none", "context-menu", "progress", "cell", "crosshair", "vertical-text", "alias", "copy", "no-drop", "grab", "grabbing", "all-scroll", "col-resize", "row-resize", "n-resize", "e-resize", "s-resize", "w-resize", "ne-resize", "nw-resize", "se-resize", "sw-resize", "ew-resize", "ns-resize", "nesw-resize", "nwse-resize", "zoom-in", "zoom-out", isArbitraryVariable, isArbitraryValue]
-      }],
-      /**
-       * Field Sizing
-       * @see https://tailwindcss.com/docs/field-sizing
-       */
-      "field-sizing": [{
-        "field-sizing": ["fixed", "content"]
-      }],
-      /**
-       * Pointer Events
-       * @see https://tailwindcss.com/docs/pointer-events
-       */
-      "pointer-events": [{
-        "pointer-events": ["auto", "none"]
-      }],
-      /**
-       * Resize
-       * @see https://tailwindcss.com/docs/resize
-       */
-      resize: [{
-        resize: ["none", "", "y", "x"]
-      }],
-      /**
-       * Scroll Behavior
-       * @see https://tailwindcss.com/docs/scroll-behavior
-       */
-      "scroll-behavior": [{
-        scroll: ["auto", "smooth"]
-      }],
-      /**
-       * Scroll Margin
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-m": [{
-        "scroll-m": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Inline
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mx": [{
-        "scroll-mx": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Block
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-my": [{
-        "scroll-my": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Inline Start
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-ms": [{
-        "scroll-ms": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Inline End
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-me": [{
-        "scroll-me": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Block Start
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mbs": [{
-        "scroll-mbs": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Block End
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mbe": [{
-        "scroll-mbe": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Top
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mt": [{
-        "scroll-mt": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Right
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mr": [{
-        "scroll-mr": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Bottom
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mb": [{
-        "scroll-mb": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Margin Left
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-ml": [{
-        "scroll-ml": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-p": [{
-        "scroll-p": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Inline
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-px": [{
-        "scroll-px": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Block
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-py": [{
-        "scroll-py": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Inline Start
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-ps": [{
-        "scroll-ps": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Inline End
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pe": [{
-        "scroll-pe": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Block Start
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pbs": [{
-        "scroll-pbs": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Block End
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pbe": [{
-        "scroll-pbe": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Top
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pt": [{
-        "scroll-pt": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Right
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pr": [{
-        "scroll-pr": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Bottom
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pb": [{
-        "scroll-pb": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Padding Left
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pl": [{
-        "scroll-pl": scaleUnambiguousSpacing()
-      }],
-      /**
-       * Scroll Snap Align
-       * @see https://tailwindcss.com/docs/scroll-snap-align
-       */
-      "snap-align": [{
-        snap: ["start", "end", "center", "align-none"]
-      }],
-      /**
-       * Scroll Snap Stop
-       * @see https://tailwindcss.com/docs/scroll-snap-stop
-       */
-      "snap-stop": [{
-        snap: ["normal", "always"]
-      }],
-      /**
-       * Scroll Snap Type
-       * @see https://tailwindcss.com/docs/scroll-snap-type
-       */
-      "snap-type": [{
-        snap: ["none", "x", "y", "both"]
-      }],
-      /**
-       * Scroll Snap Type Strictness
-       * @see https://tailwindcss.com/docs/scroll-snap-type
-       */
-      "snap-strictness": [{
-        snap: ["mandatory", "proximity"]
-      }],
-      /**
-       * Touch Action
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      touch: [{
-        touch: ["auto", "none", "manipulation"]
-      }],
-      /**
-       * Touch Action X
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      "touch-x": [{
-        "touch-pan": ["x", "left", "right"]
-      }],
-      /**
-       * Touch Action Y
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      "touch-y": [{
-        "touch-pan": ["y", "up", "down"]
-      }],
-      /**
-       * Touch Action Pinch Zoom
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      "touch-pz": ["touch-pinch-zoom"],
-      /**
-       * User Select
-       * @see https://tailwindcss.com/docs/user-select
-       */
-      select: [{
-        select: ["none", "text", "all", "auto"]
-      }],
-      /**
-       * Will Change
-       * @see https://tailwindcss.com/docs/will-change
-       */
-      "will-change": [{
-        "will-change": ["auto", "scroll", "contents", "transform", isArbitraryVariable, isArbitraryValue]
-      }],
-      // -----------
-      // --- SVG ---
-      // -----------
-      /**
-       * Fill
-       * @see https://tailwindcss.com/docs/fill
-       */
-      fill: [{
-        fill: ["none", ...scaleColor()]
-      }],
-      /**
-       * Stroke Width
-       * @see https://tailwindcss.com/docs/stroke-width
-       */
-      "stroke-w": [{
-        stroke: [isNumber$1, isArbitraryVariableLength, isArbitraryLength, isArbitraryNumber]
-      }],
-      /**
-       * Stroke
-       * @see https://tailwindcss.com/docs/stroke
-       */
-      stroke: [{
-        stroke: ["none", ...scaleColor()]
-      }],
-      // ---------------------
-      // --- Accessibility ---
-      // ---------------------
-      /**
-       * Forced Color Adjust
-       * @see https://tailwindcss.com/docs/forced-color-adjust
-       */
-      "forced-color-adjust": [{
-        "forced-color-adjust": ["auto", "none"]
-      }]
-    },
-    conflictingClassGroups: {
-      overflow: ["overflow-x", "overflow-y"],
-      overscroll: ["overscroll-x", "overscroll-y"],
-      inset: ["inset-x", "inset-y", "inset-bs", "inset-be", "start", "end", "top", "right", "bottom", "left"],
-      "inset-x": ["right", "left"],
-      "inset-y": ["top", "bottom"],
-      flex: ["basis", "grow", "shrink"],
-      gap: ["gap-x", "gap-y"],
-      p: ["px", "py", "ps", "pe", "pbs", "pbe", "pt", "pr", "pb", "pl"],
-      px: ["pr", "pl"],
-      py: ["pt", "pb"],
-      m: ["mx", "my", "ms", "me", "mbs", "mbe", "mt", "mr", "mb", "ml"],
-      mx: ["mr", "ml"],
-      my: ["mt", "mb"],
-      size: ["w", "h"],
-      "font-size": ["leading"],
-      "fvn-normal": ["fvn-ordinal", "fvn-slashed-zero", "fvn-figure", "fvn-spacing", "fvn-fraction"],
-      "fvn-ordinal": ["fvn-normal"],
-      "fvn-slashed-zero": ["fvn-normal"],
-      "fvn-figure": ["fvn-normal"],
-      "fvn-spacing": ["fvn-normal"],
-      "fvn-fraction": ["fvn-normal"],
-      "line-clamp": ["display", "overflow"],
-      rounded: ["rounded-s", "rounded-e", "rounded-t", "rounded-r", "rounded-b", "rounded-l", "rounded-ss", "rounded-se", "rounded-ee", "rounded-es", "rounded-tl", "rounded-tr", "rounded-br", "rounded-bl"],
-      "rounded-s": ["rounded-ss", "rounded-es"],
-      "rounded-e": ["rounded-se", "rounded-ee"],
-      "rounded-t": ["rounded-tl", "rounded-tr"],
-      "rounded-r": ["rounded-tr", "rounded-br"],
-      "rounded-b": ["rounded-br", "rounded-bl"],
-      "rounded-l": ["rounded-tl", "rounded-bl"],
-      "border-spacing": ["border-spacing-x", "border-spacing-y"],
-      "border-w": ["border-w-x", "border-w-y", "border-w-s", "border-w-e", "border-w-bs", "border-w-be", "border-w-t", "border-w-r", "border-w-b", "border-w-l"],
-      "border-w-x": ["border-w-r", "border-w-l"],
-      "border-w-y": ["border-w-t", "border-w-b"],
-      "border-color": ["border-color-x", "border-color-y", "border-color-s", "border-color-e", "border-color-bs", "border-color-be", "border-color-t", "border-color-r", "border-color-b", "border-color-l"],
-      "border-color-x": ["border-color-r", "border-color-l"],
-      "border-color-y": ["border-color-t", "border-color-b"],
-      translate: ["translate-x", "translate-y", "translate-none"],
-      "translate-none": ["translate", "translate-x", "translate-y", "translate-z"],
-      "scroll-m": ["scroll-mx", "scroll-my", "scroll-ms", "scroll-me", "scroll-mbs", "scroll-mbe", "scroll-mt", "scroll-mr", "scroll-mb", "scroll-ml"],
-      "scroll-mx": ["scroll-mr", "scroll-ml"],
-      "scroll-my": ["scroll-mt", "scroll-mb"],
-      "scroll-p": ["scroll-px", "scroll-py", "scroll-ps", "scroll-pe", "scroll-pbs", "scroll-pbe", "scroll-pt", "scroll-pr", "scroll-pb", "scroll-pl"],
-      "scroll-px": ["scroll-pr", "scroll-pl"],
-      "scroll-py": ["scroll-pt", "scroll-pb"],
-      touch: ["touch-x", "touch-y", "touch-pz"],
-      "touch-x": ["touch"],
-      "touch-y": ["touch"],
-      "touch-pz": ["touch"]
-    },
-    conflictingClassGroupModifiers: {
-      "font-size": ["leading"]
-    },
-    orderSensitiveModifiers: ["*", "**", "after", "backdrop", "before", "details-content", "file", "first-letter", "first-line", "marker", "placeholder", "selection"]
-  };
-};
-const twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
-function cn(...inputs) {
-  return twMerge(clsx(inputs));
-}
-function Titlebar() {
-  const [isMaximized, setIsMaximized] = reactExports.useState(false);
-  reactExports.useEffect(() => {
-    window.api.isMaximized().then(setIsMaximized);
-    const cleanup = window.api.onMaximizeChange(setIsMaximized);
-    return cleanup;
-  }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "drag-region flex h-9 shrink-0 items-center justify-between border-b border-notion-border bg-notion-sidebar", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2 pl-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-notion-text-secondary tracking-wide", children: "DeskLink" }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "no-drag flex h-full", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          onClick: () => window.api.minimize(),
-          className: cn(
-            "flex h-full w-11 items-center justify-center",
-            "text-notion-text-secondary hover:bg-notion-sidebar-hover transition-colors"
-          ),
-          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { className: "h-3.5 w-3.5" })
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          onClick: () => window.api.maximize(),
-          className: cn(
-            "flex h-full w-11 items-center justify-center",
-            "text-notion-text-secondary hover:bg-notion-sidebar-hover transition-colors"
-          ),
-          children: isMaximized ? /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "h-3 w-3" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { className: "h-3 w-3" })
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          onClick: () => window.api.close(),
-          className: cn(
-            "flex h-full w-11 items-center justify-center",
-            "text-notion-text-secondary hover:bg-notion-red hover:text-white transition-colors"
-          ),
-          children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "h-3.5 w-3.5" })
-        }
-      )
-    ] })
-  ] });
-}
-const useUIStore = create((set) => ({
-  sidebarOpen: true,
-  sidebarWidth: 240,
-  activeWorkspaceId: null,
-  commandPaletteOpen: false,
-  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
-  setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
-  setSidebarWidth: (sidebarWidth) => set({ sidebarWidth }),
-  setActiveWorkspaceId: (activeWorkspaceId) => set({ activeWorkspaceId }),
-  setCommandPaletteOpen: (commandPaletteOpen) => set({ commandPaletteOpen })
-}));
-function getInitials(name) {
-  return name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
-}
-const colors = [
-  "bg-notion-blue",
-  "bg-notion-purple",
-  "bg-notion-pink",
-  "bg-notion-red",
-  "bg-notion-orange",
-  "bg-notion-green"
-];
-function getColor(name) {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return colors[Math.abs(hash) % colors.length];
-}
-function Avatar({ name, src, size = "md", className }) {
-  const sizeClasses = {
-    sm: "h-5 w-5 text-[9px]",
-    md: "h-7 w-7 text-xs",
-    lg: "h-9 w-9 text-sm"
-  };
-  if (src) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "img",
-      {
-        src,
-        alt: name,
-        className: cn("rounded-full object-cover", sizeClasses[size], className)
-      }
-    );
-  }
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "div",
-    {
-      className: cn(
-        "flex items-center justify-center rounded-full font-medium text-white",
-        sizeClasses[size],
-        getColor(name),
-        className
-      ),
-      children: getInitials(name)
-    }
-  );
-}
 function bind(fn, thisArg) {
   return function wrap() {
     return fn.apply(thisArg, arguments);
@@ -25654,7 +21896,7 @@ function isArrayBufferView(val) {
 }
 const isString = typeOfTest("string");
 const isFunction$1 = typeOfTest("function");
-const isNumber = typeOfTest("number");
+const isNumber$1 = typeOfTest("number");
 const isObject = (thing) => thing !== null && typeof thing === "object";
 const isBoolean = (thing) => thing === true || thing === false;
 const isPlainObject = (val) => {
@@ -25854,7 +22096,7 @@ const toArray = (thing) => {
   if (!thing) return null;
   if (isArray(thing)) return thing;
   let i = thing.length;
-  if (!isNumber(i)) return null;
+  if (!isNumber$1(i)) return null;
   const arr = new Array(i);
   while (i-- > 0) {
     arr[i] = thing[i];
@@ -25995,7 +22237,7 @@ const utils$1 = {
   isFormData,
   isArrayBufferView,
   isString,
-  isNumber,
+  isNumber: isNumber$1,
   isBoolean,
   isObject,
   isPlainObject,
@@ -28311,6 +24553,4153 @@ apiClient.interceptors.response.use(
     return Promise.reject(apiError);
   }
 );
+async function login(email, password) {
+  return apiClient.post("/auth/login", { email, password });
+}
+async function register(displayName, email, password) {
+  return apiClient.post("/auth/register", { displayName, email, password });
+}
+async function getMe() {
+  return apiClient.get("/auth/me");
+}
+function ProtectedRoute() {
+  const { isAuthenticated, isLoading, setAuth, setLoading, accessToken } = useAuthStore();
+  reactExports.useEffect(() => {
+    async function init() {
+      try {
+        const storedToken = await window.api.getToken("accessToken");
+        if (storedToken) {
+          useAuthStore.setState({ accessToken: storedToken });
+          const user = await getMe();
+          setAuth(user, storedToken);
+        } else {
+          setLoading(false);
+        }
+      } catch {
+        setLoading(false);
+      }
+    }
+    if (isLoading) {
+      init();
+    }
+  }, [isLoading, setAuth, setLoading]);
+  if (isLoading) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-screen items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 w-8 animate-spin rounded-full border-2 border-notion-accent border-t-transparent" }) });
+  }
+  if (!isAuthenticated) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/login", replace: true });
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {});
+}
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const toKebabCase = (string) => string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+const mergeClasses = (...classes) => classes.filter((className, index, array) => {
+  return Boolean(className) && className.trim() !== "" && array.indexOf(className) === index;
+}).join(" ").trim();
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+var defaultAttributes$1 = {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: 24,
+  height: 24,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+};
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Icon = reactExports.forwardRef(
+  ({
+    color = "currentColor",
+    size = 24,
+    strokeWidth = 2,
+    absoluteStrokeWidth,
+    className = "",
+    children,
+    iconNode,
+    ...rest
+  }, ref) => {
+    return reactExports.createElement(
+      "svg",
+      {
+        ref,
+        ...defaultAttributes$1,
+        width: size,
+        height: size,
+        stroke: color,
+        strokeWidth: absoluteStrokeWidth ? Number(strokeWidth) * 24 / Number(size) : strokeWidth,
+        className: mergeClasses("lucide", className),
+        ...rest
+      },
+      [
+        ...iconNode.map(([tag, attrs]) => reactExports.createElement(tag, attrs)),
+        ...Array.isArray(children) ? children : [children]
+      ]
+    );
+  }
+);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const createLucideIcon = (iconName, iconNode) => {
+  const Component = reactExports.forwardRef(
+    ({ className, ...props }, ref) => reactExports.createElement(Icon, {
+      ref,
+      iconNode,
+      className: mergeClasses(`lucide-${toKebabCase(iconName)}`, className),
+      ...props
+    })
+  );
+  Component.displayName = `${iconName}`;
+  return Component;
+};
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$N = [
+  ["rect", { width: "20", height: "5", x: "2", y: "3", rx: "1", key: "1wp1u1" }],
+  ["path", { d: "M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8", key: "1s80jp" }],
+  ["path", { d: "M10 12h4", key: "a56b0p" }]
+];
+const Archive = createLucideIcon("Archive", __iconNode$N);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$M = [
+  ["circle", { cx: "12", cy: "12", r: "4", key: "4exip2" }],
+  ["path", { d: "M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8", key: "7n84p3" }]
+];
+const AtSign = createLucideIcon("AtSign", __iconNode$M);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$L = [
+  ["path", { d: "M10.268 21a2 2 0 0 0 3.464 0", key: "vwvbt9" }],
+  [
+    "path",
+    {
+      d: "M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326",
+      key: "11g9vi"
+    }
+  ]
+];
+const Bell = createLucideIcon("Bell", __iconNode$L);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$K = [
+  [
+    "path",
+    { d: "M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8", key: "mg9rjx" }
+  ]
+];
+const Bold = createLucideIcon("Bold", __iconNode$K);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$J = [
+  ["path", { d: "M8 2v4", key: "1cmpym" }],
+  ["path", { d: "M16 2v4", key: "4m81vk" }],
+  ["rect", { width: "18", height: "18", x: "3", y: "4", rx: "2", key: "1hopcy" }],
+  ["path", { d: "M3 10h18", key: "8toen8" }]
+];
+const Calendar = createLucideIcon("Calendar", __iconNode$J);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$I = [
+  ["path", { d: "M18 6 7 17l-5-5", key: "116fxf" }],
+  ["path", { d: "m22 10-7.5 7.5L13 16", key: "ke71qq" }]
+];
+const CheckCheck = createLucideIcon("CheckCheck", __iconNode$I);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$H = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
+const ChevronDown = createLucideIcon("ChevronDown", __iconNode$H);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$G = [["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]];
+const ChevronLeft = createLucideIcon("ChevronLeft", __iconNode$G);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$F = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
+const ChevronRight = createLucideIcon("ChevronRight", __iconNode$F);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$E = [
+  ["path", { d: "m11 17-5-5 5-5", key: "13zhaf" }],
+  ["path", { d: "m18 17-5-5 5-5", key: "h8a8et" }]
+];
+const ChevronsLeft = createLucideIcon("ChevronsLeft", __iconNode$E);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$D = [["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }]];
+const Circle = createLucideIcon("Circle", __iconNode$D);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$C = [
+  ["path", { d: "m18 16 4-4-4-4", key: "1inbqp" }],
+  ["path", { d: "m6 8-4 4 4 4", key: "15zrgr" }],
+  ["path", { d: "m14.5 4-5 16", key: "e7oirm" }]
+];
+const CodeXml = createLucideIcon("CodeXml", __iconNode$C);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$B = [
+  ["polyline", { points: "16 18 22 12 16 6", key: "z7tu5w" }],
+  ["polyline", { points: "8 6 2 12 8 18", key: "1eg1df" }]
+];
+const Code = createLucideIcon("Code", __iconNode$B);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$A = [
+  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
+  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
+];
+const Copy = createLucideIcon("Copy", __iconNode$A);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$z = [
+  ["circle", { cx: "12", cy: "12", r: "1", key: "41hilf" }],
+  ["circle", { cx: "19", cy: "12", r: "1", key: "1wjl8i" }],
+  ["circle", { cx: "5", cy: "12", r: "1", key: "1pcz8c" }]
+];
+const Ellipsis = createLucideIcon("Ellipsis", __iconNode$z);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$y = [
+  ["path", { d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z", key: "1rqfz7" }],
+  ["path", { d: "M14 2v4a2 2 0 0 0 2 2h4", key: "tnqrlb" }],
+  ["path", { d: "M10 9H8", key: "b1mrlr" }],
+  ["path", { d: "M16 13H8", key: "t4e002" }],
+  ["path", { d: "M16 17H8", key: "z1uh3a" }]
+];
+const FileText = createLucideIcon("FileText", __iconNode$y);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$x = [
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
+  ["path", { d: "M7 3v18", key: "bbkbws" }],
+  ["path", { d: "M3 7.5h4", key: "zfgn84" }],
+  ["path", { d: "M3 12h18", key: "1i2n21" }],
+  ["path", { d: "M3 16.5h4", key: "1230mu" }],
+  ["path", { d: "M17 3v18", key: "in4fa5" }],
+  ["path", { d: "M17 7.5h4", key: "myr1c1" }],
+  ["path", { d: "M17 16.5h4", key: "go4c1d" }]
+];
+const Film = createLucideIcon("Film", __iconNode$x);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$w = [
+  ["path", { d: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z", key: "i9b6wo" }],
+  ["line", { x1: "4", x2: "4", y1: "22", y2: "15", key: "1cm3nv" }]
+];
+const Flag = createLucideIcon("Flag", __iconNode$w);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$v = [
+  [
+    "path",
+    {
+      d: "M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z",
+      key: "1fr9dc"
+    }
+  ],
+  ["path", { d: "M8 10v4", key: "tgpxqk" }],
+  ["path", { d: "M12 10v2", key: "hh53o1" }],
+  ["path", { d: "M16 10v6", key: "1d6xys" }]
+];
+const FolderKanban = createLucideIcon("FolderKanban", __iconNode$v);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$u = [
+  [
+    "path",
+    {
+      d: "m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2",
+      key: "usdka0"
+    }
+  ]
+];
+const FolderOpen = createLucideIcon("FolderOpen", __iconNode$u);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$t = [
+  [
+    "path",
+    {
+      d: "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z",
+      key: "1kt360"
+    }
+  ]
+];
+const Folder = createLucideIcon("Folder", __iconNode$t);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$s = [
+  ["path", { d: "M4 12h8", key: "17cfdx" }],
+  ["path", { d: "M4 18V6", key: "1rz3zl" }],
+  ["path", { d: "M12 18V6", key: "zqpxq5" }],
+  ["path", { d: "m17 12 3-2v8", key: "1hhhft" }]
+];
+const Heading1 = createLucideIcon("Heading1", __iconNode$s);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$r = [
+  ["path", { d: "M4 12h8", key: "17cfdx" }],
+  ["path", { d: "M4 18V6", key: "1rz3zl" }],
+  ["path", { d: "M12 18V6", key: "zqpxq5" }],
+  ["path", { d: "M21 18h-4c0-4 4-3 4-6 0-1.5-2-2.5-4-1", key: "9jr5yi" }]
+];
+const Heading2 = createLucideIcon("Heading2", __iconNode$r);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$q = [
+  ["path", { d: "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8", key: "5wwlr5" }],
+  [
+    "path",
+    {
+      d: "M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z",
+      key: "1d0kgt"
+    }
+  ]
+];
+const House = createLucideIcon("House", __iconNode$q);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$p = [
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
+  ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
+  ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
+];
+const Image = createLucideIcon("Image", __iconNode$p);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$o = [
+  ["polyline", { points: "22 12 16 12 14 15 10 15 8 12 2 12", key: "o97t9d" }],
+  [
+    "path",
+    {
+      d: "M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z",
+      key: "oot6mr"
+    }
+  ]
+];
+const Inbox = createLucideIcon("Inbox", __iconNode$o);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$n = [
+  ["line", { x1: "19", x2: "10", y1: "4", y2: "4", key: "15jd3p" }],
+  ["line", { x1: "14", x2: "5", y1: "20", y2: "20", key: "bu0au3" }],
+  ["line", { x1: "15", x2: "9", y1: "4", y2: "20", key: "uljnxc" }]
+];
+const Italic = createLucideIcon("Italic", __iconNode$n);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$m = [
+  [
+    "path",
+    {
+      d: "M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z",
+      key: "zw3jo"
+    }
+  ],
+  [
+    "path",
+    {
+      d: "M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12",
+      key: "1wduqc"
+    }
+  ],
+  [
+    "path",
+    {
+      d: "M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17",
+      key: "kqbvx6"
+    }
+  ]
+];
+const Layers = createLucideIcon("Layers", __iconNode$m);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$l = [
+  ["rect", { width: "7", height: "9", x: "3", y: "3", rx: "1", key: "10lvy0" }],
+  ["rect", { width: "7", height: "5", x: "14", y: "3", rx: "1", key: "16une8" }],
+  ["rect", { width: "7", height: "9", x: "14", y: "12", rx: "1", key: "1hutg5" }],
+  ["rect", { width: "7", height: "5", x: "3", y: "16", rx: "1", key: "ldoo1y" }]
+];
+const LayoutDashboard = createLucideIcon("LayoutDashboard", __iconNode$l);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$k = [
+  ["rect", { width: "7", height: "7", x: "3", y: "3", rx: "1", key: "1g98yp" }],
+  ["rect", { width: "7", height: "7", x: "14", y: "3", rx: "1", key: "6d4xhi" }],
+  ["rect", { width: "7", height: "7", x: "14", y: "14", rx: "1", key: "nxv5o0" }],
+  ["rect", { width: "7", height: "7", x: "3", y: "14", rx: "1", key: "1bb6yr" }]
+];
+const LayoutGrid = createLucideIcon("LayoutGrid", __iconNode$k);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$j = [
+  ["path", { d: "M3 12h.01", key: "nlz23k" }],
+  ["path", { d: "M3 18h.01", key: "1tta3j" }],
+  ["path", { d: "M3 6h.01", key: "1rqtza" }],
+  ["path", { d: "M8 12h13", key: "1za7za" }],
+  ["path", { d: "M8 18h13", key: "1lx6n3" }],
+  ["path", { d: "M8 6h13", key: "ik3vkj" }]
+];
+const List = createLucideIcon("List", __iconNode$j);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$i = [
+  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }],
+  ["polyline", { points: "16 17 21 12 16 7", key: "1gabdz" }],
+  ["line", { x1: "21", x2: "9", y1: "12", y2: "12", key: "1uyos4" }]
+];
+const LogOut = createLucideIcon("LogOut", __iconNode$i);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$h = [
+  ["path", { d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z", key: "1lielz" }]
+];
+const MessageSquare = createLucideIcon("MessageSquare", __iconNode$h);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$g = [["path", { d: "M5 12h14", key: "1ays0h" }]];
+const Minus = createLucideIcon("Minus", __iconNode$g);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$f = [
+  ["path", { d: "M9 18V5l12-2v13", key: "1jmyc2" }],
+  ["circle", { cx: "6", cy: "18", r: "3", key: "fqmcym" }],
+  ["circle", { cx: "18", cy: "16", r: "3", key: "1hluhg" }]
+];
+const Music = createLucideIcon("Music", __iconNode$f);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$e = [
+  [
+    "path",
+    {
+      d: "M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z",
+      key: "nt11vn"
+    }
+  ],
+  [
+    "path",
+    {
+      d: "m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18",
+      key: "15qc1e"
+    }
+  ],
+  ["path", { d: "m2.3 2.3 7.286 7.286", key: "1wuzzi" }],
+  ["circle", { cx: "11", cy: "11", r: "2", key: "xmgehs" }]
+];
+const PenTool = createLucideIcon("PenTool", __iconNode$e);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$d = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "M12 5v14", key: "s699le" }]
+];
+const Plus = createLucideIcon("Plus", __iconNode$d);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$c = [
+  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }],
+  ["path", { d: "m21 21-4.3-4.3", key: "1qie3q" }]
+];
+const Search = createLucideIcon("Search", __iconNode$c);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$b = [
+  [
+    "path",
+    {
+      d: "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z",
+      key: "1ffxy3"
+    }
+  ],
+  ["path", { d: "m21.854 2.147-10.94 10.939", key: "12cjpa" }]
+];
+const Send = createLucideIcon("Send", __iconNode$b);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$a = [
+  [
+    "path",
+    {
+      d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z",
+      key: "1qme2f"
+    }
+  ],
+  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+];
+const Settings = createLucideIcon("Settings", __iconNode$a);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$9 = [
+  [
+    "path",
+    {
+      d: "M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z",
+      key: "4pj2yx"
+    }
+  ],
+  ["path", { d: "M20 3v4", key: "1olli1" }],
+  ["path", { d: "M22 5h-4", key: "1gvqau" }],
+  ["path", { d: "M4 17v2", key: "vumght" }],
+  ["path", { d: "M5 18H3", key: "zchphs" }]
+];
+const Sparkles = createLucideIcon("Sparkles", __iconNode$9);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$8 = [
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }]
+];
+const Square = createLucideIcon("Square", __iconNode$8);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$7 = [
+  [
+    "path",
+    {
+      d: "M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z",
+      key: "vktsd0"
+    }
+  ],
+  ["circle", { cx: "7.5", cy: "7.5", r: ".5", fill: "currentColor", key: "kqv944" }]
+];
+const Tag = createLucideIcon("Tag", __iconNode$7);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$6 = [
+  ["path", { d: "M3 6h18", key: "d0wm0j" }],
+  ["path", { d: "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6", key: "4alrt4" }],
+  ["path", { d: "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2", key: "v07s0e" }],
+  ["line", { x1: "10", x2: "10", y1: "11", y2: "17", key: "1uufr5" }],
+  ["line", { x1: "14", x2: "14", y1: "11", y2: "17", key: "xtxkd" }]
+];
+const Trash2 = createLucideIcon("Trash2", __iconNode$6);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$5 = [
+  ["path", { d: "M6 4v6a6 6 0 0 0 12 0V4", key: "9kb039" }],
+  ["line", { x1: "4", x2: "20", y1: "20", y2: "20", key: "nun2al" }]
+];
+const Underline = createLucideIcon("Underline", __iconNode$5);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$4 = [
+  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }],
+  ["polyline", { points: "17 8 12 3 7 8", key: "t8dd8p" }],
+  ["line", { x1: "12", x2: "12", y1: "3", y2: "15", key: "widbto" }]
+];
+const Upload = createLucideIcon("Upload", __iconNode$4);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$3 = [
+  ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
+  ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }],
+  ["line", { x1: "19", x2: "19", y1: "8", y2: "14", key: "1bvyxn" }],
+  ["line", { x1: "22", x2: "16", y1: "11", y2: "11", key: "1shjgl" }]
+];
+const UserPlus = createLucideIcon("UserPlus", __iconNode$3);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$2 = [
+  ["path", { d: "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2", key: "975kel" }],
+  ["circle", { cx: "12", cy: "7", r: "4", key: "17ys0d" }]
+];
+const User = createLucideIcon("User", __iconNode$2);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$1 = [
+  ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
+  ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }],
+  ["path", { d: "M22 21v-2a4 4 0 0 0-3-3.87", key: "kshegd" }],
+  ["path", { d: "M16 3.13a4 4 0 0 1 0 7.75", key: "1da9ce" }]
+];
+const Users = createLucideIcon("Users", __iconNode$1);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode = [
+  ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
+  ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
+];
+const X = createLucideIcon("X", __iconNode);
+function r(e) {
+  var t, f, n = "";
+  if ("string" == typeof e || "number" == typeof e) n += e;
+  else if ("object" == typeof e) if (Array.isArray(e)) {
+    var o = e.length;
+    for (t = 0; t < o; t++) e[t] && (f = r(e[t])) && (n && (n += " "), n += f);
+  } else for (f in e) e[f] && (n && (n += " "), n += f);
+  return n;
+}
+function clsx() {
+  for (var e, t, f = 0, n = "", o = arguments.length; f < o; f++) (e = arguments[f]) && (t = r(e)) && (n && (n += " "), n += t);
+  return n;
+}
+const concatArrays = (array1, array2) => {
+  const combinedArray = new Array(array1.length + array2.length);
+  for (let i = 0; i < array1.length; i++) {
+    combinedArray[i] = array1[i];
+  }
+  for (let i = 0; i < array2.length; i++) {
+    combinedArray[array1.length + i] = array2[i];
+  }
+  return combinedArray;
+};
+const createClassValidatorObject = (classGroupId, validator2) => ({
+  classGroupId,
+  validator: validator2
+});
+const createClassPartObject = (nextPart = /* @__PURE__ */ new Map(), validators2 = null, classGroupId) => ({
+  nextPart,
+  validators: validators2,
+  classGroupId
+});
+const CLASS_PART_SEPARATOR = "-";
+const EMPTY_CONFLICTS = [];
+const ARBITRARY_PROPERTY_PREFIX = "arbitrary..";
+const createClassGroupUtils = (config) => {
+  const classMap = createClassMap(config);
+  const {
+    conflictingClassGroups,
+    conflictingClassGroupModifiers
+  } = config;
+  const getClassGroupId = (className) => {
+    if (className.startsWith("[") && className.endsWith("]")) {
+      return getGroupIdForArbitraryProperty(className);
+    }
+    const classParts = className.split(CLASS_PART_SEPARATOR);
+    const startIndex = classParts[0] === "" && classParts.length > 1 ? 1 : 0;
+    return getGroupRecursive(classParts, startIndex, classMap);
+  };
+  const getConflictingClassGroupIds = (classGroupId, hasPostfixModifier) => {
+    if (hasPostfixModifier) {
+      const modifierConflicts = conflictingClassGroupModifiers[classGroupId];
+      const baseConflicts = conflictingClassGroups[classGroupId];
+      if (modifierConflicts) {
+        if (baseConflicts) {
+          return concatArrays(baseConflicts, modifierConflicts);
+        }
+        return modifierConflicts;
+      }
+      return baseConflicts || EMPTY_CONFLICTS;
+    }
+    return conflictingClassGroups[classGroupId] || EMPTY_CONFLICTS;
+  };
+  return {
+    getClassGroupId,
+    getConflictingClassGroupIds
+  };
+};
+const getGroupRecursive = (classParts, startIndex, classPartObject) => {
+  const classPathsLength = classParts.length - startIndex;
+  if (classPathsLength === 0) {
+    return classPartObject.classGroupId;
+  }
+  const currentClassPart = classParts[startIndex];
+  const nextClassPartObject = classPartObject.nextPart.get(currentClassPart);
+  if (nextClassPartObject) {
+    const result = getGroupRecursive(classParts, startIndex + 1, nextClassPartObject);
+    if (result) return result;
+  }
+  const validators2 = classPartObject.validators;
+  if (validators2 === null) {
+    return void 0;
+  }
+  const classRest = startIndex === 0 ? classParts.join(CLASS_PART_SEPARATOR) : classParts.slice(startIndex).join(CLASS_PART_SEPARATOR);
+  const validatorsLength = validators2.length;
+  for (let i = 0; i < validatorsLength; i++) {
+    const validatorObj = validators2[i];
+    if (validatorObj.validator(classRest)) {
+      return validatorObj.classGroupId;
+    }
+  }
+  return void 0;
+};
+const getGroupIdForArbitraryProperty = (className) => className.slice(1, -1).indexOf(":") === -1 ? void 0 : (() => {
+  const content = className.slice(1, -1);
+  const colonIndex = content.indexOf(":");
+  const property = content.slice(0, colonIndex);
+  return property ? ARBITRARY_PROPERTY_PREFIX + property : void 0;
+})();
+const createClassMap = (config) => {
+  const {
+    theme,
+    classGroups
+  } = config;
+  return processClassGroups(classGroups, theme);
+};
+const processClassGroups = (classGroups, theme) => {
+  const classMap = createClassPartObject();
+  for (const classGroupId in classGroups) {
+    const group = classGroups[classGroupId];
+    processClassesRecursively(group, classMap, classGroupId, theme);
+  }
+  return classMap;
+};
+const processClassesRecursively = (classGroup, classPartObject, classGroupId, theme) => {
+  const len = classGroup.length;
+  for (let i = 0; i < len; i++) {
+    const classDefinition = classGroup[i];
+    processClassDefinition(classDefinition, classPartObject, classGroupId, theme);
+  }
+};
+const processClassDefinition = (classDefinition, classPartObject, classGroupId, theme) => {
+  if (typeof classDefinition === "string") {
+    processStringDefinition(classDefinition, classPartObject, classGroupId);
+    return;
+  }
+  if (typeof classDefinition === "function") {
+    processFunctionDefinition(classDefinition, classPartObject, classGroupId, theme);
+    return;
+  }
+  processObjectDefinition(classDefinition, classPartObject, classGroupId, theme);
+};
+const processStringDefinition = (classDefinition, classPartObject, classGroupId) => {
+  const classPartObjectToEdit = classDefinition === "" ? classPartObject : getPart(classPartObject, classDefinition);
+  classPartObjectToEdit.classGroupId = classGroupId;
+};
+const processFunctionDefinition = (classDefinition, classPartObject, classGroupId, theme) => {
+  if (isThemeGetter(classDefinition)) {
+    processClassesRecursively(classDefinition(theme), classPartObject, classGroupId, theme);
+    return;
+  }
+  if (classPartObject.validators === null) {
+    classPartObject.validators = [];
+  }
+  classPartObject.validators.push(createClassValidatorObject(classGroupId, classDefinition));
+};
+const processObjectDefinition = (classDefinition, classPartObject, classGroupId, theme) => {
+  const entries = Object.entries(classDefinition);
+  const len = entries.length;
+  for (let i = 0; i < len; i++) {
+    const [key2, value] = entries[i];
+    processClassesRecursively(value, getPart(classPartObject, key2), classGroupId, theme);
+  }
+};
+const getPart = (classPartObject, path) => {
+  let current = classPartObject;
+  const parts = path.split(CLASS_PART_SEPARATOR);
+  const len = parts.length;
+  for (let i = 0; i < len; i++) {
+    const part = parts[i];
+    let next = current.nextPart.get(part);
+    if (!next) {
+      next = createClassPartObject();
+      current.nextPart.set(part, next);
+    }
+    current = next;
+  }
+  return current;
+};
+const isThemeGetter = (func) => "isThemeGetter" in func && func.isThemeGetter === true;
+const createLruCache = (maxCacheSize) => {
+  if (maxCacheSize < 1) {
+    return {
+      get: () => void 0,
+      set: () => {
+      }
+    };
+  }
+  let cacheSize = 0;
+  let cache = /* @__PURE__ */ Object.create(null);
+  let previousCache = /* @__PURE__ */ Object.create(null);
+  const update = (key2, value) => {
+    cache[key2] = value;
+    cacheSize++;
+    if (cacheSize > maxCacheSize) {
+      cacheSize = 0;
+      previousCache = cache;
+      cache = /* @__PURE__ */ Object.create(null);
+    }
+  };
+  return {
+    get(key2) {
+      let value = cache[key2];
+      if (value !== void 0) {
+        return value;
+      }
+      if ((value = previousCache[key2]) !== void 0) {
+        update(key2, value);
+        return value;
+      }
+    },
+    set(key2, value) {
+      if (key2 in cache) {
+        cache[key2] = value;
+      } else {
+        update(key2, value);
+      }
+    }
+  };
+};
+const IMPORTANT_MODIFIER = "!";
+const MODIFIER_SEPARATOR = ":";
+const EMPTY_MODIFIERS = [];
+const createResultObject = (modifiers, hasImportantModifier, baseClassName, maybePostfixModifierPosition, isExternal) => ({
+  modifiers,
+  hasImportantModifier,
+  baseClassName,
+  maybePostfixModifierPosition,
+  isExternal
+});
+const createParseClassName = (config) => {
+  const {
+    prefix,
+    experimentalParseClassName
+  } = config;
+  let parseClassName = (className) => {
+    const modifiers = [];
+    let bracketDepth = 0;
+    let parenDepth = 0;
+    let modifierStart = 0;
+    let postfixModifierPosition;
+    const len = className.length;
+    for (let index = 0; index < len; index++) {
+      const currentCharacter = className[index];
+      if (bracketDepth === 0 && parenDepth === 0) {
+        if (currentCharacter === MODIFIER_SEPARATOR) {
+          modifiers.push(className.slice(modifierStart, index));
+          modifierStart = index + 1;
+          continue;
+        }
+        if (currentCharacter === "/") {
+          postfixModifierPosition = index;
+          continue;
+        }
+      }
+      if (currentCharacter === "[") bracketDepth++;
+      else if (currentCharacter === "]") bracketDepth--;
+      else if (currentCharacter === "(") parenDepth++;
+      else if (currentCharacter === ")") parenDepth--;
+    }
+    const baseClassNameWithImportantModifier = modifiers.length === 0 ? className : className.slice(modifierStart);
+    let baseClassName = baseClassNameWithImportantModifier;
+    let hasImportantModifier = false;
+    if (baseClassNameWithImportantModifier.endsWith(IMPORTANT_MODIFIER)) {
+      baseClassName = baseClassNameWithImportantModifier.slice(0, -1);
+      hasImportantModifier = true;
+    } else if (
+      /**
+       * In Tailwind CSS v3 the important modifier was at the start of the base class name. This is still supported for legacy reasons.
+       * @see https://github.com/dcastil/tailwind-merge/issues/513#issuecomment-2614029864
+       */
+      baseClassNameWithImportantModifier.startsWith(IMPORTANT_MODIFIER)
+    ) {
+      baseClassName = baseClassNameWithImportantModifier.slice(1);
+      hasImportantModifier = true;
+    }
+    const maybePostfixModifierPosition = postfixModifierPosition && postfixModifierPosition > modifierStart ? postfixModifierPosition - modifierStart : void 0;
+    return createResultObject(modifiers, hasImportantModifier, baseClassName, maybePostfixModifierPosition);
+  };
+  if (prefix) {
+    const fullPrefix = prefix + MODIFIER_SEPARATOR;
+    const parseClassNameOriginal = parseClassName;
+    parseClassName = (className) => className.startsWith(fullPrefix) ? parseClassNameOriginal(className.slice(fullPrefix.length)) : createResultObject(EMPTY_MODIFIERS, false, className, void 0, true);
+  }
+  if (experimentalParseClassName) {
+    const parseClassNameOriginal = parseClassName;
+    parseClassName = (className) => experimentalParseClassName({
+      className,
+      parseClassName: parseClassNameOriginal
+    });
+  }
+  return parseClassName;
+};
+const createSortModifiers = (config) => {
+  const modifierWeights = /* @__PURE__ */ new Map();
+  config.orderSensitiveModifiers.forEach((mod, index) => {
+    modifierWeights.set(mod, 1e6 + index);
+  });
+  return (modifiers) => {
+    const result = [];
+    let currentSegment = [];
+    for (let i = 0; i < modifiers.length; i++) {
+      const modifier = modifiers[i];
+      const isArbitrary = modifier[0] === "[";
+      const isOrderSensitive = modifierWeights.has(modifier);
+      if (isArbitrary || isOrderSensitive) {
+        if (currentSegment.length > 0) {
+          currentSegment.sort();
+          result.push(...currentSegment);
+          currentSegment = [];
+        }
+        result.push(modifier);
+      } else {
+        currentSegment.push(modifier);
+      }
+    }
+    if (currentSegment.length > 0) {
+      currentSegment.sort();
+      result.push(...currentSegment);
+    }
+    return result;
+  };
+};
+const createConfigUtils = (config) => ({
+  cache: createLruCache(config.cacheSize),
+  parseClassName: createParseClassName(config),
+  sortModifiers: createSortModifiers(config),
+  ...createClassGroupUtils(config)
+});
+const SPLIT_CLASSES_REGEX = /\s+/;
+const mergeClassList = (classList, configUtils) => {
+  const {
+    parseClassName,
+    getClassGroupId,
+    getConflictingClassGroupIds,
+    sortModifiers
+  } = configUtils;
+  const classGroupsInConflict = [];
+  const classNames = classList.trim().split(SPLIT_CLASSES_REGEX);
+  let result = "";
+  for (let index = classNames.length - 1; index >= 0; index -= 1) {
+    const originalClassName = classNames[index];
+    const {
+      isExternal,
+      modifiers,
+      hasImportantModifier,
+      baseClassName,
+      maybePostfixModifierPosition
+    } = parseClassName(originalClassName);
+    if (isExternal) {
+      result = originalClassName + (result.length > 0 ? " " + result : result);
+      continue;
+    }
+    let hasPostfixModifier = !!maybePostfixModifierPosition;
+    let classGroupId = getClassGroupId(hasPostfixModifier ? baseClassName.substring(0, maybePostfixModifierPosition) : baseClassName);
+    if (!classGroupId) {
+      if (!hasPostfixModifier) {
+        result = originalClassName + (result.length > 0 ? " " + result : result);
+        continue;
+      }
+      classGroupId = getClassGroupId(baseClassName);
+      if (!classGroupId) {
+        result = originalClassName + (result.length > 0 ? " " + result : result);
+        continue;
+      }
+      hasPostfixModifier = false;
+    }
+    const variantModifier = modifiers.length === 0 ? "" : modifiers.length === 1 ? modifiers[0] : sortModifiers(modifiers).join(":");
+    const modifierId = hasImportantModifier ? variantModifier + IMPORTANT_MODIFIER : variantModifier;
+    const classId = modifierId + classGroupId;
+    if (classGroupsInConflict.indexOf(classId) > -1) {
+      continue;
+    }
+    classGroupsInConflict.push(classId);
+    const conflictGroups = getConflictingClassGroupIds(classGroupId, hasPostfixModifier);
+    for (let i = 0; i < conflictGroups.length; ++i) {
+      const group = conflictGroups[i];
+      classGroupsInConflict.push(modifierId + group);
+    }
+    result = originalClassName + (result.length > 0 ? " " + result : result);
+  }
+  return result;
+};
+const twJoin = (...classLists) => {
+  let index = 0;
+  let argument;
+  let resolvedValue;
+  let string = "";
+  while (index < classLists.length) {
+    if (argument = classLists[index++]) {
+      if (resolvedValue = toValue(argument)) {
+        string && (string += " ");
+        string += resolvedValue;
+      }
+    }
+  }
+  return string;
+};
+const toValue = (mix) => {
+  if (typeof mix === "string") {
+    return mix;
+  }
+  let resolvedValue;
+  let string = "";
+  for (let k = 0; k < mix.length; k++) {
+    if (mix[k]) {
+      if (resolvedValue = toValue(mix[k])) {
+        string && (string += " ");
+        string += resolvedValue;
+      }
+    }
+  }
+  return string;
+};
+const createTailwindMerge = (createConfigFirst, ...createConfigRest) => {
+  let configUtils;
+  let cacheGet;
+  let cacheSet;
+  let functionToCall;
+  const initTailwindMerge = (classList) => {
+    const config = createConfigRest.reduce((previousConfig, createConfigCurrent) => createConfigCurrent(previousConfig), createConfigFirst());
+    configUtils = createConfigUtils(config);
+    cacheGet = configUtils.cache.get;
+    cacheSet = configUtils.cache.set;
+    functionToCall = tailwindMerge;
+    return tailwindMerge(classList);
+  };
+  const tailwindMerge = (classList) => {
+    const cachedResult = cacheGet(classList);
+    if (cachedResult) {
+      return cachedResult;
+    }
+    const result = mergeClassList(classList, configUtils);
+    cacheSet(classList, result);
+    return result;
+  };
+  functionToCall = initTailwindMerge;
+  return (...args) => functionToCall(twJoin(...args));
+};
+const fallbackThemeArr = [];
+const fromTheme = (key2) => {
+  const themeGetter = (theme) => theme[key2] || fallbackThemeArr;
+  themeGetter.isThemeGetter = true;
+  return themeGetter;
+};
+const arbitraryValueRegex = /^\[(?:(\w[\w-]*):)?(.+)\]$/i;
+const arbitraryVariableRegex = /^\((?:(\w[\w-]*):)?(.+)\)$/i;
+const fractionRegex = /^\d+(?:\.\d+)?\/\d+(?:\.\d+)?$/;
+const tshirtUnitRegex = /^(\d+(\.\d+)?)?(xs|sm|md|lg|xl)$/;
+const lengthUnitRegex = /\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|ch|ex|r?lh|cq(w|h|i|b|min|max))|\b(calc|min|max|clamp)\(.+\)|^0$/;
+const colorFunctionRegex = /^(rgba?|hsla?|hwb|(ok)?(lab|lch)|color-mix)\(.+\)$/;
+const shadowRegex = /^(inset_)?-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)/;
+const imageRegex = /^(url|image|image-set|cross-fade|element|(repeating-)?(linear|radial|conic)-gradient)\(.+\)$/;
+const isFraction = (value) => fractionRegex.test(value);
+const isNumber = (value) => !!value && !Number.isNaN(Number(value));
+const isInteger = (value) => !!value && Number.isInteger(Number(value));
+const isPercent = (value) => value.endsWith("%") && isNumber(value.slice(0, -1));
+const isTshirtSize = (value) => tshirtUnitRegex.test(value);
+const isAny = () => true;
+const isLengthOnly = (value) => (
+  // `colorFunctionRegex` check is necessary because color functions can have percentages in them which which would be incorrectly classified as lengths.
+  // For example, `hsl(0 0% 0%)` would be classified as a length without this check.
+  // I could also use lookbehind assertion in `lengthUnitRegex` but that isn't supported widely enough.
+  lengthUnitRegex.test(value) && !colorFunctionRegex.test(value)
+);
+const isNever = () => false;
+const isShadow = (value) => shadowRegex.test(value);
+const isImage = (value) => imageRegex.test(value);
+const isAnyNonArbitrary = (value) => !isArbitraryValue(value) && !isArbitraryVariable(value);
+const isArbitrarySize = (value) => getIsArbitraryValue(value, isLabelSize, isNever);
+const isArbitraryValue = (value) => arbitraryValueRegex.test(value);
+const isArbitraryLength = (value) => getIsArbitraryValue(value, isLabelLength, isLengthOnly);
+const isArbitraryNumber = (value) => getIsArbitraryValue(value, isLabelNumber, isNumber);
+const isArbitraryWeight = (value) => getIsArbitraryValue(value, isLabelWeight, isAny);
+const isArbitraryFamilyName = (value) => getIsArbitraryValue(value, isLabelFamilyName, isNever);
+const isArbitraryPosition = (value) => getIsArbitraryValue(value, isLabelPosition, isNever);
+const isArbitraryImage = (value) => getIsArbitraryValue(value, isLabelImage, isImage);
+const isArbitraryShadow = (value) => getIsArbitraryValue(value, isLabelShadow, isShadow);
+const isArbitraryVariable = (value) => arbitraryVariableRegex.test(value);
+const isArbitraryVariableLength = (value) => getIsArbitraryVariable(value, isLabelLength);
+const isArbitraryVariableFamilyName = (value) => getIsArbitraryVariable(value, isLabelFamilyName);
+const isArbitraryVariablePosition = (value) => getIsArbitraryVariable(value, isLabelPosition);
+const isArbitraryVariableSize = (value) => getIsArbitraryVariable(value, isLabelSize);
+const isArbitraryVariableImage = (value) => getIsArbitraryVariable(value, isLabelImage);
+const isArbitraryVariableShadow = (value) => getIsArbitraryVariable(value, isLabelShadow, true);
+const isArbitraryVariableWeight = (value) => getIsArbitraryVariable(value, isLabelWeight, true);
+const getIsArbitraryValue = (value, testLabel, testValue) => {
+  const result = arbitraryValueRegex.exec(value);
+  if (result) {
+    if (result[1]) {
+      return testLabel(result[1]);
+    }
+    return testValue(result[2]);
+  }
+  return false;
+};
+const getIsArbitraryVariable = (value, testLabel, shouldMatchNoLabel = false) => {
+  const result = arbitraryVariableRegex.exec(value);
+  if (result) {
+    if (result[1]) {
+      return testLabel(result[1]);
+    }
+    return shouldMatchNoLabel;
+  }
+  return false;
+};
+const isLabelPosition = (label) => label === "position" || label === "percentage";
+const isLabelImage = (label) => label === "image" || label === "url";
+const isLabelSize = (label) => label === "length" || label === "size" || label === "bg-size";
+const isLabelLength = (label) => label === "length";
+const isLabelNumber = (label) => label === "number";
+const isLabelFamilyName = (label) => label === "family-name";
+const isLabelWeight = (label) => label === "number" || label === "weight";
+const isLabelShadow = (label) => label === "shadow";
+const getDefaultConfig = () => {
+  const themeColor = fromTheme("color");
+  const themeFont = fromTheme("font");
+  const themeText = fromTheme("text");
+  const themeFontWeight = fromTheme("font-weight");
+  const themeTracking = fromTheme("tracking");
+  const themeLeading = fromTheme("leading");
+  const themeBreakpoint = fromTheme("breakpoint");
+  const themeContainer = fromTheme("container");
+  const themeSpacing = fromTheme("spacing");
+  const themeRadius = fromTheme("radius");
+  const themeShadow = fromTheme("shadow");
+  const themeInsetShadow = fromTheme("inset-shadow");
+  const themeTextShadow = fromTheme("text-shadow");
+  const themeDropShadow = fromTheme("drop-shadow");
+  const themeBlur = fromTheme("blur");
+  const themePerspective = fromTheme("perspective");
+  const themeAspect = fromTheme("aspect");
+  const themeEase = fromTheme("ease");
+  const themeAnimate = fromTheme("animate");
+  const scaleBreak = () => ["auto", "avoid", "all", "avoid-page", "page", "left", "right", "column"];
+  const scalePosition = () => [
+    "center",
+    "top",
+    "bottom",
+    "left",
+    "right",
+    "top-left",
+    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
+    "left-top",
+    "top-right",
+    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
+    "right-top",
+    "bottom-right",
+    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
+    "right-bottom",
+    "bottom-left",
+    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
+    "left-bottom"
+  ];
+  const scalePositionWithArbitrary = () => [...scalePosition(), isArbitraryVariable, isArbitraryValue];
+  const scaleOverflow = () => ["auto", "hidden", "clip", "visible", "scroll"];
+  const scaleOverscroll = () => ["auto", "contain", "none"];
+  const scaleUnambiguousSpacing = () => [isArbitraryVariable, isArbitraryValue, themeSpacing];
+  const scaleInset = () => [isFraction, "full", "auto", ...scaleUnambiguousSpacing()];
+  const scaleGridTemplateColsRows = () => [isInteger, "none", "subgrid", isArbitraryVariable, isArbitraryValue];
+  const scaleGridColRowStartAndEnd = () => ["auto", {
+    span: ["full", isInteger, isArbitraryVariable, isArbitraryValue]
+  }, isInteger, isArbitraryVariable, isArbitraryValue];
+  const scaleGridColRowStartOrEnd = () => [isInteger, "auto", isArbitraryVariable, isArbitraryValue];
+  const scaleGridAutoColsRows = () => ["auto", "min", "max", "fr", isArbitraryVariable, isArbitraryValue];
+  const scaleAlignPrimaryAxis = () => ["start", "end", "center", "between", "around", "evenly", "stretch", "baseline", "center-safe", "end-safe"];
+  const scaleAlignSecondaryAxis = () => ["start", "end", "center", "stretch", "center-safe", "end-safe"];
+  const scaleMargin = () => ["auto", ...scaleUnambiguousSpacing()];
+  const scaleSizing = () => [isFraction, "auto", "full", "dvw", "dvh", "lvw", "lvh", "svw", "svh", "min", "max", "fit", ...scaleUnambiguousSpacing()];
+  const scaleSizingInline = () => [isFraction, "screen", "full", "dvw", "lvw", "svw", "min", "max", "fit", ...scaleUnambiguousSpacing()];
+  const scaleSizingBlock = () => [isFraction, "screen", "full", "lh", "dvh", "lvh", "svh", "min", "max", "fit", ...scaleUnambiguousSpacing()];
+  const scaleColor = () => [themeColor, isArbitraryVariable, isArbitraryValue];
+  const scaleBgPosition = () => [...scalePosition(), isArbitraryVariablePosition, isArbitraryPosition, {
+    position: [isArbitraryVariable, isArbitraryValue]
+  }];
+  const scaleBgRepeat = () => ["no-repeat", {
+    repeat: ["", "x", "y", "space", "round"]
+  }];
+  const scaleBgSize = () => ["auto", "cover", "contain", isArbitraryVariableSize, isArbitrarySize, {
+    size: [isArbitraryVariable, isArbitraryValue]
+  }];
+  const scaleGradientStopPosition = () => [isPercent, isArbitraryVariableLength, isArbitraryLength];
+  const scaleRadius = () => [
+    // Deprecated since Tailwind CSS v4.0.0
+    "",
+    "none",
+    "full",
+    themeRadius,
+    isArbitraryVariable,
+    isArbitraryValue
+  ];
+  const scaleBorderWidth = () => ["", isNumber, isArbitraryVariableLength, isArbitraryLength];
+  const scaleLineStyle = () => ["solid", "dashed", "dotted", "double"];
+  const scaleBlendMode = () => ["normal", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity"];
+  const scaleMaskImagePosition = () => [isNumber, isPercent, isArbitraryVariablePosition, isArbitraryPosition];
+  const scaleBlur = () => [
+    // Deprecated since Tailwind CSS v4.0.0
+    "",
+    "none",
+    themeBlur,
+    isArbitraryVariable,
+    isArbitraryValue
+  ];
+  const scaleRotate = () => ["none", isNumber, isArbitraryVariable, isArbitraryValue];
+  const scaleScale = () => ["none", isNumber, isArbitraryVariable, isArbitraryValue];
+  const scaleSkew = () => [isNumber, isArbitraryVariable, isArbitraryValue];
+  const scaleTranslate = () => [isFraction, "full", ...scaleUnambiguousSpacing()];
+  return {
+    cacheSize: 500,
+    theme: {
+      animate: ["spin", "ping", "pulse", "bounce"],
+      aspect: ["video"],
+      blur: [isTshirtSize],
+      breakpoint: [isTshirtSize],
+      color: [isAny],
+      container: [isTshirtSize],
+      "drop-shadow": [isTshirtSize],
+      ease: ["in", "out", "in-out"],
+      font: [isAnyNonArbitrary],
+      "font-weight": ["thin", "extralight", "light", "normal", "medium", "semibold", "bold", "extrabold", "black"],
+      "inset-shadow": [isTshirtSize],
+      leading: ["none", "tight", "snug", "normal", "relaxed", "loose"],
+      perspective: ["dramatic", "near", "normal", "midrange", "distant", "none"],
+      radius: [isTshirtSize],
+      shadow: [isTshirtSize],
+      spacing: ["px", isNumber],
+      text: [isTshirtSize],
+      "text-shadow": [isTshirtSize],
+      tracking: ["tighter", "tight", "normal", "wide", "wider", "widest"]
+    },
+    classGroups: {
+      // --------------
+      // --- Layout ---
+      // --------------
+      /**
+       * Aspect Ratio
+       * @see https://tailwindcss.com/docs/aspect-ratio
+       */
+      aspect: [{
+        aspect: ["auto", "square", isFraction, isArbitraryValue, isArbitraryVariable, themeAspect]
+      }],
+      /**
+       * Container
+       * @see https://tailwindcss.com/docs/container
+       * @deprecated since Tailwind CSS v4.0.0
+       */
+      container: ["container"],
+      /**
+       * Columns
+       * @see https://tailwindcss.com/docs/columns
+       */
+      columns: [{
+        columns: [isNumber, isArbitraryValue, isArbitraryVariable, themeContainer]
+      }],
+      /**
+       * Break After
+       * @see https://tailwindcss.com/docs/break-after
+       */
+      "break-after": [{
+        "break-after": scaleBreak()
+      }],
+      /**
+       * Break Before
+       * @see https://tailwindcss.com/docs/break-before
+       */
+      "break-before": [{
+        "break-before": scaleBreak()
+      }],
+      /**
+       * Break Inside
+       * @see https://tailwindcss.com/docs/break-inside
+       */
+      "break-inside": [{
+        "break-inside": ["auto", "avoid", "avoid-page", "avoid-column"]
+      }],
+      /**
+       * Box Decoration Break
+       * @see https://tailwindcss.com/docs/box-decoration-break
+       */
+      "box-decoration": [{
+        "box-decoration": ["slice", "clone"]
+      }],
+      /**
+       * Box Sizing
+       * @see https://tailwindcss.com/docs/box-sizing
+       */
+      box: [{
+        box: ["border", "content"]
+      }],
+      /**
+       * Display
+       * @see https://tailwindcss.com/docs/display
+       */
+      display: ["block", "inline-block", "inline", "flex", "inline-flex", "table", "inline-table", "table-caption", "table-cell", "table-column", "table-column-group", "table-footer-group", "table-header-group", "table-row-group", "table-row", "flow-root", "grid", "inline-grid", "contents", "list-item", "hidden"],
+      /**
+       * Screen Reader Only
+       * @see https://tailwindcss.com/docs/display#screen-reader-only
+       */
+      sr: ["sr-only", "not-sr-only"],
+      /**
+       * Floats
+       * @see https://tailwindcss.com/docs/float
+       */
+      float: [{
+        float: ["right", "left", "none", "start", "end"]
+      }],
+      /**
+       * Clear
+       * @see https://tailwindcss.com/docs/clear
+       */
+      clear: [{
+        clear: ["left", "right", "both", "none", "start", "end"]
+      }],
+      /**
+       * Isolation
+       * @see https://tailwindcss.com/docs/isolation
+       */
+      isolation: ["isolate", "isolation-auto"],
+      /**
+       * Object Fit
+       * @see https://tailwindcss.com/docs/object-fit
+       */
+      "object-fit": [{
+        object: ["contain", "cover", "fill", "none", "scale-down"]
+      }],
+      /**
+       * Object Position
+       * @see https://tailwindcss.com/docs/object-position
+       */
+      "object-position": [{
+        object: scalePositionWithArbitrary()
+      }],
+      /**
+       * Overflow
+       * @see https://tailwindcss.com/docs/overflow
+       */
+      overflow: [{
+        overflow: scaleOverflow()
+      }],
+      /**
+       * Overflow X
+       * @see https://tailwindcss.com/docs/overflow
+       */
+      "overflow-x": [{
+        "overflow-x": scaleOverflow()
+      }],
+      /**
+       * Overflow Y
+       * @see https://tailwindcss.com/docs/overflow
+       */
+      "overflow-y": [{
+        "overflow-y": scaleOverflow()
+      }],
+      /**
+       * Overscroll Behavior
+       * @see https://tailwindcss.com/docs/overscroll-behavior
+       */
+      overscroll: [{
+        overscroll: scaleOverscroll()
+      }],
+      /**
+       * Overscroll Behavior X
+       * @see https://tailwindcss.com/docs/overscroll-behavior
+       */
+      "overscroll-x": [{
+        "overscroll-x": scaleOverscroll()
+      }],
+      /**
+       * Overscroll Behavior Y
+       * @see https://tailwindcss.com/docs/overscroll-behavior
+       */
+      "overscroll-y": [{
+        "overscroll-y": scaleOverscroll()
+      }],
+      /**
+       * Position
+       * @see https://tailwindcss.com/docs/position
+       */
+      position: ["static", "fixed", "absolute", "relative", "sticky"],
+      /**
+       * Inset
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      inset: [{
+        inset: scaleInset()
+      }],
+      /**
+       * Inset Inline
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      "inset-x": [{
+        "inset-x": scaleInset()
+      }],
+      /**
+       * Inset Block
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      "inset-y": [{
+        "inset-y": scaleInset()
+      }],
+      /**
+       * Inset Inline Start
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       * @todo class group will be renamed to `inset-s` in next major release
+       */
+      start: [{
+        "inset-s": scaleInset(),
+        /**
+         * @deprecated since Tailwind CSS v4.2.0 in favor of `inset-s-*` utilities.
+         * @see https://github.com/tailwindlabs/tailwindcss/pull/19613
+         */
+        start: scaleInset()
+      }],
+      /**
+       * Inset Inline End
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       * @todo class group will be renamed to `inset-e` in next major release
+       */
+      end: [{
+        "inset-e": scaleInset(),
+        /**
+         * @deprecated since Tailwind CSS v4.2.0 in favor of `inset-e-*` utilities.
+         * @see https://github.com/tailwindlabs/tailwindcss/pull/19613
+         */
+        end: scaleInset()
+      }],
+      /**
+       * Inset Block Start
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      "inset-bs": [{
+        "inset-bs": scaleInset()
+      }],
+      /**
+       * Inset Block End
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      "inset-be": [{
+        "inset-be": scaleInset()
+      }],
+      /**
+       * Top
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      top: [{
+        top: scaleInset()
+      }],
+      /**
+       * Right
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      right: [{
+        right: scaleInset()
+      }],
+      /**
+       * Bottom
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      bottom: [{
+        bottom: scaleInset()
+      }],
+      /**
+       * Left
+       * @see https://tailwindcss.com/docs/top-right-bottom-left
+       */
+      left: [{
+        left: scaleInset()
+      }],
+      /**
+       * Visibility
+       * @see https://tailwindcss.com/docs/visibility
+       */
+      visibility: ["visible", "invisible", "collapse"],
+      /**
+       * Z-Index
+       * @see https://tailwindcss.com/docs/z-index
+       */
+      z: [{
+        z: [isInteger, "auto", isArbitraryVariable, isArbitraryValue]
+      }],
+      // ------------------------
+      // --- Flexbox and Grid ---
+      // ------------------------
+      /**
+       * Flex Basis
+       * @see https://tailwindcss.com/docs/flex-basis
+       */
+      basis: [{
+        basis: [isFraction, "full", "auto", themeContainer, ...scaleUnambiguousSpacing()]
+      }],
+      /**
+       * Flex Direction
+       * @see https://tailwindcss.com/docs/flex-direction
+       */
+      "flex-direction": [{
+        flex: ["row", "row-reverse", "col", "col-reverse"]
+      }],
+      /**
+       * Flex Wrap
+       * @see https://tailwindcss.com/docs/flex-wrap
+       */
+      "flex-wrap": [{
+        flex: ["nowrap", "wrap", "wrap-reverse"]
+      }],
+      /**
+       * Flex
+       * @see https://tailwindcss.com/docs/flex
+       */
+      flex: [{
+        flex: [isNumber, isFraction, "auto", "initial", "none", isArbitraryValue]
+      }],
+      /**
+       * Flex Grow
+       * @see https://tailwindcss.com/docs/flex-grow
+       */
+      grow: [{
+        grow: ["", isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Flex Shrink
+       * @see https://tailwindcss.com/docs/flex-shrink
+       */
+      shrink: [{
+        shrink: ["", isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Order
+       * @see https://tailwindcss.com/docs/order
+       */
+      order: [{
+        order: [isInteger, "first", "last", "none", isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Grid Template Columns
+       * @see https://tailwindcss.com/docs/grid-template-columns
+       */
+      "grid-cols": [{
+        "grid-cols": scaleGridTemplateColsRows()
+      }],
+      /**
+       * Grid Column Start / End
+       * @see https://tailwindcss.com/docs/grid-column
+       */
+      "col-start-end": [{
+        col: scaleGridColRowStartAndEnd()
+      }],
+      /**
+       * Grid Column Start
+       * @see https://tailwindcss.com/docs/grid-column
+       */
+      "col-start": [{
+        "col-start": scaleGridColRowStartOrEnd()
+      }],
+      /**
+       * Grid Column End
+       * @see https://tailwindcss.com/docs/grid-column
+       */
+      "col-end": [{
+        "col-end": scaleGridColRowStartOrEnd()
+      }],
+      /**
+       * Grid Template Rows
+       * @see https://tailwindcss.com/docs/grid-template-rows
+       */
+      "grid-rows": [{
+        "grid-rows": scaleGridTemplateColsRows()
+      }],
+      /**
+       * Grid Row Start / End
+       * @see https://tailwindcss.com/docs/grid-row
+       */
+      "row-start-end": [{
+        row: scaleGridColRowStartAndEnd()
+      }],
+      /**
+       * Grid Row Start
+       * @see https://tailwindcss.com/docs/grid-row
+       */
+      "row-start": [{
+        "row-start": scaleGridColRowStartOrEnd()
+      }],
+      /**
+       * Grid Row End
+       * @see https://tailwindcss.com/docs/grid-row
+       */
+      "row-end": [{
+        "row-end": scaleGridColRowStartOrEnd()
+      }],
+      /**
+       * Grid Auto Flow
+       * @see https://tailwindcss.com/docs/grid-auto-flow
+       */
+      "grid-flow": [{
+        "grid-flow": ["row", "col", "dense", "row-dense", "col-dense"]
+      }],
+      /**
+       * Grid Auto Columns
+       * @see https://tailwindcss.com/docs/grid-auto-columns
+       */
+      "auto-cols": [{
+        "auto-cols": scaleGridAutoColsRows()
+      }],
+      /**
+       * Grid Auto Rows
+       * @see https://tailwindcss.com/docs/grid-auto-rows
+       */
+      "auto-rows": [{
+        "auto-rows": scaleGridAutoColsRows()
+      }],
+      /**
+       * Gap
+       * @see https://tailwindcss.com/docs/gap
+       */
+      gap: [{
+        gap: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Gap X
+       * @see https://tailwindcss.com/docs/gap
+       */
+      "gap-x": [{
+        "gap-x": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Gap Y
+       * @see https://tailwindcss.com/docs/gap
+       */
+      "gap-y": [{
+        "gap-y": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Justify Content
+       * @see https://tailwindcss.com/docs/justify-content
+       */
+      "justify-content": [{
+        justify: [...scaleAlignPrimaryAxis(), "normal"]
+      }],
+      /**
+       * Justify Items
+       * @see https://tailwindcss.com/docs/justify-items
+       */
+      "justify-items": [{
+        "justify-items": [...scaleAlignSecondaryAxis(), "normal"]
+      }],
+      /**
+       * Justify Self
+       * @see https://tailwindcss.com/docs/justify-self
+       */
+      "justify-self": [{
+        "justify-self": ["auto", ...scaleAlignSecondaryAxis()]
+      }],
+      /**
+       * Align Content
+       * @see https://tailwindcss.com/docs/align-content
+       */
+      "align-content": [{
+        content: ["normal", ...scaleAlignPrimaryAxis()]
+      }],
+      /**
+       * Align Items
+       * @see https://tailwindcss.com/docs/align-items
+       */
+      "align-items": [{
+        items: [...scaleAlignSecondaryAxis(), {
+          baseline: ["", "last"]
+        }]
+      }],
+      /**
+       * Align Self
+       * @see https://tailwindcss.com/docs/align-self
+       */
+      "align-self": [{
+        self: ["auto", ...scaleAlignSecondaryAxis(), {
+          baseline: ["", "last"]
+        }]
+      }],
+      /**
+       * Place Content
+       * @see https://tailwindcss.com/docs/place-content
+       */
+      "place-content": [{
+        "place-content": scaleAlignPrimaryAxis()
+      }],
+      /**
+       * Place Items
+       * @see https://tailwindcss.com/docs/place-items
+       */
+      "place-items": [{
+        "place-items": [...scaleAlignSecondaryAxis(), "baseline"]
+      }],
+      /**
+       * Place Self
+       * @see https://tailwindcss.com/docs/place-self
+       */
+      "place-self": [{
+        "place-self": ["auto", ...scaleAlignSecondaryAxis()]
+      }],
+      // Spacing
+      /**
+       * Padding
+       * @see https://tailwindcss.com/docs/padding
+       */
+      p: [{
+        p: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Padding Inline
+       * @see https://tailwindcss.com/docs/padding
+       */
+      px: [{
+        px: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Padding Block
+       * @see https://tailwindcss.com/docs/padding
+       */
+      py: [{
+        py: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Padding Inline Start
+       * @see https://tailwindcss.com/docs/padding
+       */
+      ps: [{
+        ps: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Padding Inline End
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pe: [{
+        pe: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Padding Block Start
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pbs: [{
+        pbs: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Padding Block End
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pbe: [{
+        pbe: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Padding Top
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pt: [{
+        pt: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Padding Right
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pr: [{
+        pr: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Padding Bottom
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pb: [{
+        pb: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Padding Left
+       * @see https://tailwindcss.com/docs/padding
+       */
+      pl: [{
+        pl: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Margin
+       * @see https://tailwindcss.com/docs/margin
+       */
+      m: [{
+        m: scaleMargin()
+      }],
+      /**
+       * Margin Inline
+       * @see https://tailwindcss.com/docs/margin
+       */
+      mx: [{
+        mx: scaleMargin()
+      }],
+      /**
+       * Margin Block
+       * @see https://tailwindcss.com/docs/margin
+       */
+      my: [{
+        my: scaleMargin()
+      }],
+      /**
+       * Margin Inline Start
+       * @see https://tailwindcss.com/docs/margin
+       */
+      ms: [{
+        ms: scaleMargin()
+      }],
+      /**
+       * Margin Inline End
+       * @see https://tailwindcss.com/docs/margin
+       */
+      me: [{
+        me: scaleMargin()
+      }],
+      /**
+       * Margin Block Start
+       * @see https://tailwindcss.com/docs/margin
+       */
+      mbs: [{
+        mbs: scaleMargin()
+      }],
+      /**
+       * Margin Block End
+       * @see https://tailwindcss.com/docs/margin
+       */
+      mbe: [{
+        mbe: scaleMargin()
+      }],
+      /**
+       * Margin Top
+       * @see https://tailwindcss.com/docs/margin
+       */
+      mt: [{
+        mt: scaleMargin()
+      }],
+      /**
+       * Margin Right
+       * @see https://tailwindcss.com/docs/margin
+       */
+      mr: [{
+        mr: scaleMargin()
+      }],
+      /**
+       * Margin Bottom
+       * @see https://tailwindcss.com/docs/margin
+       */
+      mb: [{
+        mb: scaleMargin()
+      }],
+      /**
+       * Margin Left
+       * @see https://tailwindcss.com/docs/margin
+       */
+      ml: [{
+        ml: scaleMargin()
+      }],
+      /**
+       * Space Between X
+       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
+       */
+      "space-x": [{
+        "space-x": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Space Between X Reverse
+       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
+       */
+      "space-x-reverse": ["space-x-reverse"],
+      /**
+       * Space Between Y
+       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
+       */
+      "space-y": [{
+        "space-y": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Space Between Y Reverse
+       * @see https://tailwindcss.com/docs/margin#adding-space-between-children
+       */
+      "space-y-reverse": ["space-y-reverse"],
+      // --------------
+      // --- Sizing ---
+      // --------------
+      /**
+       * Size
+       * @see https://tailwindcss.com/docs/width#setting-both-width-and-height
+       */
+      size: [{
+        size: scaleSizing()
+      }],
+      /**
+       * Inline Size
+       * @see https://tailwindcss.com/docs/width
+       */
+      "inline-size": [{
+        inline: ["auto", ...scaleSizingInline()]
+      }],
+      /**
+       * Min-Inline Size
+       * @see https://tailwindcss.com/docs/min-width
+       */
+      "min-inline-size": [{
+        "min-inline": ["auto", ...scaleSizingInline()]
+      }],
+      /**
+       * Max-Inline Size
+       * @see https://tailwindcss.com/docs/max-width
+       */
+      "max-inline-size": [{
+        "max-inline": ["none", ...scaleSizingInline()]
+      }],
+      /**
+       * Block Size
+       * @see https://tailwindcss.com/docs/height
+       */
+      "block-size": [{
+        block: ["auto", ...scaleSizingBlock()]
+      }],
+      /**
+       * Min-Block Size
+       * @see https://tailwindcss.com/docs/min-height
+       */
+      "min-block-size": [{
+        "min-block": ["auto", ...scaleSizingBlock()]
+      }],
+      /**
+       * Max-Block Size
+       * @see https://tailwindcss.com/docs/max-height
+       */
+      "max-block-size": [{
+        "max-block": ["none", ...scaleSizingBlock()]
+      }],
+      /**
+       * Width
+       * @see https://tailwindcss.com/docs/width
+       */
+      w: [{
+        w: [themeContainer, "screen", ...scaleSizing()]
+      }],
+      /**
+       * Min-Width
+       * @see https://tailwindcss.com/docs/min-width
+       */
+      "min-w": [{
+        "min-w": [
+          themeContainer,
+          "screen",
+          /** Deprecated. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
+          "none",
+          ...scaleSizing()
+        ]
+      }],
+      /**
+       * Max-Width
+       * @see https://tailwindcss.com/docs/max-width
+       */
+      "max-w": [{
+        "max-w": [
+          themeContainer,
+          "screen",
+          "none",
+          /** Deprecated since Tailwind CSS v4.0.0. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
+          "prose",
+          /** Deprecated since Tailwind CSS v4.0.0. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
+          {
+            screen: [themeBreakpoint]
+          },
+          ...scaleSizing()
+        ]
+      }],
+      /**
+       * Height
+       * @see https://tailwindcss.com/docs/height
+       */
+      h: [{
+        h: ["screen", "lh", ...scaleSizing()]
+      }],
+      /**
+       * Min-Height
+       * @see https://tailwindcss.com/docs/min-height
+       */
+      "min-h": [{
+        "min-h": ["screen", "lh", "none", ...scaleSizing()]
+      }],
+      /**
+       * Max-Height
+       * @see https://tailwindcss.com/docs/max-height
+       */
+      "max-h": [{
+        "max-h": ["screen", "lh", ...scaleSizing()]
+      }],
+      // ------------------
+      // --- Typography ---
+      // ------------------
+      /**
+       * Font Size
+       * @see https://tailwindcss.com/docs/font-size
+       */
+      "font-size": [{
+        text: ["base", themeText, isArbitraryVariableLength, isArbitraryLength]
+      }],
+      /**
+       * Font Smoothing
+       * @see https://tailwindcss.com/docs/font-smoothing
+       */
+      "font-smoothing": ["antialiased", "subpixel-antialiased"],
+      /**
+       * Font Style
+       * @see https://tailwindcss.com/docs/font-style
+       */
+      "font-style": ["italic", "not-italic"],
+      /**
+       * Font Weight
+       * @see https://tailwindcss.com/docs/font-weight
+       */
+      "font-weight": [{
+        font: [themeFontWeight, isArbitraryVariableWeight, isArbitraryWeight]
+      }],
+      /**
+       * Font Stretch
+       * @see https://tailwindcss.com/docs/font-stretch
+       */
+      "font-stretch": [{
+        "font-stretch": ["ultra-condensed", "extra-condensed", "condensed", "semi-condensed", "normal", "semi-expanded", "expanded", "extra-expanded", "ultra-expanded", isPercent, isArbitraryValue]
+      }],
+      /**
+       * Font Family
+       * @see https://tailwindcss.com/docs/font-family
+       */
+      "font-family": [{
+        font: [isArbitraryVariableFamilyName, isArbitraryFamilyName, themeFont]
+      }],
+      /**
+       * Font Feature Settings
+       * @see https://tailwindcss.com/docs/font-feature-settings
+       */
+      "font-features": [{
+        "font-features": [isArbitraryValue]
+      }],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-normal": ["normal-nums"],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-ordinal": ["ordinal"],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-slashed-zero": ["slashed-zero"],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-figure": ["lining-nums", "oldstyle-nums"],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-spacing": ["proportional-nums", "tabular-nums"],
+      /**
+       * Font Variant Numeric
+       * @see https://tailwindcss.com/docs/font-variant-numeric
+       */
+      "fvn-fraction": ["diagonal-fractions", "stacked-fractions"],
+      /**
+       * Letter Spacing
+       * @see https://tailwindcss.com/docs/letter-spacing
+       */
+      tracking: [{
+        tracking: [themeTracking, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Line Clamp
+       * @see https://tailwindcss.com/docs/line-clamp
+       */
+      "line-clamp": [{
+        "line-clamp": [isNumber, "none", isArbitraryVariable, isArbitraryNumber]
+      }],
+      /**
+       * Line Height
+       * @see https://tailwindcss.com/docs/line-height
+       */
+      leading: [{
+        leading: [
+          /** Deprecated since Tailwind CSS v4.0.0. @see https://github.com/tailwindlabs/tailwindcss.com/issues/2027#issuecomment-2620152757 */
+          themeLeading,
+          ...scaleUnambiguousSpacing()
+        ]
+      }],
+      /**
+       * List Style Image
+       * @see https://tailwindcss.com/docs/list-style-image
+       */
+      "list-image": [{
+        "list-image": ["none", isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * List Style Position
+       * @see https://tailwindcss.com/docs/list-style-position
+       */
+      "list-style-position": [{
+        list: ["inside", "outside"]
+      }],
+      /**
+       * List Style Type
+       * @see https://tailwindcss.com/docs/list-style-type
+       */
+      "list-style-type": [{
+        list: ["disc", "decimal", "none", isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Text Alignment
+       * @see https://tailwindcss.com/docs/text-align
+       */
+      "text-alignment": [{
+        text: ["left", "center", "right", "justify", "start", "end"]
+      }],
+      /**
+       * Placeholder Color
+       * @deprecated since Tailwind CSS v3.0.0
+       * @see https://v3.tailwindcss.com/docs/placeholder-color
+       */
+      "placeholder-color": [{
+        placeholder: scaleColor()
+      }],
+      /**
+       * Text Color
+       * @see https://tailwindcss.com/docs/text-color
+       */
+      "text-color": [{
+        text: scaleColor()
+      }],
+      /**
+       * Text Decoration
+       * @see https://tailwindcss.com/docs/text-decoration
+       */
+      "text-decoration": ["underline", "overline", "line-through", "no-underline"],
+      /**
+       * Text Decoration Style
+       * @see https://tailwindcss.com/docs/text-decoration-style
+       */
+      "text-decoration-style": [{
+        decoration: [...scaleLineStyle(), "wavy"]
+      }],
+      /**
+       * Text Decoration Thickness
+       * @see https://tailwindcss.com/docs/text-decoration-thickness
+       */
+      "text-decoration-thickness": [{
+        decoration: [isNumber, "from-font", "auto", isArbitraryVariable, isArbitraryLength]
+      }],
+      /**
+       * Text Decoration Color
+       * @see https://tailwindcss.com/docs/text-decoration-color
+       */
+      "text-decoration-color": [{
+        decoration: scaleColor()
+      }],
+      /**
+       * Text Underline Offset
+       * @see https://tailwindcss.com/docs/text-underline-offset
+       */
+      "underline-offset": [{
+        "underline-offset": [isNumber, "auto", isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Text Transform
+       * @see https://tailwindcss.com/docs/text-transform
+       */
+      "text-transform": ["uppercase", "lowercase", "capitalize", "normal-case"],
+      /**
+       * Text Overflow
+       * @see https://tailwindcss.com/docs/text-overflow
+       */
+      "text-overflow": ["truncate", "text-ellipsis", "text-clip"],
+      /**
+       * Text Wrap
+       * @see https://tailwindcss.com/docs/text-wrap
+       */
+      "text-wrap": [{
+        text: ["wrap", "nowrap", "balance", "pretty"]
+      }],
+      /**
+       * Text Indent
+       * @see https://tailwindcss.com/docs/text-indent
+       */
+      indent: [{
+        indent: scaleUnambiguousSpacing()
+      }],
+      /**
+       * Vertical Alignment
+       * @see https://tailwindcss.com/docs/vertical-align
+       */
+      "vertical-align": [{
+        align: ["baseline", "top", "middle", "bottom", "text-top", "text-bottom", "sub", "super", isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Whitespace
+       * @see https://tailwindcss.com/docs/whitespace
+       */
+      whitespace: [{
+        whitespace: ["normal", "nowrap", "pre", "pre-line", "pre-wrap", "break-spaces"]
+      }],
+      /**
+       * Word Break
+       * @see https://tailwindcss.com/docs/word-break
+       */
+      break: [{
+        break: ["normal", "words", "all", "keep"]
+      }],
+      /**
+       * Overflow Wrap
+       * @see https://tailwindcss.com/docs/overflow-wrap
+       */
+      wrap: [{
+        wrap: ["break-word", "anywhere", "normal"]
+      }],
+      /**
+       * Hyphens
+       * @see https://tailwindcss.com/docs/hyphens
+       */
+      hyphens: [{
+        hyphens: ["none", "manual", "auto"]
+      }],
+      /**
+       * Content
+       * @see https://tailwindcss.com/docs/content
+       */
+      content: [{
+        content: ["none", isArbitraryVariable, isArbitraryValue]
+      }],
+      // -------------------
+      // --- Backgrounds ---
+      // -------------------
+      /**
+       * Background Attachment
+       * @see https://tailwindcss.com/docs/background-attachment
+       */
+      "bg-attachment": [{
+        bg: ["fixed", "local", "scroll"]
+      }],
+      /**
+       * Background Clip
+       * @see https://tailwindcss.com/docs/background-clip
+       */
+      "bg-clip": [{
+        "bg-clip": ["border", "padding", "content", "text"]
+      }],
+      /**
+       * Background Origin
+       * @see https://tailwindcss.com/docs/background-origin
+       */
+      "bg-origin": [{
+        "bg-origin": ["border", "padding", "content"]
+      }],
+      /**
+       * Background Position
+       * @see https://tailwindcss.com/docs/background-position
+       */
+      "bg-position": [{
+        bg: scaleBgPosition()
+      }],
+      /**
+       * Background Repeat
+       * @see https://tailwindcss.com/docs/background-repeat
+       */
+      "bg-repeat": [{
+        bg: scaleBgRepeat()
+      }],
+      /**
+       * Background Size
+       * @see https://tailwindcss.com/docs/background-size
+       */
+      "bg-size": [{
+        bg: scaleBgSize()
+      }],
+      /**
+       * Background Image
+       * @see https://tailwindcss.com/docs/background-image
+       */
+      "bg-image": [{
+        bg: ["none", {
+          linear: [{
+            to: ["t", "tr", "r", "br", "b", "bl", "l", "tl"]
+          }, isInteger, isArbitraryVariable, isArbitraryValue],
+          radial: ["", isArbitraryVariable, isArbitraryValue],
+          conic: [isInteger, isArbitraryVariable, isArbitraryValue]
+        }, isArbitraryVariableImage, isArbitraryImage]
+      }],
+      /**
+       * Background Color
+       * @see https://tailwindcss.com/docs/background-color
+       */
+      "bg-color": [{
+        bg: scaleColor()
+      }],
+      /**
+       * Gradient Color Stops From Position
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-from-pos": [{
+        from: scaleGradientStopPosition()
+      }],
+      /**
+       * Gradient Color Stops Via Position
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-via-pos": [{
+        via: scaleGradientStopPosition()
+      }],
+      /**
+       * Gradient Color Stops To Position
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-to-pos": [{
+        to: scaleGradientStopPosition()
+      }],
+      /**
+       * Gradient Color Stops From
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-from": [{
+        from: scaleColor()
+      }],
+      /**
+       * Gradient Color Stops Via
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-via": [{
+        via: scaleColor()
+      }],
+      /**
+       * Gradient Color Stops To
+       * @see https://tailwindcss.com/docs/gradient-color-stops
+       */
+      "gradient-to": [{
+        to: scaleColor()
+      }],
+      // ---------------
+      // --- Borders ---
+      // ---------------
+      /**
+       * Border Radius
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      rounded: [{
+        rounded: scaleRadius()
+      }],
+      /**
+       * Border Radius Start
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-s": [{
+        "rounded-s": scaleRadius()
+      }],
+      /**
+       * Border Radius End
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-e": [{
+        "rounded-e": scaleRadius()
+      }],
+      /**
+       * Border Radius Top
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-t": [{
+        "rounded-t": scaleRadius()
+      }],
+      /**
+       * Border Radius Right
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-r": [{
+        "rounded-r": scaleRadius()
+      }],
+      /**
+       * Border Radius Bottom
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-b": [{
+        "rounded-b": scaleRadius()
+      }],
+      /**
+       * Border Radius Left
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-l": [{
+        "rounded-l": scaleRadius()
+      }],
+      /**
+       * Border Radius Start Start
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-ss": [{
+        "rounded-ss": scaleRadius()
+      }],
+      /**
+       * Border Radius Start End
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-se": [{
+        "rounded-se": scaleRadius()
+      }],
+      /**
+       * Border Radius End End
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-ee": [{
+        "rounded-ee": scaleRadius()
+      }],
+      /**
+       * Border Radius End Start
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-es": [{
+        "rounded-es": scaleRadius()
+      }],
+      /**
+       * Border Radius Top Left
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-tl": [{
+        "rounded-tl": scaleRadius()
+      }],
+      /**
+       * Border Radius Top Right
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-tr": [{
+        "rounded-tr": scaleRadius()
+      }],
+      /**
+       * Border Radius Bottom Right
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-br": [{
+        "rounded-br": scaleRadius()
+      }],
+      /**
+       * Border Radius Bottom Left
+       * @see https://tailwindcss.com/docs/border-radius
+       */
+      "rounded-bl": [{
+        "rounded-bl": scaleRadius()
+      }],
+      /**
+       * Border Width
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w": [{
+        border: scaleBorderWidth()
+      }],
+      /**
+       * Border Width Inline
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-x": [{
+        "border-x": scaleBorderWidth()
+      }],
+      /**
+       * Border Width Block
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-y": [{
+        "border-y": scaleBorderWidth()
+      }],
+      /**
+       * Border Width Inline Start
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-s": [{
+        "border-s": scaleBorderWidth()
+      }],
+      /**
+       * Border Width Inline End
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-e": [{
+        "border-e": scaleBorderWidth()
+      }],
+      /**
+       * Border Width Block Start
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-bs": [{
+        "border-bs": scaleBorderWidth()
+      }],
+      /**
+       * Border Width Block End
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-be": [{
+        "border-be": scaleBorderWidth()
+      }],
+      /**
+       * Border Width Top
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-t": [{
+        "border-t": scaleBorderWidth()
+      }],
+      /**
+       * Border Width Right
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-r": [{
+        "border-r": scaleBorderWidth()
+      }],
+      /**
+       * Border Width Bottom
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-b": [{
+        "border-b": scaleBorderWidth()
+      }],
+      /**
+       * Border Width Left
+       * @see https://tailwindcss.com/docs/border-width
+       */
+      "border-w-l": [{
+        "border-l": scaleBorderWidth()
+      }],
+      /**
+       * Divide Width X
+       * @see https://tailwindcss.com/docs/border-width#between-children
+       */
+      "divide-x": [{
+        "divide-x": scaleBorderWidth()
+      }],
+      /**
+       * Divide Width X Reverse
+       * @see https://tailwindcss.com/docs/border-width#between-children
+       */
+      "divide-x-reverse": ["divide-x-reverse"],
+      /**
+       * Divide Width Y
+       * @see https://tailwindcss.com/docs/border-width#between-children
+       */
+      "divide-y": [{
+        "divide-y": scaleBorderWidth()
+      }],
+      /**
+       * Divide Width Y Reverse
+       * @see https://tailwindcss.com/docs/border-width#between-children
+       */
+      "divide-y-reverse": ["divide-y-reverse"],
+      /**
+       * Border Style
+       * @see https://tailwindcss.com/docs/border-style
+       */
+      "border-style": [{
+        border: [...scaleLineStyle(), "hidden", "none"]
+      }],
+      /**
+       * Divide Style
+       * @see https://tailwindcss.com/docs/border-style#setting-the-divider-style
+       */
+      "divide-style": [{
+        divide: [...scaleLineStyle(), "hidden", "none"]
+      }],
+      /**
+       * Border Color
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color": [{
+        border: scaleColor()
+      }],
+      /**
+       * Border Color Inline
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-x": [{
+        "border-x": scaleColor()
+      }],
+      /**
+       * Border Color Block
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-y": [{
+        "border-y": scaleColor()
+      }],
+      /**
+       * Border Color Inline Start
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-s": [{
+        "border-s": scaleColor()
+      }],
+      /**
+       * Border Color Inline End
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-e": [{
+        "border-e": scaleColor()
+      }],
+      /**
+       * Border Color Block Start
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-bs": [{
+        "border-bs": scaleColor()
+      }],
+      /**
+       * Border Color Block End
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-be": [{
+        "border-be": scaleColor()
+      }],
+      /**
+       * Border Color Top
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-t": [{
+        "border-t": scaleColor()
+      }],
+      /**
+       * Border Color Right
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-r": [{
+        "border-r": scaleColor()
+      }],
+      /**
+       * Border Color Bottom
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-b": [{
+        "border-b": scaleColor()
+      }],
+      /**
+       * Border Color Left
+       * @see https://tailwindcss.com/docs/border-color
+       */
+      "border-color-l": [{
+        "border-l": scaleColor()
+      }],
+      /**
+       * Divide Color
+       * @see https://tailwindcss.com/docs/divide-color
+       */
+      "divide-color": [{
+        divide: scaleColor()
+      }],
+      /**
+       * Outline Style
+       * @see https://tailwindcss.com/docs/outline-style
+       */
+      "outline-style": [{
+        outline: [...scaleLineStyle(), "none", "hidden"]
+      }],
+      /**
+       * Outline Offset
+       * @see https://tailwindcss.com/docs/outline-offset
+       */
+      "outline-offset": [{
+        "outline-offset": [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Outline Width
+       * @see https://tailwindcss.com/docs/outline-width
+       */
+      "outline-w": [{
+        outline: ["", isNumber, isArbitraryVariableLength, isArbitraryLength]
+      }],
+      /**
+       * Outline Color
+       * @see https://tailwindcss.com/docs/outline-color
+       */
+      "outline-color": [{
+        outline: scaleColor()
+      }],
+      // ---------------
+      // --- Effects ---
+      // ---------------
+      /**
+       * Box Shadow
+       * @see https://tailwindcss.com/docs/box-shadow
+       */
+      shadow: [{
+        shadow: [
+          // Deprecated since Tailwind CSS v4.0.0
+          "",
+          "none",
+          themeShadow,
+          isArbitraryVariableShadow,
+          isArbitraryShadow
+        ]
+      }],
+      /**
+       * Box Shadow Color
+       * @see https://tailwindcss.com/docs/box-shadow#setting-the-shadow-color
+       */
+      "shadow-color": [{
+        shadow: scaleColor()
+      }],
+      /**
+       * Inset Box Shadow
+       * @see https://tailwindcss.com/docs/box-shadow#adding-an-inset-shadow
+       */
+      "inset-shadow": [{
+        "inset-shadow": ["none", themeInsetShadow, isArbitraryVariableShadow, isArbitraryShadow]
+      }],
+      /**
+       * Inset Box Shadow Color
+       * @see https://tailwindcss.com/docs/box-shadow#setting-the-inset-shadow-color
+       */
+      "inset-shadow-color": [{
+        "inset-shadow": scaleColor()
+      }],
+      /**
+       * Ring Width
+       * @see https://tailwindcss.com/docs/box-shadow#adding-a-ring
+       */
+      "ring-w": [{
+        ring: scaleBorderWidth()
+      }],
+      /**
+       * Ring Width Inset
+       * @see https://v3.tailwindcss.com/docs/ring-width#inset-rings
+       * @deprecated since Tailwind CSS v4.0.0
+       * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
+       */
+      "ring-w-inset": ["ring-inset"],
+      /**
+       * Ring Color
+       * @see https://tailwindcss.com/docs/box-shadow#setting-the-ring-color
+       */
+      "ring-color": [{
+        ring: scaleColor()
+      }],
+      /**
+       * Ring Offset Width
+       * @see https://v3.tailwindcss.com/docs/ring-offset-width
+       * @deprecated since Tailwind CSS v4.0.0
+       * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
+       */
+      "ring-offset-w": [{
+        "ring-offset": [isNumber, isArbitraryLength]
+      }],
+      /**
+       * Ring Offset Color
+       * @see https://v3.tailwindcss.com/docs/ring-offset-color
+       * @deprecated since Tailwind CSS v4.0.0
+       * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/utilities.ts#L4158
+       */
+      "ring-offset-color": [{
+        "ring-offset": scaleColor()
+      }],
+      /**
+       * Inset Ring Width
+       * @see https://tailwindcss.com/docs/box-shadow#adding-an-inset-ring
+       */
+      "inset-ring-w": [{
+        "inset-ring": scaleBorderWidth()
+      }],
+      /**
+       * Inset Ring Color
+       * @see https://tailwindcss.com/docs/box-shadow#setting-the-inset-ring-color
+       */
+      "inset-ring-color": [{
+        "inset-ring": scaleColor()
+      }],
+      /**
+       * Text Shadow
+       * @see https://tailwindcss.com/docs/text-shadow
+       */
+      "text-shadow": [{
+        "text-shadow": ["none", themeTextShadow, isArbitraryVariableShadow, isArbitraryShadow]
+      }],
+      /**
+       * Text Shadow Color
+       * @see https://tailwindcss.com/docs/text-shadow#setting-the-shadow-color
+       */
+      "text-shadow-color": [{
+        "text-shadow": scaleColor()
+      }],
+      /**
+       * Opacity
+       * @see https://tailwindcss.com/docs/opacity
+       */
+      opacity: [{
+        opacity: [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Mix Blend Mode
+       * @see https://tailwindcss.com/docs/mix-blend-mode
+       */
+      "mix-blend": [{
+        "mix-blend": [...scaleBlendMode(), "plus-darker", "plus-lighter"]
+      }],
+      /**
+       * Background Blend Mode
+       * @see https://tailwindcss.com/docs/background-blend-mode
+       */
+      "bg-blend": [{
+        "bg-blend": scaleBlendMode()
+      }],
+      /**
+       * Mask Clip
+       * @see https://tailwindcss.com/docs/mask-clip
+       */
+      "mask-clip": [{
+        "mask-clip": ["border", "padding", "content", "fill", "stroke", "view"]
+      }, "mask-no-clip"],
+      /**
+       * Mask Composite
+       * @see https://tailwindcss.com/docs/mask-composite
+       */
+      "mask-composite": [{
+        mask: ["add", "subtract", "intersect", "exclude"]
+      }],
+      /**
+       * Mask Image
+       * @see https://tailwindcss.com/docs/mask-image
+       */
+      "mask-image-linear-pos": [{
+        "mask-linear": [isNumber]
+      }],
+      "mask-image-linear-from-pos": [{
+        "mask-linear-from": scaleMaskImagePosition()
+      }],
+      "mask-image-linear-to-pos": [{
+        "mask-linear-to": scaleMaskImagePosition()
+      }],
+      "mask-image-linear-from-color": [{
+        "mask-linear-from": scaleColor()
+      }],
+      "mask-image-linear-to-color": [{
+        "mask-linear-to": scaleColor()
+      }],
+      "mask-image-t-from-pos": [{
+        "mask-t-from": scaleMaskImagePosition()
+      }],
+      "mask-image-t-to-pos": [{
+        "mask-t-to": scaleMaskImagePosition()
+      }],
+      "mask-image-t-from-color": [{
+        "mask-t-from": scaleColor()
+      }],
+      "mask-image-t-to-color": [{
+        "mask-t-to": scaleColor()
+      }],
+      "mask-image-r-from-pos": [{
+        "mask-r-from": scaleMaskImagePosition()
+      }],
+      "mask-image-r-to-pos": [{
+        "mask-r-to": scaleMaskImagePosition()
+      }],
+      "mask-image-r-from-color": [{
+        "mask-r-from": scaleColor()
+      }],
+      "mask-image-r-to-color": [{
+        "mask-r-to": scaleColor()
+      }],
+      "mask-image-b-from-pos": [{
+        "mask-b-from": scaleMaskImagePosition()
+      }],
+      "mask-image-b-to-pos": [{
+        "mask-b-to": scaleMaskImagePosition()
+      }],
+      "mask-image-b-from-color": [{
+        "mask-b-from": scaleColor()
+      }],
+      "mask-image-b-to-color": [{
+        "mask-b-to": scaleColor()
+      }],
+      "mask-image-l-from-pos": [{
+        "mask-l-from": scaleMaskImagePosition()
+      }],
+      "mask-image-l-to-pos": [{
+        "mask-l-to": scaleMaskImagePosition()
+      }],
+      "mask-image-l-from-color": [{
+        "mask-l-from": scaleColor()
+      }],
+      "mask-image-l-to-color": [{
+        "mask-l-to": scaleColor()
+      }],
+      "mask-image-x-from-pos": [{
+        "mask-x-from": scaleMaskImagePosition()
+      }],
+      "mask-image-x-to-pos": [{
+        "mask-x-to": scaleMaskImagePosition()
+      }],
+      "mask-image-x-from-color": [{
+        "mask-x-from": scaleColor()
+      }],
+      "mask-image-x-to-color": [{
+        "mask-x-to": scaleColor()
+      }],
+      "mask-image-y-from-pos": [{
+        "mask-y-from": scaleMaskImagePosition()
+      }],
+      "mask-image-y-to-pos": [{
+        "mask-y-to": scaleMaskImagePosition()
+      }],
+      "mask-image-y-from-color": [{
+        "mask-y-from": scaleColor()
+      }],
+      "mask-image-y-to-color": [{
+        "mask-y-to": scaleColor()
+      }],
+      "mask-image-radial": [{
+        "mask-radial": [isArbitraryVariable, isArbitraryValue]
+      }],
+      "mask-image-radial-from-pos": [{
+        "mask-radial-from": scaleMaskImagePosition()
+      }],
+      "mask-image-radial-to-pos": [{
+        "mask-radial-to": scaleMaskImagePosition()
+      }],
+      "mask-image-radial-from-color": [{
+        "mask-radial-from": scaleColor()
+      }],
+      "mask-image-radial-to-color": [{
+        "mask-radial-to": scaleColor()
+      }],
+      "mask-image-radial-shape": [{
+        "mask-radial": ["circle", "ellipse"]
+      }],
+      "mask-image-radial-size": [{
+        "mask-radial": [{
+          closest: ["side", "corner"],
+          farthest: ["side", "corner"]
+        }]
+      }],
+      "mask-image-radial-pos": [{
+        "mask-radial-at": scalePosition()
+      }],
+      "mask-image-conic-pos": [{
+        "mask-conic": [isNumber]
+      }],
+      "mask-image-conic-from-pos": [{
+        "mask-conic-from": scaleMaskImagePosition()
+      }],
+      "mask-image-conic-to-pos": [{
+        "mask-conic-to": scaleMaskImagePosition()
+      }],
+      "mask-image-conic-from-color": [{
+        "mask-conic-from": scaleColor()
+      }],
+      "mask-image-conic-to-color": [{
+        "mask-conic-to": scaleColor()
+      }],
+      /**
+       * Mask Mode
+       * @see https://tailwindcss.com/docs/mask-mode
+       */
+      "mask-mode": [{
+        mask: ["alpha", "luminance", "match"]
+      }],
+      /**
+       * Mask Origin
+       * @see https://tailwindcss.com/docs/mask-origin
+       */
+      "mask-origin": [{
+        "mask-origin": ["border", "padding", "content", "fill", "stroke", "view"]
+      }],
+      /**
+       * Mask Position
+       * @see https://tailwindcss.com/docs/mask-position
+       */
+      "mask-position": [{
+        mask: scaleBgPosition()
+      }],
+      /**
+       * Mask Repeat
+       * @see https://tailwindcss.com/docs/mask-repeat
+       */
+      "mask-repeat": [{
+        mask: scaleBgRepeat()
+      }],
+      /**
+       * Mask Size
+       * @see https://tailwindcss.com/docs/mask-size
+       */
+      "mask-size": [{
+        mask: scaleBgSize()
+      }],
+      /**
+       * Mask Type
+       * @see https://tailwindcss.com/docs/mask-type
+       */
+      "mask-type": [{
+        "mask-type": ["alpha", "luminance"]
+      }],
+      /**
+       * Mask Image
+       * @see https://tailwindcss.com/docs/mask-image
+       */
+      "mask-image": [{
+        mask: ["none", isArbitraryVariable, isArbitraryValue]
+      }],
+      // ---------------
+      // --- Filters ---
+      // ---------------
+      /**
+       * Filter
+       * @see https://tailwindcss.com/docs/filter
+       */
+      filter: [{
+        filter: [
+          // Deprecated since Tailwind CSS v3.0.0
+          "",
+          "none",
+          isArbitraryVariable,
+          isArbitraryValue
+        ]
+      }],
+      /**
+       * Blur
+       * @see https://tailwindcss.com/docs/blur
+       */
+      blur: [{
+        blur: scaleBlur()
+      }],
+      /**
+       * Brightness
+       * @see https://tailwindcss.com/docs/brightness
+       */
+      brightness: [{
+        brightness: [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Contrast
+       * @see https://tailwindcss.com/docs/contrast
+       */
+      contrast: [{
+        contrast: [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Drop Shadow
+       * @see https://tailwindcss.com/docs/drop-shadow
+       */
+      "drop-shadow": [{
+        "drop-shadow": [
+          // Deprecated since Tailwind CSS v4.0.0
+          "",
+          "none",
+          themeDropShadow,
+          isArbitraryVariableShadow,
+          isArbitraryShadow
+        ]
+      }],
+      /**
+       * Drop Shadow Color
+       * @see https://tailwindcss.com/docs/filter-drop-shadow#setting-the-shadow-color
+       */
+      "drop-shadow-color": [{
+        "drop-shadow": scaleColor()
+      }],
+      /**
+       * Grayscale
+       * @see https://tailwindcss.com/docs/grayscale
+       */
+      grayscale: [{
+        grayscale: ["", isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Hue Rotate
+       * @see https://tailwindcss.com/docs/hue-rotate
+       */
+      "hue-rotate": [{
+        "hue-rotate": [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Invert
+       * @see https://tailwindcss.com/docs/invert
+       */
+      invert: [{
+        invert: ["", isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Saturate
+       * @see https://tailwindcss.com/docs/saturate
+       */
+      saturate: [{
+        saturate: [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Sepia
+       * @see https://tailwindcss.com/docs/sepia
+       */
+      sepia: [{
+        sepia: ["", isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Backdrop Filter
+       * @see https://tailwindcss.com/docs/backdrop-filter
+       */
+      "backdrop-filter": [{
+        "backdrop-filter": [
+          // Deprecated since Tailwind CSS v3.0.0
+          "",
+          "none",
+          isArbitraryVariable,
+          isArbitraryValue
+        ]
+      }],
+      /**
+       * Backdrop Blur
+       * @see https://tailwindcss.com/docs/backdrop-blur
+       */
+      "backdrop-blur": [{
+        "backdrop-blur": scaleBlur()
+      }],
+      /**
+       * Backdrop Brightness
+       * @see https://tailwindcss.com/docs/backdrop-brightness
+       */
+      "backdrop-brightness": [{
+        "backdrop-brightness": [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Backdrop Contrast
+       * @see https://tailwindcss.com/docs/backdrop-contrast
+       */
+      "backdrop-contrast": [{
+        "backdrop-contrast": [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Backdrop Grayscale
+       * @see https://tailwindcss.com/docs/backdrop-grayscale
+       */
+      "backdrop-grayscale": [{
+        "backdrop-grayscale": ["", isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Backdrop Hue Rotate
+       * @see https://tailwindcss.com/docs/backdrop-hue-rotate
+       */
+      "backdrop-hue-rotate": [{
+        "backdrop-hue-rotate": [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Backdrop Invert
+       * @see https://tailwindcss.com/docs/backdrop-invert
+       */
+      "backdrop-invert": [{
+        "backdrop-invert": ["", isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Backdrop Opacity
+       * @see https://tailwindcss.com/docs/backdrop-opacity
+       */
+      "backdrop-opacity": [{
+        "backdrop-opacity": [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Backdrop Saturate
+       * @see https://tailwindcss.com/docs/backdrop-saturate
+       */
+      "backdrop-saturate": [{
+        "backdrop-saturate": [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Backdrop Sepia
+       * @see https://tailwindcss.com/docs/backdrop-sepia
+       */
+      "backdrop-sepia": [{
+        "backdrop-sepia": ["", isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      // --------------
+      // --- Tables ---
+      // --------------
+      /**
+       * Border Collapse
+       * @see https://tailwindcss.com/docs/border-collapse
+       */
+      "border-collapse": [{
+        border: ["collapse", "separate"]
+      }],
+      /**
+       * Border Spacing
+       * @see https://tailwindcss.com/docs/border-spacing
+       */
+      "border-spacing": [{
+        "border-spacing": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Border Spacing X
+       * @see https://tailwindcss.com/docs/border-spacing
+       */
+      "border-spacing-x": [{
+        "border-spacing-x": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Border Spacing Y
+       * @see https://tailwindcss.com/docs/border-spacing
+       */
+      "border-spacing-y": [{
+        "border-spacing-y": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Table Layout
+       * @see https://tailwindcss.com/docs/table-layout
+       */
+      "table-layout": [{
+        table: ["auto", "fixed"]
+      }],
+      /**
+       * Caption Side
+       * @see https://tailwindcss.com/docs/caption-side
+       */
+      caption: [{
+        caption: ["top", "bottom"]
+      }],
+      // ---------------------------------
+      // --- Transitions and Animation ---
+      // ---------------------------------
+      /**
+       * Transition Property
+       * @see https://tailwindcss.com/docs/transition-property
+       */
+      transition: [{
+        transition: ["", "all", "colors", "opacity", "shadow", "transform", "none", isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Transition Behavior
+       * @see https://tailwindcss.com/docs/transition-behavior
+       */
+      "transition-behavior": [{
+        transition: ["normal", "discrete"]
+      }],
+      /**
+       * Transition Duration
+       * @see https://tailwindcss.com/docs/transition-duration
+       */
+      duration: [{
+        duration: [isNumber, "initial", isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Transition Timing Function
+       * @see https://tailwindcss.com/docs/transition-timing-function
+       */
+      ease: [{
+        ease: ["linear", "initial", themeEase, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Transition Delay
+       * @see https://tailwindcss.com/docs/transition-delay
+       */
+      delay: [{
+        delay: [isNumber, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Animation
+       * @see https://tailwindcss.com/docs/animation
+       */
+      animate: [{
+        animate: ["none", themeAnimate, isArbitraryVariable, isArbitraryValue]
+      }],
+      // ------------------
+      // --- Transforms ---
+      // ------------------
+      /**
+       * Backface Visibility
+       * @see https://tailwindcss.com/docs/backface-visibility
+       */
+      backface: [{
+        backface: ["hidden", "visible"]
+      }],
+      /**
+       * Perspective
+       * @see https://tailwindcss.com/docs/perspective
+       */
+      perspective: [{
+        perspective: [themePerspective, isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Perspective Origin
+       * @see https://tailwindcss.com/docs/perspective-origin
+       */
+      "perspective-origin": [{
+        "perspective-origin": scalePositionWithArbitrary()
+      }],
+      /**
+       * Rotate
+       * @see https://tailwindcss.com/docs/rotate
+       */
+      rotate: [{
+        rotate: scaleRotate()
+      }],
+      /**
+       * Rotate X
+       * @see https://tailwindcss.com/docs/rotate
+       */
+      "rotate-x": [{
+        "rotate-x": scaleRotate()
+      }],
+      /**
+       * Rotate Y
+       * @see https://tailwindcss.com/docs/rotate
+       */
+      "rotate-y": [{
+        "rotate-y": scaleRotate()
+      }],
+      /**
+       * Rotate Z
+       * @see https://tailwindcss.com/docs/rotate
+       */
+      "rotate-z": [{
+        "rotate-z": scaleRotate()
+      }],
+      /**
+       * Scale
+       * @see https://tailwindcss.com/docs/scale
+       */
+      scale: [{
+        scale: scaleScale()
+      }],
+      /**
+       * Scale X
+       * @see https://tailwindcss.com/docs/scale
+       */
+      "scale-x": [{
+        "scale-x": scaleScale()
+      }],
+      /**
+       * Scale Y
+       * @see https://tailwindcss.com/docs/scale
+       */
+      "scale-y": [{
+        "scale-y": scaleScale()
+      }],
+      /**
+       * Scale Z
+       * @see https://tailwindcss.com/docs/scale
+       */
+      "scale-z": [{
+        "scale-z": scaleScale()
+      }],
+      /**
+       * Scale 3D
+       * @see https://tailwindcss.com/docs/scale
+       */
+      "scale-3d": ["scale-3d"],
+      /**
+       * Skew
+       * @see https://tailwindcss.com/docs/skew
+       */
+      skew: [{
+        skew: scaleSkew()
+      }],
+      /**
+       * Skew X
+       * @see https://tailwindcss.com/docs/skew
+       */
+      "skew-x": [{
+        "skew-x": scaleSkew()
+      }],
+      /**
+       * Skew Y
+       * @see https://tailwindcss.com/docs/skew
+       */
+      "skew-y": [{
+        "skew-y": scaleSkew()
+      }],
+      /**
+       * Transform
+       * @see https://tailwindcss.com/docs/transform
+       */
+      transform: [{
+        transform: [isArbitraryVariable, isArbitraryValue, "", "none", "gpu", "cpu"]
+      }],
+      /**
+       * Transform Origin
+       * @see https://tailwindcss.com/docs/transform-origin
+       */
+      "transform-origin": [{
+        origin: scalePositionWithArbitrary()
+      }],
+      /**
+       * Transform Style
+       * @see https://tailwindcss.com/docs/transform-style
+       */
+      "transform-style": [{
+        transform: ["3d", "flat"]
+      }],
+      /**
+       * Translate
+       * @see https://tailwindcss.com/docs/translate
+       */
+      translate: [{
+        translate: scaleTranslate()
+      }],
+      /**
+       * Translate X
+       * @see https://tailwindcss.com/docs/translate
+       */
+      "translate-x": [{
+        "translate-x": scaleTranslate()
+      }],
+      /**
+       * Translate Y
+       * @see https://tailwindcss.com/docs/translate
+       */
+      "translate-y": [{
+        "translate-y": scaleTranslate()
+      }],
+      /**
+       * Translate Z
+       * @see https://tailwindcss.com/docs/translate
+       */
+      "translate-z": [{
+        "translate-z": scaleTranslate()
+      }],
+      /**
+       * Translate None
+       * @see https://tailwindcss.com/docs/translate
+       */
+      "translate-none": ["translate-none"],
+      // ---------------------
+      // --- Interactivity ---
+      // ---------------------
+      /**
+       * Accent Color
+       * @see https://tailwindcss.com/docs/accent-color
+       */
+      accent: [{
+        accent: scaleColor()
+      }],
+      /**
+       * Appearance
+       * @see https://tailwindcss.com/docs/appearance
+       */
+      appearance: [{
+        appearance: ["none", "auto"]
+      }],
+      /**
+       * Caret Color
+       * @see https://tailwindcss.com/docs/just-in-time-mode#caret-color-utilities
+       */
+      "caret-color": [{
+        caret: scaleColor()
+      }],
+      /**
+       * Color Scheme
+       * @see https://tailwindcss.com/docs/color-scheme
+       */
+      "color-scheme": [{
+        scheme: ["normal", "dark", "light", "light-dark", "only-dark", "only-light"]
+      }],
+      /**
+       * Cursor
+       * @see https://tailwindcss.com/docs/cursor
+       */
+      cursor: [{
+        cursor: ["auto", "default", "pointer", "wait", "text", "move", "help", "not-allowed", "none", "context-menu", "progress", "cell", "crosshair", "vertical-text", "alias", "copy", "no-drop", "grab", "grabbing", "all-scroll", "col-resize", "row-resize", "n-resize", "e-resize", "s-resize", "w-resize", "ne-resize", "nw-resize", "se-resize", "sw-resize", "ew-resize", "ns-resize", "nesw-resize", "nwse-resize", "zoom-in", "zoom-out", isArbitraryVariable, isArbitraryValue]
+      }],
+      /**
+       * Field Sizing
+       * @see https://tailwindcss.com/docs/field-sizing
+       */
+      "field-sizing": [{
+        "field-sizing": ["fixed", "content"]
+      }],
+      /**
+       * Pointer Events
+       * @see https://tailwindcss.com/docs/pointer-events
+       */
+      "pointer-events": [{
+        "pointer-events": ["auto", "none"]
+      }],
+      /**
+       * Resize
+       * @see https://tailwindcss.com/docs/resize
+       */
+      resize: [{
+        resize: ["none", "", "y", "x"]
+      }],
+      /**
+       * Scroll Behavior
+       * @see https://tailwindcss.com/docs/scroll-behavior
+       */
+      "scroll-behavior": [{
+        scroll: ["auto", "smooth"]
+      }],
+      /**
+       * Scroll Margin
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-m": [{
+        "scroll-m": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Margin Inline
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-mx": [{
+        "scroll-mx": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Margin Block
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-my": [{
+        "scroll-my": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Margin Inline Start
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-ms": [{
+        "scroll-ms": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Margin Inline End
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-me": [{
+        "scroll-me": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Margin Block Start
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-mbs": [{
+        "scroll-mbs": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Margin Block End
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-mbe": [{
+        "scroll-mbe": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Margin Top
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-mt": [{
+        "scroll-mt": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Margin Right
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-mr": [{
+        "scroll-mr": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Margin Bottom
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-mb": [{
+        "scroll-mb": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Margin Left
+       * @see https://tailwindcss.com/docs/scroll-margin
+       */
+      "scroll-ml": [{
+        "scroll-ml": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Padding
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-p": [{
+        "scroll-p": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Padding Inline
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-px": [{
+        "scroll-px": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Padding Block
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-py": [{
+        "scroll-py": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Padding Inline Start
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-ps": [{
+        "scroll-ps": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Padding Inline End
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pe": [{
+        "scroll-pe": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Padding Block Start
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pbs": [{
+        "scroll-pbs": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Padding Block End
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pbe": [{
+        "scroll-pbe": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Padding Top
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pt": [{
+        "scroll-pt": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Padding Right
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pr": [{
+        "scroll-pr": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Padding Bottom
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pb": [{
+        "scroll-pb": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Padding Left
+       * @see https://tailwindcss.com/docs/scroll-padding
+       */
+      "scroll-pl": [{
+        "scroll-pl": scaleUnambiguousSpacing()
+      }],
+      /**
+       * Scroll Snap Align
+       * @see https://tailwindcss.com/docs/scroll-snap-align
+       */
+      "snap-align": [{
+        snap: ["start", "end", "center", "align-none"]
+      }],
+      /**
+       * Scroll Snap Stop
+       * @see https://tailwindcss.com/docs/scroll-snap-stop
+       */
+      "snap-stop": [{
+        snap: ["normal", "always"]
+      }],
+      /**
+       * Scroll Snap Type
+       * @see https://tailwindcss.com/docs/scroll-snap-type
+       */
+      "snap-type": [{
+        snap: ["none", "x", "y", "both"]
+      }],
+      /**
+       * Scroll Snap Type Strictness
+       * @see https://tailwindcss.com/docs/scroll-snap-type
+       */
+      "snap-strictness": [{
+        snap: ["mandatory", "proximity"]
+      }],
+      /**
+       * Touch Action
+       * @see https://tailwindcss.com/docs/touch-action
+       */
+      touch: [{
+        touch: ["auto", "none", "manipulation"]
+      }],
+      /**
+       * Touch Action X
+       * @see https://tailwindcss.com/docs/touch-action
+       */
+      "touch-x": [{
+        "touch-pan": ["x", "left", "right"]
+      }],
+      /**
+       * Touch Action Y
+       * @see https://tailwindcss.com/docs/touch-action
+       */
+      "touch-y": [{
+        "touch-pan": ["y", "up", "down"]
+      }],
+      /**
+       * Touch Action Pinch Zoom
+       * @see https://tailwindcss.com/docs/touch-action
+       */
+      "touch-pz": ["touch-pinch-zoom"],
+      /**
+       * User Select
+       * @see https://tailwindcss.com/docs/user-select
+       */
+      select: [{
+        select: ["none", "text", "all", "auto"]
+      }],
+      /**
+       * Will Change
+       * @see https://tailwindcss.com/docs/will-change
+       */
+      "will-change": [{
+        "will-change": ["auto", "scroll", "contents", "transform", isArbitraryVariable, isArbitraryValue]
+      }],
+      // -----------
+      // --- SVG ---
+      // -----------
+      /**
+       * Fill
+       * @see https://tailwindcss.com/docs/fill
+       */
+      fill: [{
+        fill: ["none", ...scaleColor()]
+      }],
+      /**
+       * Stroke Width
+       * @see https://tailwindcss.com/docs/stroke-width
+       */
+      "stroke-w": [{
+        stroke: [isNumber, isArbitraryVariableLength, isArbitraryLength, isArbitraryNumber]
+      }],
+      /**
+       * Stroke
+       * @see https://tailwindcss.com/docs/stroke
+       */
+      stroke: [{
+        stroke: ["none", ...scaleColor()]
+      }],
+      // ---------------------
+      // --- Accessibility ---
+      // ---------------------
+      /**
+       * Forced Color Adjust
+       * @see https://tailwindcss.com/docs/forced-color-adjust
+       */
+      "forced-color-adjust": [{
+        "forced-color-adjust": ["auto", "none"]
+      }]
+    },
+    conflictingClassGroups: {
+      overflow: ["overflow-x", "overflow-y"],
+      overscroll: ["overscroll-x", "overscroll-y"],
+      inset: ["inset-x", "inset-y", "inset-bs", "inset-be", "start", "end", "top", "right", "bottom", "left"],
+      "inset-x": ["right", "left"],
+      "inset-y": ["top", "bottom"],
+      flex: ["basis", "grow", "shrink"],
+      gap: ["gap-x", "gap-y"],
+      p: ["px", "py", "ps", "pe", "pbs", "pbe", "pt", "pr", "pb", "pl"],
+      px: ["pr", "pl"],
+      py: ["pt", "pb"],
+      m: ["mx", "my", "ms", "me", "mbs", "mbe", "mt", "mr", "mb", "ml"],
+      mx: ["mr", "ml"],
+      my: ["mt", "mb"],
+      size: ["w", "h"],
+      "font-size": ["leading"],
+      "fvn-normal": ["fvn-ordinal", "fvn-slashed-zero", "fvn-figure", "fvn-spacing", "fvn-fraction"],
+      "fvn-ordinal": ["fvn-normal"],
+      "fvn-slashed-zero": ["fvn-normal"],
+      "fvn-figure": ["fvn-normal"],
+      "fvn-spacing": ["fvn-normal"],
+      "fvn-fraction": ["fvn-normal"],
+      "line-clamp": ["display", "overflow"],
+      rounded: ["rounded-s", "rounded-e", "rounded-t", "rounded-r", "rounded-b", "rounded-l", "rounded-ss", "rounded-se", "rounded-ee", "rounded-es", "rounded-tl", "rounded-tr", "rounded-br", "rounded-bl"],
+      "rounded-s": ["rounded-ss", "rounded-es"],
+      "rounded-e": ["rounded-se", "rounded-ee"],
+      "rounded-t": ["rounded-tl", "rounded-tr"],
+      "rounded-r": ["rounded-tr", "rounded-br"],
+      "rounded-b": ["rounded-br", "rounded-bl"],
+      "rounded-l": ["rounded-tl", "rounded-bl"],
+      "border-spacing": ["border-spacing-x", "border-spacing-y"],
+      "border-w": ["border-w-x", "border-w-y", "border-w-s", "border-w-e", "border-w-bs", "border-w-be", "border-w-t", "border-w-r", "border-w-b", "border-w-l"],
+      "border-w-x": ["border-w-r", "border-w-l"],
+      "border-w-y": ["border-w-t", "border-w-b"],
+      "border-color": ["border-color-x", "border-color-y", "border-color-s", "border-color-e", "border-color-bs", "border-color-be", "border-color-t", "border-color-r", "border-color-b", "border-color-l"],
+      "border-color-x": ["border-color-r", "border-color-l"],
+      "border-color-y": ["border-color-t", "border-color-b"],
+      translate: ["translate-x", "translate-y", "translate-none"],
+      "translate-none": ["translate", "translate-x", "translate-y", "translate-z"],
+      "scroll-m": ["scroll-mx", "scroll-my", "scroll-ms", "scroll-me", "scroll-mbs", "scroll-mbe", "scroll-mt", "scroll-mr", "scroll-mb", "scroll-ml"],
+      "scroll-mx": ["scroll-mr", "scroll-ml"],
+      "scroll-my": ["scroll-mt", "scroll-mb"],
+      "scroll-p": ["scroll-px", "scroll-py", "scroll-ps", "scroll-pe", "scroll-pbs", "scroll-pbe", "scroll-pt", "scroll-pr", "scroll-pb", "scroll-pl"],
+      "scroll-px": ["scroll-pr", "scroll-pl"],
+      "scroll-py": ["scroll-pt", "scroll-pb"],
+      touch: ["touch-x", "touch-y", "touch-pz"],
+      "touch-x": ["touch"],
+      "touch-y": ["touch"],
+      "touch-pz": ["touch"]
+    },
+    conflictingClassGroupModifiers: {
+      "font-size": ["leading"]
+    },
+    orderSensitiveModifiers: ["*", "**", "after", "backdrop", "before", "details-content", "file", "first-letter", "first-line", "marker", "placeholder", "selection"]
+  };
+};
+const twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
+function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
+function Titlebar() {
+  const [isMaximized, setIsMaximized] = reactExports.useState(false);
+  reactExports.useEffect(() => {
+    window.api.isMaximized().then(setIsMaximized);
+    const cleanup = window.api.onMaximizeChange(setIsMaximized);
+    return cleanup;
+  }, []);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "drag-region flex h-9 shrink-0 items-center justify-between border-b border-notion-border bg-notion-sidebar", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2 pl-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-notion-text-secondary tracking-wide", children: "DeskLink" }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "no-drag flex h-full", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: () => window.api.minimize(),
+          className: cn(
+            "flex h-full w-11 items-center justify-center",
+            "text-notion-text-secondary hover:bg-notion-sidebar-hover transition-colors"
+          ),
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { className: "h-3.5 w-3.5" })
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: () => window.api.maximize(),
+          className: cn(
+            "flex h-full w-11 items-center justify-center",
+            "text-notion-text-secondary hover:bg-notion-sidebar-hover transition-colors"
+          ),
+          children: isMaximized ? /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "h-3 w-3" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { className: "h-3 w-3" })
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: () => window.api.close(),
+          className: cn(
+            "flex h-full w-11 items-center justify-center",
+            "text-notion-text-secondary hover:bg-notion-red hover:text-white transition-colors"
+          ),
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "h-3.5 w-3.5" })
+        }
+      )
+    ] })
+  ] });
+}
+let _nextPageId = 2;
+const defaultPage = {
+  id: "page-1",
+  title: "Home",
+  appId: "home"
+};
+const useUIStore = create((set, get) => ({
+  // Sidebar
+  sidebarOpen: true,
+  sidebarWidth: 240,
+  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+  setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
+  setSidebarWidth: (sidebarWidth) => set({ sidebarWidth }),
+  // Workspace
+  activeWorkspaceId: null,
+  setActiveWorkspaceId: (activeWorkspaceId) => set({ activeWorkspaceId }),
+  // Command palette
+  commandPaletteOpen: false,
+  setCommandPaletteOpen: (commandPaletteOpen) => set({ commandPaletteOpen }),
+  // App switcher
+  activeApp: "home",
+  setActiveApp: (activeApp) => set({ activeApp }),
+  // Page tabs
+  pages: [defaultPage],
+  activePageId: defaultPage.id,
+  addPage: (partial = {}) => {
+    const id = `page-${_nextPageId++}`;
+    const appId = partial.appId ?? get().activeApp;
+    const titleMap = {
+      home: "New page",
+      inbox: "Inbox",
+      documents: "Untitled",
+      files: "Files"
+    };
+    const newPage = {
+      id,
+      title: partial.title ?? titleMap[appId],
+      appId,
+      path: partial.path
+    };
+    set((state) => ({
+      pages: [...state.pages, newPage],
+      activePageId: id
+    }));
+  },
+  setActivePage: (id) => {
+    const page = get().pages.find((p) => p.id === id);
+    if (page) {
+      set({ activePageId: id, activeApp: page.appId });
+    }
+  },
+  closePage: (id) => {
+    const { pages, activePageId } = get();
+    if (pages.length <= 1) return;
+    const idx = pages.findIndex((p) => p.id === id);
+    const remaining = pages.filter((p) => p.id !== id);
+    let nextActiveId = activePageId;
+    if (activePageId === id) {
+      const newIdx = Math.max(0, idx - 1);
+      nextActiveId = remaining[newIdx]?.id ?? null;
+    }
+    const nextPage = remaining.find((p) => p.id === nextActiveId);
+    set({
+      pages: remaining,
+      activePageId: nextActiveId,
+      ...nextPage ? { activeApp: nextPage.appId } : {}
+    });
+  },
+  updatePageTitle: (id, title) => {
+    set((state) => ({
+      pages: state.pages.map((p) => p.id === id ? { ...p, title } : p)
+    }));
+  }
+}));
+function getInitials(name) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+const colors = [
+  "bg-notion-blue",
+  "bg-notion-purple",
+  "bg-notion-pink",
+  "bg-notion-red",
+  "bg-notion-orange",
+  "bg-notion-green"
+];
+function getColor(name) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return colors[Math.abs(hash) % colors.length];
+}
+function Avatar({ name, src, size = "md", className }) {
+  const sizeClasses = {
+    sm: "h-5 w-5 text-[9px]",
+    md: "h-7 w-7 text-xs",
+    lg: "h-9 w-9 text-sm"
+  };
+  const label = (name ?? "").trim() || "?";
+  if (src) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "img",
+      {
+        src,
+        alt: label,
+        className: cn("rounded-full object-cover", sizeClasses[size], className)
+      }
+    );
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      className: cn(
+        "flex items-center justify-center rounded-full font-medium text-white",
+        sizeClasses[size],
+        getColor(label),
+        className
+      ),
+      children: getInitials(label)
+    }
+  );
+}
 async function listWorkspaces() {
   return apiClient.get("/workspaces");
 }
@@ -28330,7 +28719,10 @@ async function removeMember(workspaceId, userId) {
   return apiClient.delete(`/workspaces/${workspaceId}/members/${userId}`);
 }
 async function listProjects(workspaceId) {
-  return apiClient.get(`/workspaces/${workspaceId}/projects`);
+  const res = await apiClient.get(
+    `/workspaces/${workspaceId}/projects`
+  );
+  return res.data;
 }
 async function getProject(id) {
   return apiClient.get(`/projects/${id}`);
@@ -28344,7 +28736,7 @@ async function deleteProject(id) {
 function Sidebar() {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
-  const { sidebarOpen, toggleSidebar, setActiveWorkspaceId } = useUIStore();
+  const { sidebarOpen, toggleSidebar, setActiveWorkspaceId, setActiveApp, addPage, pages, setActivePage } = useUIStore();
   const { user, logout } = useAuthStore();
   const [plannerOpen, setPlannerOpen] = reactExports.useState(true);
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = reactExports.useState(false);
@@ -28367,6 +28759,16 @@ function Sidebar() {
     logout();
     navigate("/login");
   };
+  const handleAppSwitch = (appId, path) => {
+    const existing = pages.find((p) => p.appId === appId);
+    if (existing) {
+      setActivePage(existing.id);
+    } else {
+      addPage({ appId, path });
+    }
+    setActiveApp(appId);
+    navigate(path);
+  };
   if (!sidebarOpen) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-10 shrink-0 flex-col items-center border-r border-notion-border bg-notion-sidebar py-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
       "button",
@@ -28377,28 +28779,21 @@ function Sidebar() {
       }
     ) });
   }
-  const navItems = [
-    { label: "Documents", icon: FileText, to: `/w/${workspaceId}/documents`, disabled: true },
-    { label: "Whiteboards", icon: PenTool, to: `/w/${workspaceId}/whiteboards`, disabled: true },
-    { label: "Mockups", icon: Layers, to: `/w/${workspaceId}/mockups`, disabled: true },
-    { label: "Files", icon: FolderOpen, to: `/w/${workspaceId}/files`, disabled: true },
-    { label: "AI Assistant", icon: Sparkles, to: `/w/${workspaceId}/ai`, disabled: true }
-  ];
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-60 shrink-0 flex-col border-r border-notion-border bg-notion-sidebar", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative flex w-[248px] shrink-0 flex-col border-r border-notion-border bg-notion-sidebar overflow-hidden", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative px-2 pt-2 pb-1", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           onClick: () => setWorkspaceMenuOpen(!workspaceMenuOpen),
-          className: "flex w-full items-center gap-2 rounded-md px-2 py-1.5 hover:bg-notion-sidebar-hover transition-colors",
+          className: "flex w-full items-center gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-notion-sidebar-hover",
           children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-5 w-5 items-center justify-center rounded bg-notion-accent text-[10px] font-bold text-white", children: currentWorkspace?.name?.charAt(0).toUpperCase() || "W" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1 truncate text-left text-sm font-medium text-notion-text", children: currentWorkspace?.name || "Workspace" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3.5 w-3.5 text-notion-text-secondary" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-6 w-6 items-center justify-center rounded bg-notion-text text-xs font-semibold text-notion-bg", children: currentWorkspace?.name?.charAt(0).toUpperCase() || "D" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0 flex-1 truncate text-left text-sm font-medium text-notion-text", children: currentWorkspace?.name || "My desk" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3.5 w-3.5 shrink-0 text-notion-text-secondary" })
           ]
         }
       ),
-      workspaceMenuOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute left-2 right-2 top-full z-50 mt-1 rounded-md border border-notion-border bg-white py-1 shadow-lg", children: [
+      workspaceMenuOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute left-2 right-2 top-full z-50 mt-1 rounded-md border border-notion-border bg-notion-bg py-1 shadow-lg", children: [
         workspaces.map((ws) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
@@ -28408,7 +28803,7 @@ function Sidebar() {
               ws.id === workspaceId && "bg-notion-sidebar"
             ),
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-5 w-5 items-center justify-center rounded bg-notion-accent text-[10px] font-bold text-white", children: ws.name.charAt(0).toUpperCase() }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-5 w-5 items-center justify-center rounded bg-notion-text text-[10px] font-bold text-notion-bg", children: ws.name.charAt(0).toUpperCase() }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: ws.name })
             ]
           },
@@ -28426,91 +28821,168 @@ function Sidebar() {
               "Settings"
             ]
           }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "flex flex-1 flex-col overflow-y-auto px-2 pb-2 pt-1", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          type: "button",
+          disabled: true,
+          className: "mb-1 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-tertiary",
+          title: "Coming soon",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "h-4 w-4 shrink-0 opacity-70" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Search" })
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        NavLink,
+        {
+          to: `/w/${workspaceId}/projects`,
+          end: true,
+          onClick: () => setActiveApp("home"),
+          className: ({ isActive }) => cn(
+            "mb-1 flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
+            isActive ? "bg-notion-sidebar-hover font-medium text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"
+          ),
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(House, { className: "h-4 w-4 shrink-0" }),
+            "Home"
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          type: "button",
+          onClick: () => handleAppSwitch("inbox", `/w/${workspaceId}/inbox`),
+          className: "mb-3 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Inbox, { className: "h-4 w-4 shrink-0" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: "Inbox" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-4 min-w-[16px] items-center justify-center rounded-full bg-notion-accent px-1 text-[10px] font-semibold text-white", children: "3" })
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary", children: "Tasks" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: () => setPlannerOpen(!plannerOpen),
+            className: "flex w-full items-center gap-1 rounded px-2 py-1 text-xs font-medium text-notion-text-secondary hover:bg-notion-sidebar-hover",
+            children: [
+              plannerOpen ? /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3 w-3" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "h-3 w-3" }),
+              "Projects"
+            ]
+          }
+        ),
+        plannerOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-0.5 mt-0.5 space-y-0.5 border-l border-notion-border/80 pl-2", children: [
+          projects.map((project) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            NavLink,
+            {
+              to: `/w/${workspaceId}/projects/${project.id}`,
+              onClick: () => setActiveApp("home"),
+              className: ({ isActive }) => cn(
+                "flex items-center gap-2 rounded-md px-2 py-1 text-sm transition-colors",
+                isActive ? "bg-notion-sidebar-hover font-medium text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"
+              ),
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(LayoutDashboard, { className: "h-3.5 w-3.5 shrink-0 opacity-80" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: project.name })
+              ]
+            },
+            project.id
+          )),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            NavLink,
+            {
+              to: `/w/${workspaceId}/projects`,
+              onClick: () => setActiveApp("home"),
+              className: "flex items-center gap-2 rounded-md px-2 py-1 text-sm text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-3.5 w-3.5 shrink-0" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "New project" })
+              ]
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-1 mt-3 px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary", children: "Library" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-0.5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: () => handleAppSwitch("documents", `/w/${workspaceId}/documents`),
+            className: "flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(FileText, { className: "h-4 w-4 shrink-0" }),
+              "Documents"
+            ]
+          }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          NavLink,
+          "div",
           {
-            to: `/w/${workspaceId}/members`,
-            onClick: () => setWorkspaceMenuOpen(false),
-            className: "flex w-full items-center gap-2 px-3 py-1.5 text-sm text-notion-text-secondary hover:bg-notion-sidebar-hover",
+            className: "flex items-center gap-2 rounded-md px-2 py-1 text-sm cursor-not-allowed text-notion-text-tertiary opacity-50",
+            title: "Coming soon",
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "h-3.5 w-3.5" }),
-              "Members"
+              /* @__PURE__ */ jsxRuntimeExports.jsx(PenTool, { className: "h-4 w-4 shrink-0" }),
+              "Whiteboards"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "flex items-center gap-2 rounded-md px-2 py-1 text-sm cursor-not-allowed text-notion-text-tertiary opacity-50",
+            title: "Coming soon",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { className: "h-4 w-4 shrink-0" }),
+              "Mockups"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: () => handleAppSwitch("files", `/w/${workspaceId}/files`),
+            className: "flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(FolderOpen, { className: "h-4 w-4 shrink-0" }),
+              "Files"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "flex items-center gap-2 rounded-md px-2 py-1 text-sm cursor-not-allowed text-notion-text-tertiary opacity-50",
+            title: "Coming soon",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "h-4 w-4 shrink-0" }),
+              "AI assistant"
             ]
           }
         )
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "flex-1 overflow-y-auto px-2 py-1", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-1", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: () => setPlannerOpen(!plannerOpen),
-            className: "flex w-full items-center gap-1 rounded px-2 py-1 text-xs font-medium text-notion-text-secondary hover:bg-notion-sidebar-hover",
-            children: [
-              plannerOpen ? /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3 w-3" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "h-3 w-3" }),
-              "Planner"
-            ]
-          }
-        ),
-        plannerOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-1 mt-0.5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            NavLink,
-            {
-              to: `/w/${workspaceId}/projects`,
-              className: ({ isActive }) => cn(
-                "flex items-center gap-2 rounded-md px-2 py-1 text-sm transition-colors",
-                isActive ? "bg-notion-sidebar-hover text-notion-text font-medium" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"
-              ),
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(FolderKanban, { className: "h-4 w-4" }),
-                "All Projects"
-              ]
-            }
-          ),
-          projects.map((project) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            NavLink,
-            {
-              to: `/w/${workspaceId}/projects/${project.id}`,
-              className: ({ isActive }) => cn(
-                "flex items-center gap-2 rounded-md px-2 py-1 text-sm transition-colors",
-                isActive ? "bg-notion-sidebar-hover text-notion-text font-medium" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"
-              ),
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(LayoutDashboard, { className: "h-3.5 w-3.5" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: project.name })
-              ]
-            },
-            project.id
-          ))
-        ] })
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-t border-notion-border px-2 py-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-w-0 flex-1 items-center gap-2 px-1", children: [
+        user && /* @__PURE__ */ jsxRuntimeExports.jsx(Avatar, { name: user.displayName, src: user.avatarUrl, size: "sm" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate text-xs text-notion-text-secondary", children: user?.displayName })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-2 border-t border-notion-border pt-2", children: navItems.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: cn(
-            "flex items-center gap-2 rounded-md px-2 py-1 text-sm",
-            "text-notion-text-tertiary cursor-not-allowed opacity-50"
-          ),
-          title: "Coming soon",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(item.icon, { className: "h-4 w-4" }),
-            item.label
-          ]
-        },
-        item.label
-      )) })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-t border-notion-border px-2 py-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 px-1", children: [
-        user && /* @__PURE__ */ jsxRuntimeExports.jsx(Avatar, { name: user.name, src: user.avatarUrl, size: "sm" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate text-xs text-notion-text-secondary", children: user?.name })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-0.5", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 items-center gap-0.5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
+            type: "button",
             onClick: handleLogout,
             className: "flex h-6 w-6 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
             title: "Log out",
@@ -28520,6 +28992,7 @@ function Sidebar() {
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
+            type: "button",
             onClick: toggleSidebar,
             className: "flex h-6 w-6 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
             title: "Collapse sidebar",
@@ -28530,19 +29003,946 @@ function Sidebar() {
     ] }) })
   ] });
 }
-async function login(email, password) {
-  return apiClient.post("/auth/login", { email, password });
+const APPS = [
+  { id: "home", label: "Home", icon: House },
+  { id: "inbox", label: "Inbox", icon: Inbox },
+  { id: "documents", label: "Documents", icon: FileText },
+  { id: "files", label: "Files", icon: FolderOpen }
+];
+function AppSwitcherRail() {
+  const { activeApp, setActiveApp, pages, addPage, setActivePage } = useUIStore();
+  const handleAppClick = (appId) => {
+    const existingPage = pages.find((p) => p.appId === appId);
+    if (existingPage) {
+      setActivePage(existingPage.id);
+    } else {
+      addPage({ appId });
+    }
+    setActiveApp(appId);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      className: cn(
+        "flex w-12 shrink-0 flex-col items-center gap-1 border-r border-notion-border bg-notion-sidebar py-2",
+        "relative z-10"
+        // sit above main content, below dropdowns
+      ),
+      children: APPS.map((app) => {
+        const isActive = activeApp === app.id;
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            title: app.label,
+            onClick: () => handleAppClick(app.id),
+            className: cn(
+              "group relative flex h-9 w-9 flex-col items-center justify-center rounded-lg transition-all",
+              isActive ? "bg-notion-sidebar-hover text-notion-text" : "text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
+            ),
+            children: [
+              isActive && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute -left-2 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-notion-accent" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(app.icon, { className: "h-4 w-4 shrink-0" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
+                {
+                  className: cn(
+                    "mt-0.5 text-[9px] font-medium leading-none tracking-wide",
+                    isActive ? "text-notion-text" : "text-notion-text-tertiary"
+                  ),
+                  children: app.label
+                }
+              )
+            ]
+          },
+          app.id
+        );
+      })
+    }
+  );
 }
-async function register(name, email, password) {
-  return apiClient.post("/auth/register", { name, email, password });
+const APP_ICONS = {
+  home: House,
+  inbox: Inbox,
+  documents: FileText,
+  files: FolderOpen
+};
+function Tab({ page, isActive }) {
+  const { setActivePage, closePage, pages } = useUIStore();
+  const Icon2 = APP_ICONS[page.appId];
+  const canClose = pages.length > 1;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "button",
+    {
+      type: "button",
+      onClick: () => setActivePage(page.id),
+      className: cn(
+        "group relative flex h-full max-w-[180px] min-w-[100px] items-center gap-1.5 border-r border-notion-border px-3 text-xs transition-colors select-none",
+        isActive ? "bg-notion-bg text-notion-text" : "bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text"
+      ),
+      children: [
+        isActive && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute bottom-0 left-0 right-0 h-[2px] bg-notion-accent" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: "h-3 w-3 shrink-0 opacity-70" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1 truncate text-left leading-none", children: page.title }),
+        canClose && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "span",
+          {
+            role: "button",
+            tabIndex: 0,
+            onClick: (e) => {
+              e.stopPropagation();
+              closePage(page.id);
+            },
+            onKeyDown: (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.stopPropagation();
+                closePage(page.id);
+              }
+            },
+            className: cn(
+              "flex h-4 w-4 shrink-0 items-center justify-center rounded transition-colors",
+              isActive ? "opacity-60 hover:bg-notion-sidebar-hover hover:opacity-100" : "opacity-0 group-hover:opacity-60 hover:!opacity-100 hover:bg-notion-sidebar-hover"
+            ),
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "h-2.5 w-2.5" })
+          }
+        )
+      ]
+    }
+  );
 }
-async function getMe() {
-  return apiClient.get("/auth/me");
+function PageTabBar() {
+  const { pages, activePageId, addPage } = useUIStore();
+  const scrollRef = reactExports.useRef(null);
+  reactExports.useEffect(() => {
+    if (!scrollRef.current) return;
+    const activeEl = scrollRef.current.querySelector('[data-active="true"]');
+    activeEl?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [activePageId]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-8 shrink-0 items-stretch border-b border-notion-border bg-notion-sidebar", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        ref: scrollRef,
+        className: "flex flex-1 items-stretch overflow-x-auto overflow-y-hidden",
+        style: { scrollbarWidth: "none" },
+        children: pages.map((page) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { "data-active": page.id === activePageId ? "true" : void 0, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Tab, { page, isActive: page.id === activePageId }) }, page.id))
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "button",
+      {
+        type: "button",
+        onClick: () => addPage(),
+        title: "New page",
+        className: "flex h-full w-8 shrink-0 items-center justify-center border-l border-notion-border text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-3.5 w-3.5" })
+      }
+    )
+  ] });
+}
+const MOCK_MESSAGES = [
+  {
+    id: "m1",
+    sender: "Alex Chen",
+    senderInitials: "AC",
+    senderColor: "#2383E2",
+    subject: 'Mentioned you in "Q2 Roadmap"',
+    preview: "@you Can you review the timeline section before EOD?",
+    timestamp: "2m ago",
+    unread: true,
+    type: "mention",
+    body: "Hey! I added you to the Q2 Roadmap document. Can you review the timeline section before EOD? I want to make sure the milestones are realistic given the current sprint capacity.\n\nSpecifically, I need your input on:\n- The release date for v2.1\n- Resource allocation for the design phase\n- Dependencies on the backend team"
+  },
+  {
+    id: "m2",
+    sender: "Jordan Lee",
+    senderInitials: "JL",
+    senderColor: "#9065B0",
+    subject: 'Comment on "Sprint Planning Board"',
+    preview: 'Left a comment on task "Implement auth flow"',
+    timestamp: "15m ago",
+    unread: true,
+    type: "comment",
+    body: 'I left a comment on the "Implement auth flow" task in the Sprint Planning Board.\n\nComment: "This looks good overall, but we should consider adding refresh token rotation for better security. I can pair with you on this if needed — just let me know your availability this week."'
+  },
+  {
+    id: "m3",
+    sender: "System",
+    senderInitials: "SY",
+    senderColor: "#33B679",
+    subject: 'Project "DeskLink v1.0" is due soon',
+    preview: "The project deadline is in 3 days. 4 tasks remaining.",
+    timestamp: "1h ago",
+    unread: true,
+    type: "notification",
+    body: 'This is an automated reminder that the project "DeskLink v1.0" has a deadline in 3 days.\n\nCurrent status:\n- 4 tasks remaining\n- 2 tasks in progress\n- 1 task blocked\n\nPlease review the board and update task statuses to ensure the deadline is met.'
+  },
+  {
+    id: "m4",
+    sender: "Sam Rivera",
+    senderInitials: "SR",
+    senderColor: "#FA8C16",
+    subject: 'Shared "Design System v2" with you',
+    preview: "Sam shared a document with you",
+    timestamp: "3h ago",
+    unread: false,
+    type: "message",
+    body: "Hi! I've shared the updated Design System v2 document with you. It includes all the new component specs, color tokens, and typography guidelines we discussed in last week's design review.\n\nFeel free to leave comments directly in the document. I'll be reviewing feedback on Friday."
+  },
+  {
+    id: "m5",
+    sender: "Taylor Kim",
+    senderInitials: "TK",
+    senderColor: "#E255A1",
+    subject: 'Mentioned you in "Bug Tracker"',
+    preview: "@you This bug is blocking the release, can you take a look?",
+    timestamp: "Yesterday",
+    unread: false,
+    type: "mention",
+    body: `I've tagged you on a critical bug in the Bug Tracker.
+
+Bug: "Authentication fails on Safari 16.x"
+Priority: Urgent
+Status: Open
+
+This is blocking the v1.0 release. The issue seems to be related to the SameSite cookie attribute. Can you investigate and provide an ETA for the fix?`
+  },
+  {
+    id: "m6",
+    sender: "Morgan Davis",
+    senderInitials: "MD",
+    senderColor: "#EB5757",
+    subject: 'Comment on "API Documentation"',
+    preview: "Great work on the endpoints section!",
+    timestamp: "Yesterday",
+    unread: false,
+    type: "comment",
+    body: "Just reviewed the API Documentation you updated. Great work on the endpoints section — the examples are really clear and the error codes table is exactly what the frontend team needed.\n\nOne small suggestion: could you add a section on rate limiting? Some of our enterprise clients have been asking about it."
+  }
+];
+const TYPE_ICONS = {
+  mention: AtSign,
+  comment: MessageSquare,
+  notification: Bell,
+  message: User
+};
+function InboxApp() {
+  const [filter2, setFilter] = reactExports.useState("all");
+  const [selectedId, setSelectedId] = reactExports.useState("m1");
+  const [messages, setMessages] = reactExports.useState(MOCK_MESSAGES);
+  const filtered = messages.filter((m) => {
+    if (filter2 === "unread") return m.unread;
+    if (filter2 === "mentions") return m.type === "mention";
+    return true;
+  });
+  const selected = messages.find((m) => m.id === selectedId) ?? null;
+  const unreadCount = messages.filter((m) => m.unread).length;
+  const markRead = (id) => {
+    setMessages(
+      (prev) => prev.map((m) => m.id === id ? { ...m, unread: false } : m)
+    );
+  };
+  const markAllRead = () => {
+    setMessages((prev) => prev.map((m) => ({ ...m, unread: false })));
+  };
+  const handleSelect = (msg) => {
+    setSelectedId(msg.id);
+    if (msg.unread) markRead(msg.id);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-72 shrink-0 flex-col border-r border-notion-border bg-notion-sidebar overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border px-4 py-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-sm font-semibold text-notion-text", children: "Inbox" }),
+          unreadCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-4 min-w-[16px] items-center justify-center rounded-full bg-notion-accent px-1 text-[10px] font-semibold text-white", children: unreadCount })
+        ] }),
+        unreadCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: markAllRead,
+            title: "Mark all as read",
+            className: "flex items-center gap-1 rounded px-1.5 py-1 text-xs text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text transition-colors",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CheckCheck, { className: "h-3.5 w-3.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "All read" })
+            ]
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex border-b border-notion-border px-2 pt-1", children: ["all", "unread", "mentions"].map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          onClick: () => setFilter(tab),
+          className: cn(
+            "px-3 py-1.5 text-xs font-medium capitalize transition-colors",
+            filter2 === tab ? "border-b-2 border-notion-accent text-notion-accent" : "text-notion-text-secondary hover:text-notion-text"
+          ),
+          children: tab
+        },
+        tab
+      )) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto", children: filtered.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-2 py-16 text-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(CheckCheck, { className: "h-8 w-8 text-notion-text-tertiary" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-notion-text-secondary", children: "You're all caught up" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-notion-text-tertiary", children: [
+          "No ",
+          filter2 === "all" ? "" : filter2,
+          " messages"
+        ] })
+      ] }) : filtered.map((msg) => {
+        const TypeIcon = TYPE_ICONS[msg.type];
+        const isSelected = selectedId === msg.id;
+        return /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: () => handleSelect(msg),
+            className: cn(
+              "w-full border-b border-notion-border/60 px-3 py-2.5 text-left transition-colors",
+              isSelected ? "bg-notion-sidebar-hover" : "hover:bg-notion-sidebar-hover/60"
+            ),
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-2.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "div",
+                {
+                  className: "mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white",
+                  style: { backgroundColor: msg.senderColor },
+                  children: msg.senderInitials
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-1", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: cn("truncate text-xs font-medium", msg.unread ? "text-notion-text" : "text-notion-text-secondary"), children: msg.sender }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-[10px] text-notion-text-tertiary", children: msg.timestamp })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-0.5 flex items-center gap-1", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(TypeIcon, { className: "h-2.5 w-2.5 shrink-0 text-notion-text-tertiary" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: cn("truncate text-[11px]", msg.unread ? "text-notion-text" : "text-notion-text-tertiary"), children: msg.subject })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-0.5 truncate text-[11px] text-notion-text-tertiary", children: msg.preview })
+              ] }),
+              msg.unread && /* @__PURE__ */ jsxRuntimeExports.jsx(Circle, { className: "mt-1.5 h-2 w-2 shrink-0 fill-notion-accent text-notion-accent" })
+            ] })
+          },
+          msg.id
+        );
+      }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 flex-col overflow-hidden bg-notion-bg", children: selected ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-b border-notion-border px-8 py-5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white",
+            style: { backgroundColor: selected.senderColor },
+            children: selected.senderInitials
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-notion-text", children: selected.sender }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-notion-text-tertiary", children: selected.timestamp })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-0.5 text-sm text-notion-text-secondary", children: selected.subject })
+        ] })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto px-8 py-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-2xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "whitespace-pre-line text-sm leading-relaxed text-notion-text", children: selected.body }) }) })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 flex-col items-center justify-center gap-3 text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CheckCheck, { className: "h-10 w-10 text-notion-text-tertiary" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-notion-text-secondary", children: "You're all caught up" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-xs text-notion-text-tertiary", children: "You'll be notified here for @mentions, page activity, and more" })
+      ] })
+    ] }) })
+  ] });
+}
+const INITIAL_DOCS = [
+  {
+    id: "doc-1",
+    title: "Welcome to Documents",
+    content: `<h1>Welcome to Documents</h1><p>This is your rich text workspace. Click anywhere to start editing.</p><p>Use the toolbar above to format your text with <strong>bold</strong>, <em>italic</em>, headings, lists, and more.</p><h2>Getting Started</h2><ul><li>Click the <strong>+ New Document</strong> button to create a new doc</li><li>Select any document from the sidebar to open it</li><li>Use the formatting toolbar to style your content</li></ul><p>Your documents are saved automatically as you type.</p>`,
+    updatedAt: "Just now"
+  },
+  {
+    id: "doc-2",
+    title: "Meeting Notes — Q2 Planning",
+    content: `<h1>Meeting Notes — Q2 Planning</h1><p><em>Date: March 27, 2026 · Attendees: Alex, Jordan, Sam</em></p><h2>Agenda</h2><ul><li>Review Q1 outcomes</li><li>Set Q2 priorities</li><li>Assign owners</li></ul><h2>Key Decisions</h2><p>The team agreed to focus on three core initiatives this quarter:</p><ol><li>Launch the new onboarding flow</li><li>Improve performance on the dashboard</li><li>Ship the mobile app beta</li></ol><h2>Action Items</h2><ul><li><strong>Alex</strong> — Draft onboarding spec by April 3</li><li><strong>Jordan</strong> — Performance audit by April 5</li><li><strong>Sam</strong> — Mobile beta plan by April 7</li></ul>`,
+    updatedAt: "2 hours ago"
+  },
+  {
+    id: "doc-3",
+    title: "Product Spec: Auth Flow",
+    content: `<h1>Product Spec: Auth Flow</h1><p>This document outlines the authentication flow for DeskLink v1.0.</p><h2>Overview</h2><p>Users can sign up and log in using email/password. JWT tokens are used for session management with refresh token rotation.</p><h2>Requirements</h2><ul><li>Email + password registration</li><li>Login with remember me option</li><li>Password reset via email</li><li>Session timeout after 30 days of inactivity</li></ul><h2>Technical Notes</h2><p>Access tokens expire after 15 minutes. Refresh tokens are rotated on each use and expire after 30 days.</p><code>POST /auth/login
+POST /auth/register
+POST /auth/refresh
+POST /auth/logout</code>`,
+    updatedAt: "Yesterday"
+  }
+];
+let _nextDocId = 4;
+const TOOLBAR_ACTIONS = [
+  { cmd: "bold", icon: Bold, title: "Bold (Ctrl+B)" },
+  { cmd: "italic", icon: Italic, title: "Italic (Ctrl+I)" },
+  { cmd: "underline", icon: Underline, title: "Underline (Ctrl+U)" },
+  { cmd: "h1", icon: Heading1, title: "Heading 1" },
+  { cmd: "h2", icon: Heading2, title: "Heading 2" },
+  { cmd: "insertUnorderedList", icon: List, title: "Bullet list" },
+  { cmd: "code", icon: Code, title: "Code block" }
+];
+function DocumentApp() {
+  const { activePageId, updatePageTitle } = useUIStore();
+  const [docs, setDocs] = reactExports.useState(INITIAL_DOCS);
+  const [selectedDocId, setSelectedDocId] = reactExports.useState("doc-1");
+  const editorRef = reactExports.useRef(null);
+  const titleRef = reactExports.useRef(null);
+  const selectedDoc = docs.find((d) => d.id === selectedDocId) ?? docs[0];
+  const handleNewDoc = () => {
+    const id = `doc-${_nextDocId++}`;
+    const newDoc = {
+      id,
+      title: "Untitled",
+      content: "<h1>Untitled</h1><p></p>",
+      updatedAt: "Just now"
+    };
+    setDocs((prev) => [newDoc, ...prev]);
+    setSelectedDocId(id);
+  };
+  const handleSelectDoc = (doc) => {
+    if (editorRef.current && selectedDoc) {
+      const html = editorRef.current.innerHTML;
+      setDocs(
+        (prev) => prev.map((d) => d.id === selectedDoc.id ? { ...d, content: html, updatedAt: "Just now" } : d)
+      );
+    }
+    setSelectedDocId(doc.id);
+  };
+  const handleDeleteDoc = (e, docId) => {
+    e.stopPropagation();
+    if (docs.length <= 1) return;
+    const remaining = docs.filter((d) => d.id !== docId);
+    setDocs(remaining);
+    if (selectedDocId === docId) {
+      setSelectedDocId(remaining[0].id);
+    }
+  };
+  const handleTitleInput = reactExports.useCallback(() => {
+    if (!titleRef.current || !selectedDoc) return;
+    const newTitle = titleRef.current.innerText.trim() || "Untitled";
+    setDocs(
+      (prev) => prev.map((d) => d.id === selectedDoc.id ? { ...d, title: newTitle, updatedAt: "Just now" } : d)
+    );
+    if (activePageId) updatePageTitle(activePageId, newTitle);
+  }, [selectedDoc, activePageId, updatePageTitle]);
+  const handleEditorInput = reactExports.useCallback(() => {
+    if (!editorRef.current || !selectedDoc) return;
+    const html = editorRef.current.innerHTML;
+    setDocs(
+      (prev) => prev.map((d) => d.id === selectedDoc.id ? { ...d, content: html, updatedAt: "Just now" } : d)
+    );
+  }, [selectedDoc]);
+  const execFormat = (cmd) => {
+    if (cmd === "h1") {
+      document.execCommand("formatBlock", false, "h1");
+    } else if (cmd === "h2") {
+      document.execCommand("formatBlock", false, "h2");
+    } else if (cmd === "code") {
+      document.execCommand("formatBlock", false, "pre");
+    } else {
+      document.execCommand(cmd, false);
+    }
+    editorRef.current?.focus();
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-56 shrink-0 flex-col border-r border-notion-border bg-notion-sidebar overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border px-3 py-2.5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-notion-text", children: "Documents" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: handleNewDoc,
+            title: "New document",
+            className: "flex h-6 w-6 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text transition-colors",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-3.5 w-3.5" })
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto py-1", children: docs.map((doc) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          type: "button",
+          onClick: () => handleSelectDoc(doc),
+          className: cn(
+            "group flex w-full items-center gap-2 px-3 py-1.5 text-left transition-colors",
+            doc.id === selectedDocId ? "bg-notion-sidebar-hover text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text"
+          ),
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(FileText, { className: "h-3.5 w-3.5 shrink-0 opacity-60" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1 truncate text-xs", children: doc.title }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: (e) => handleDeleteDoc(e, doc.id),
+                className: "hidden h-5 w-5 shrink-0 items-center justify-center rounded text-notion-text-tertiary hover:text-notion-red group-hover:flex",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "h-3 w-3" })
+              }
+            )
+          ]
+        },
+        doc.id
+      )) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 flex-col overflow-hidden bg-notion-bg", children: selectedDoc && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-0.5 border-b border-notion-border bg-notion-sidebar px-4 py-1.5", children: [
+        TOOLBAR_ACTIONS.map(({ cmd, icon: Icon2, title }) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            title,
+            onMouseDown: (e) => {
+              e.preventDefault();
+              execFormat(cmd);
+            },
+            className: "flex h-7 w-7 items-center justify-center rounded text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: "h-3.5 w-3.5" })
+          },
+          cmd
+        )),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-auto flex items-center gap-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[11px] text-notion-text-tertiary", children: [
+            "Edited ",
+            selectedDoc.updatedAt
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              className: "flex h-7 w-7 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Ellipsis, { className: "h-3.5 w-3.5" })
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-3xl px-16 py-12", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            ref: titleRef,
+            contentEditable: true,
+            suppressContentEditableWarning: true,
+            onInput: handleTitleInput,
+            className: cn(
+              "mb-6 text-4xl font-bold text-notion-text outline-none",
+              'empty:before:text-notion-text-tertiary empty:before:content-["Untitled"]'
+            ),
+            style: { minHeight: "1.2em" },
+            dangerouslySetInnerHTML: { __html: selectedDoc.title }
+          },
+          `title-${selectedDoc.id}`
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            ref: editorRef,
+            contentEditable: true,
+            suppressContentEditableWarning: true,
+            onInput: handleEditorInput,
+            className: cn(
+              "min-h-[400px] text-sm leading-relaxed text-notion-text outline-none",
+              'empty:before:text-notion-text-tertiary empty:before:content-["Start_writing,_or_press_//_for_commands…"]',
+              // Prose styles for rendered HTML
+              "[&_h1]:mb-3 [&_h1]:mt-6 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-notion-text",
+              "[&_h2]:mb-2 [&_h2]:mt-5 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-notion-text",
+              "[&_p]:mb-2 [&_p]:leading-relaxed",
+              "[&_ul]:mb-2 [&_ul]:ml-5 [&_ul]:list-disc",
+              "[&_ol]:mb-2 [&_ol]:ml-5 [&_ol]:list-decimal",
+              "[&_li]:mb-0.5",
+              "[&_strong]:font-semibold",
+              "[&_em]:italic",
+              "[&_u]:underline",
+              "[&_pre]:mb-2 [&_pre]:rounded [&_pre]:bg-notion-sidebar [&_pre]:p-3 [&_pre]:font-mono [&_pre]:text-xs",
+              "[&_code]:rounded [&_code]:bg-notion-sidebar [&_code]:px-1 [&_code]:font-mono [&_code]:text-xs"
+            ),
+            dangerouslySetInnerHTML: { __html: selectedDoc.content }
+          },
+          `body-${selectedDoc.id}`
+        )
+      ] }) })
+    ] }) })
+  ] });
+}
+const MOCK_TREE = [
+  {
+    id: "f1",
+    name: "Projects",
+    type: "folder",
+    children: [
+      {
+        id: "f1-1",
+        name: "DeskLink",
+        type: "folder",
+        children: [
+          { id: "f1-1-1", name: "README.md", type: "file", mimeType: "text", size: "4 KB", modified: "Today" },
+          { id: "f1-1-2", name: "package.json", type: "file", mimeType: "code", size: "2 KB", modified: "Today" },
+          { id: "f1-1-3", name: "tsconfig.json", type: "file", mimeType: "code", size: "1 KB", modified: "Yesterday" }
+        ]
+      },
+      {
+        id: "f1-2",
+        name: "Design System",
+        type: "folder",
+        children: [
+          { id: "f1-2-1", name: "components.fig", type: "file", mimeType: "image", size: "12 MB", modified: "2 days ago" },
+          { id: "f1-2-2", name: "tokens.json", type: "file", mimeType: "code", size: "8 KB", modified: "3 days ago" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "f2",
+    name: "Documents",
+    type: "folder",
+    children: [
+      { id: "f2-1", name: "Q2 Roadmap.pdf", type: "file", mimeType: "text", size: "340 KB", modified: "Today" },
+      { id: "f2-2", name: "Meeting Notes.docx", type: "file", mimeType: "text", size: "56 KB", modified: "Yesterday" },
+      { id: "f2-3", name: "Budget 2026.xlsx", type: "file", mimeType: "text", size: "128 KB", modified: "Last week" }
+    ]
+  },
+  {
+    id: "f3",
+    name: "Assets",
+    type: "folder",
+    children: [
+      {
+        id: "f3-1",
+        name: "Images",
+        type: "folder",
+        children: [
+          { id: "f3-1-1", name: "logo.png", type: "file", mimeType: "image", size: "24 KB", modified: "Last week" },
+          { id: "f3-1-2", name: "banner.jpg", type: "file", mimeType: "image", size: "1.2 MB", modified: "Last week" },
+          { id: "f3-1-3", name: "icons.svg", type: "file", mimeType: "image", size: "8 KB", modified: "2 weeks ago" }
+        ]
+      },
+      {
+        id: "f3-2",
+        name: "Videos",
+        type: "folder",
+        children: [
+          { id: "f3-2-1", name: "demo.mp4", type: "file", mimeType: "video", size: "48 MB", modified: "Last month" }
+        ]
+      }
+    ]
+  },
+  { id: "f4", name: "archive.zip", type: "file", mimeType: "archive", size: "256 MB", modified: "Last month" },
+  { id: "f5", name: "notes.txt", type: "file", mimeType: "text", size: "2 KB", modified: "Today" }
+];
+function getMimeIcon(mimeType) {
+  switch (mimeType) {
+    case "image":
+      return Image;
+    case "video":
+      return Film;
+    case "audio":
+      return Music;
+    case "archive":
+      return Archive;
+    case "code":
+      return CodeXml;
+    default:
+      return FileText;
+  }
+}
+function getMimeColor(mimeType) {
+  switch (mimeType) {
+    case "image":
+      return "text-notion-purple";
+    case "video":
+      return "text-notion-red";
+    case "audio":
+      return "text-notion-orange";
+    case "archive":
+      return "text-notion-yellow";
+    case "code":
+      return "text-notion-green";
+    default:
+      return "text-notion-accent";
+  }
+}
+function TreeNode({ node, depth, selectedId, expandedIds, onSelect, onToggle }) {
+  const isExpanded = expandedIds.has(node.id);
+  const isSelected = selectedId === node.id;
+  const Icon2 = node.type === "folder" ? isExpanded ? FolderOpen : Folder : getMimeIcon(node.mimeType);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        type: "button",
+        onClick: () => {
+          onSelect(node);
+          if (node.type === "folder") onToggle(node.id);
+        },
+        className: cn(
+          "flex w-full items-center gap-1.5 rounded px-2 py-1 text-left text-xs transition-colors",
+          isSelected ? "bg-notion-sidebar-hover text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text"
+        ),
+        style: { paddingLeft: `${8 + depth * 14}px` },
+        children: [
+          node.type === "folder" ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-3.5 w-3.5 shrink-0 items-center justify-center", children: isExpanded ? /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3 w-3 text-notion-text-tertiary" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "h-3 w-3 text-notion-text-tertiary" }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-3.5 shrink-0" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: cn("h-3.5 w-3.5 shrink-0", node.type === "folder" ? "text-notion-orange" : getMimeColor(node.mimeType)) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1 truncate", children: node.name })
+        ]
+      }
+    ),
+    node.type === "folder" && isExpanded && node.children && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: node.children.map((child) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+      TreeNode,
+      {
+        node: child,
+        depth: depth + 1,
+        selectedId,
+        expandedIds,
+        onSelect,
+        onToggle
+      },
+      child.id
+    )) })
+  ] });
+}
+function getChildFiles(node, allNodes) {
+  if (!node) {
+    return allNodes;
+  }
+  if (node.type === "folder") {
+    return node.children ?? [];
+  }
+  return [];
+}
+function FilesApp() {
+  const [selectedNode, setSelectedNode] = reactExports.useState(null);
+  const [expandedIds, setExpandedIds] = reactExports.useState(/* @__PURE__ */ new Set(["f1", "f2", "f3"]));
+  const [viewMode, setViewMode] = reactExports.useState("list");
+  const [searchQuery, setSearchQuery] = reactExports.useState("");
+  const [selectedFileId, setSelectedFileId] = reactExports.useState(null);
+  const toggleExpand = (id) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+  const handleSelectNode = (node) => {
+    setSelectedNode(node.type === "folder" ? node : null);
+    if (node.type === "file") setSelectedFileId(node.id);
+  };
+  const currentFiles = getChildFiles(selectedNode, MOCK_TREE);
+  const filteredFiles = searchQuery ? currentFiles.filter((f) => f.name.toLowerCase().includes(searchQuery.toLowerCase())) : currentFiles;
+  selectedNode ? selectedNode.name : "All Files";
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-56 shrink-0 flex-col border-r border-notion-border bg-notion-sidebar overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border px-3 py-2.5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-notion-text", children: "Files" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            title: "New folder",
+            className: "flex h-6 w-6 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text transition-colors",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-3.5 w-3.5" })
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto py-1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: () => {
+              setSelectedNode(null);
+              setSelectedFileId(null);
+            },
+            className: cn(
+              "flex w-full items-center gap-2 rounded px-2 py-1 text-left text-xs transition-colors",
+              selectedNode === null ? "bg-notion-sidebar-hover text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text"
+            ),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(FolderOpen, { className: "h-3.5 w-3.5 shrink-0 text-notion-accent" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium", children: "All Files" })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-1 border-t border-notion-border/60 pt-1", children: MOCK_TREE.map((node) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          TreeNode,
+          {
+            node,
+            depth: 0,
+            selectedId: selectedNode?.id ?? null,
+            expandedIds,
+            onSelect: handleSelectNode,
+            onToggle: toggleExpand
+          },
+          node.id
+        )) })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 flex-col overflow-hidden bg-notion-bg", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 border-b border-notion-border px-4 py-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 text-xs text-notion-text-secondary", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "span",
+            {
+              className: "cursor-pointer hover:text-notion-text",
+              onClick: () => setSelectedNode(null),
+              children: "Files"
+            }
+          ),
+          selectedNode && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "h-3 w-3 text-notion-text-tertiary" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-notion-text", children: selectedNode.name })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-auto flex items-center gap-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-notion-text-tertiary" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "text",
+                placeholder: "Search files…",
+                value: searchQuery,
+                onChange: (e) => setSearchQuery(e.target.value),
+                className: "h-7 rounded border border-notion-border bg-notion-sidebar pl-6 pr-2 text-xs text-notion-text placeholder:text-notion-text-tertiary focus:border-notion-accent focus:outline-none"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              title: "Upload files",
+              className: "flex h-7 items-center gap-1.5 rounded border border-notion-border bg-notion-sidebar px-2 text-xs text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text transition-colors",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Upload, { className: "h-3 w-3" }),
+                "Upload"
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex rounded border border-notion-border overflow-hidden", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => setViewMode("list"),
+                className: cn(
+                  "flex h-7 w-7 items-center justify-center transition-colors",
+                  viewMode === "list" ? "bg-notion-sidebar-hover text-notion-text" : "bg-notion-sidebar text-notion-text-tertiary hover:text-notion-text-secondary"
+                ),
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(List, { className: "h-3.5 w-3.5" })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => setViewMode("grid"),
+                className: cn(
+                  "flex h-7 w-7 items-center justify-center border-l border-notion-border transition-colors",
+                  viewMode === "grid" ? "bg-notion-sidebar-hover text-notion-text" : "bg-notion-sidebar text-notion-text-tertiary hover:text-notion-text-secondary"
+                ),
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(LayoutGrid, { className: "h-3.5 w-3.5" })
+              }
+            )
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto", children: filteredFiles.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-2 py-20 text-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Folder, { className: "h-10 w-10 text-notion-text-tertiary" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-notion-text-secondary", children: searchQuery ? "No files match your search" : "This folder is empty" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-notion-text-tertiary", children: searchQuery ? "Try a different search term" : "Upload files or create a new folder" })
+      ] }) : viewMode === "list" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-xs", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-notion-border bg-notion-sidebar/50", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "px-4 py-2 text-left font-medium text-notion-text-tertiary", children: "Name" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "px-4 py-2 text-left font-medium text-notion-text-tertiary", children: "Modified" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "px-4 py-2 text-left font-medium text-notion-text-tertiary", children: "Size" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "w-8 px-2 py-2" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: filteredFiles.map((file) => {
+          const Icon2 = file.type === "folder" ? Folder : getMimeIcon(file.mimeType);
+          const isSelected = selectedFileId === file.id;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "tr",
+            {
+              onClick: () => handleSelectNode(file),
+              className: cn(
+                "group cursor-pointer border-b border-notion-border/40 transition-colors",
+                isSelected ? "bg-notion-sidebar-hover" : "hover:bg-notion-sidebar/60"
+              ),
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-4 py-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: cn(
+                    "h-4 w-4 shrink-0",
+                    file.type === "folder" ? "text-notion-orange" : getMimeColor(file.mimeType)
+                  ) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-notion-text", children: file.name })
+                ] }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-4 py-2 text-notion-text-tertiary", children: file.modified ?? "—" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-4 py-2 text-notion-text-tertiary", children: file.size ?? "—" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-2 py-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: (e) => e.stopPropagation(),
+                    className: "hidden h-6 w-6 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover group-hover:flex",
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(Ellipsis, { className: "h-3.5 w-3.5" })
+                  }
+                ) })
+              ]
+            },
+            file.id
+          );
+        }) })
+      ] }) : (
+        /* Grid view */
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-3 p-4", children: filteredFiles.map((file) => {
+          const Icon2 = file.type === "folder" ? Folder : getMimeIcon(file.mimeType);
+          const isSelected = selectedFileId === file.id;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: () => handleSelectNode(file),
+              className: cn(
+                "flex flex-col items-center gap-2 rounded-lg border p-3 text-center transition-all",
+                isSelected ? "border-notion-accent bg-notion-accent/5" : "border-notion-border hover:border-notion-text-tertiary/60 hover:bg-notion-sidebar/60"
+              ),
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: cn(
+                  "h-8 w-8",
+                  file.type === "folder" ? "text-notion-orange" : getMimeColor(file.mimeType)
+                ) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-full truncate text-[11px] text-notion-text", children: file.name }),
+                file.size && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-notion-text-tertiary", children: file.size })
+              ]
+            },
+            file.id
+          );
+        }) })
+      ) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center border-t border-notion-border px-4 py-1.5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[11px] text-notion-text-tertiary", children: [
+        filteredFiles.length,
+        " item",
+        filteredFiles.length !== 1 ? "s" : "",
+        searchQuery && ` matching "${searchQuery}"`
+      ] }) })
+    ] })
+  ] });
 }
 function AppShell() {
   const navigate = useNavigate();
-  const { activeWorkspaceId, setActiveWorkspaceId } = useUIStore();
-  const { setUser, setAuth, accessToken, isLoading, setLoading } = useAuthStore();
+  const { activeWorkspaceId, setActiveWorkspaceId, activeApp } = useUIStore();
+  const { setUser, accessToken } = useAuthStore();
   useQuery({
     queryKey: ["me"],
     queryFn: getMe,
@@ -28563,13 +29963,23 @@ function AppShell() {
       navigate(`/w/${firstWorkspace.id}`, { replace: true });
     }
   }, [workspaces, activeWorkspaceId, setActiveWorkspaceId, navigate]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-screen flex-col", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Titlebar, {}),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 overflow-hidden", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Sidebar, {}),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "flex-1 overflow-y-auto bg-notion-bg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) })
+  return (
+    // Root shell: full viewport, column layout, no overflow
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-screen flex-col overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Titlebar, {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(PageTabBar, {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 overflow-hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(AppSwitcherRail, {}),
+        activeApp === "home" && /* @__PURE__ */ jsxRuntimeExports.jsx(Sidebar, {}),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "relative flex flex-1 flex-col overflow-hidden", children: [
+          activeApp === "home" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto overflow-x-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) }),
+          activeApp === "inbox" && /* @__PURE__ */ jsxRuntimeExports.jsx(InboxApp, {}),
+          activeApp === "documents" && /* @__PURE__ */ jsxRuntimeExports.jsx(DocumentApp, {}),
+          activeApp === "files" && /* @__PURE__ */ jsxRuntimeExports.jsx(FilesApp, {})
+        ] })
+      ] })
     ] })
-  ] });
+  );
 }
 const Button = reactExports.forwardRef(
   ({ className, variant = "primary", size = "md", disabled, children, ...props }, ref) => {
@@ -28650,36 +30060,8 @@ function LoginPage() {
     }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-screen flex-col", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "drag-region flex h-9 shrink-0 items-center border-b border-notion-border bg-notion-sidebar px-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-notion-text-secondary tracking-wide", children: "DeskLink" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "no-drag ml-auto flex h-full", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: () => window.api.minimize(),
-            className: "flex h-full w-11 items-center justify-center text-notion-text-secondary hover:bg-notion-sidebar-hover",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "—" })
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: () => window.api.maximize(),
-            className: "flex h-full w-11 items-center justify-center text-notion-text-secondary hover:bg-notion-sidebar-hover",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "□" })
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: () => window.api.close(),
-            className: "flex h-full w-11 items-center justify-center text-notion-text-secondary hover:bg-notion-red hover:text-white",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "✕" })
-          }
-        )
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 items-center justify-center bg-notion-sidebar", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-sm rounded-lg border border-notion-border bg-white p-8 shadow-sm", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Titlebar, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 items-center justify-center bg-gradient-to-b from-notion-sidebar to-notion-bg px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-sm rounded-xl border border-notion-border/80 bg-notion-bg/95 p-8 shadow-lg shadow-neutral-900/[0.06] ring-1 ring-black/[0.03] backdrop-blur-sm", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 text-center", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-semibold text-notion-text", children: "Welcome back" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-notion-text-secondary", children: "Log in to your DeskLink workspace" })
@@ -28744,36 +30126,8 @@ function RegisterPage() {
     }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-screen flex-col", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "drag-region flex h-9 shrink-0 items-center border-b border-notion-border bg-notion-sidebar px-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-notion-text-secondary tracking-wide", children: "DeskLink" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "no-drag ml-auto flex h-full", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: () => window.api.minimize(),
-            className: "flex h-full w-11 items-center justify-center text-notion-text-secondary hover:bg-notion-sidebar-hover",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "—" })
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: () => window.api.maximize(),
-            className: "flex h-full w-11 items-center justify-center text-notion-text-secondary hover:bg-notion-sidebar-hover",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "□" })
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: () => window.api.close(),
-            className: "flex h-full w-11 items-center justify-center text-notion-text-secondary hover:bg-notion-red hover:text-white",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "✕" })
-          }
-        )
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 items-center justify-center bg-notion-sidebar", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-sm rounded-lg border border-notion-border bg-white p-8 shadow-sm", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Titlebar, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 items-center justify-center bg-gradient-to-b from-notion-sidebar to-notion-bg px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-sm rounded-xl border border-notion-border/80 bg-notion-bg/95 p-8 shadow-lg shadow-neutral-900/[0.06] ring-1 ring-black/[0.03] backdrop-blur-sm", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 text-center", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-semibold text-notion-text", children: "Create your account" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-notion-text-secondary", children: "Get started with DeskLink" })
@@ -28863,10 +30217,13 @@ function ProjectsPage() {
       queryClient2.invalidateQueries({ queryKey: ["projects", workspaceId] });
     }
   });
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-3xl px-12 py-10", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 flex items-center justify-between", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-lg font-semibold text-notion-text", children: "Projects" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { size: "sm", onClick: () => setShowCreate(true), children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-3xl px-8 py-10 md:px-12", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-semibold tracking-tight text-notion-text", children: "Projects" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-notion-text-secondary", children: "Your personal initiatives — boards, lists, and calendar in one place." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { size: "sm", className: "mt-4 shrink-0 sm:mt-0", onClick: () => setShowCreate(true), children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "mr-1.5 h-3.5 w-3.5" }),
         "New project"
       ] })
@@ -28921,7 +30278,7 @@ function ProjectsPage() {
       {
         icon: FolderKanban,
         title: "No projects yet",
-        description: "Create a project to organize your tasks, boards, and calendar events.",
+        description: "Create a project to capture a goal, then plan it on a board, list, or calendar.",
         actionLabel: "New project",
         onAction: () => setShowCreate(true)
       }
@@ -28929,7 +30286,7 @@ function ProjectsPage() {
       "div",
       {
         onClick: () => navigate(`/w/${workspaceId}/projects/${project.id}`),
-        className: "group cursor-pointer rounded-lg border border-notion-border bg-white p-4 transition-colors hover:border-notion-text-tertiary",
+        className: "group cursor-pointer rounded-xl border border-notion-border bg-notion-bg p-4 shadow-sm transition-all hover:border-notion-text-tertiary/60 hover:shadow-md",
         children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex-1", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-medium text-notion-text truncate", children: project.name }),
@@ -32684,7 +34041,11 @@ async function createColumn(boardId, data) {
   return apiClient.post(`/boards/${boardId}/columns`, data);
 }
 async function listTasks(projectId, params) {
-  return apiClient.get(`/projects/${projectId}/tasks`, { params });
+  const res = await apiClient.get(
+    `/projects/${projectId}/tasks`,
+    { params }
+  );
+  return res.data;
 }
 async function getTask(id) {
   return apiClient.get(`/tasks/${id}`);
@@ -33229,8 +34590,8 @@ function TaskCard({ task, isDragging, onClick }) {
       ...listeners,
       onClick,
       className: cn(
-        "cursor-pointer rounded-lg border border-notion-border bg-white p-3 transition-shadow",
-        "hover:shadow-sm",
+        "cursor-pointer rounded-lg border border-notion-border/90 bg-notion-bg p-3 shadow-sm transition-shadow",
+        "hover:shadow-md",
         isDragging && "rotate-2 shadow-lg",
         isSortDragging && "opacity-50"
       ),
@@ -33252,13 +34613,32 @@ function TaskCard({ task, isDragging, onClick }) {
               task._count.comments
             ] })
           ] }),
-          task.assignee && /* @__PURE__ */ jsxRuntimeExports.jsx(Avatar, { name: task.assignee.name, src: task.assignee.avatarUrl, size: "sm" })
+          task.assignee && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Avatar,
+            {
+              name: task.assignee.displayName ?? task.assignee.name,
+              src: task.assignee.avatarUrl,
+              size: "sm"
+            }
+          )
         ] })
       ]
     }
   );
 }
-function KanbanColumn({ column, projectId, boardId, onTaskClick }) {
+const COLUMN_ACCENTS = [
+  "bg-notion-purple",
+  "bg-notion-yellow",
+  "bg-notion-blue",
+  "bg-notion-green"
+];
+function KanbanColumn({
+  column,
+  columnIndex,
+  projectId,
+  boardId,
+  onTaskClick
+}) {
   const queryClient2 = useQueryClient();
   const [showNewTask, setShowNewTask] = reactExports.useState(false);
   const [newTitle, setNewTitle] = reactExports.useState("");
@@ -33272,11 +34652,13 @@ function KanbanColumn({ column, projectId, boardId, onTaskClick }) {
     }
   });
   const tasks = column.tasks || [];
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-64 shrink-0 flex-col", children: [
+  const accent = COLUMN_ACCENTS[columnIndex % COLUMN_ACCENTS.length];
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-[272px] shrink-0 flex-col", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-2 flex items-center justify-between px-1", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold uppercase tracking-wider text-notion-text-secondary", children: column.name }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-4 min-w-[16px] items-center justify-center rounded-full bg-notion-sidebar px-1 text-[10px] text-notion-text-tertiary", children: tasks.length })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-w-0 items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: cn("h-2 w-2 shrink-0 rounded-full", accent), "aria-hidden": true }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate text-[13px] font-semibold text-notion-text", children: column.name }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-5 min-w-[20px] shrink-0 items-center justify-center rounded-full bg-notion-sidebar px-1.5 text-[11px] font-medium tabular-nums text-notion-text-secondary", children: tasks.length })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
@@ -33291,10 +34673,13 @@ function KanbanColumn({ column, projectId, boardId, onTaskClick }) {
       "div",
       {
         ref: setNodeRef,
-        className: `flex flex-1 flex-col gap-1.5 rounded-lg p-1 transition-colors ${isOver ? "bg-notion-accent/5" : ""}`,
+        className: cn(
+          "flex min-h-[120px] flex-1 flex-col gap-2 rounded-xl border border-transparent bg-notion-sidebar/40 p-1.5 transition-colors",
+          isOver && "border-notion-accent/25 bg-notion-accent/5"
+        ),
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(SortableContext, { items: tasks.map((t) => t.id), strategy: verticalListSortingStrategy, children: tasks.map((task) => /* @__PURE__ */ jsxRuntimeExports.jsx(TaskCard, { task, onClick: () => onTaskClick(task.id) }, task.id)) }),
-          showNewTask && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-lg border border-notion-border bg-white p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          showNewTask && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-lg border border-notion-border bg-notion-bg p-2 shadow-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             "input",
             {
               value: newTitle,
@@ -33488,10 +34873,17 @@ function TaskDetailPanel({ taskId, projectId, onClose }) {
           ")"
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-3", children: comments.map((comment) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Avatar, { name: comment.author.name, src: comment.author.avatarUrl, size: "sm" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Avatar,
+            {
+              name: comment.author?.displayName ?? comment.author?.name,
+              src: comment.author?.avatarUrl,
+              size: "sm"
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-medium text-notion-text", children: comment.author.name }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-medium text-notion-text", children: comment.author?.displayName ?? comment.author?.name ?? "You" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-notion-text-tertiary", children: new Date(comment.createdAt).toLocaleDateString() })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-0.5 text-sm text-notion-text-secondary", children: comment.content })
@@ -33615,12 +35007,13 @@ function BoardView({ projectId }) {
     ) });
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full flex-col", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 items-center gap-2 border-b border-notion-border px-6 py-2", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 flex-wrap items-center gap-1 border-b border-notion-border bg-notion-bg px-6 py-2", children: [
       boards.map((b) => /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
+          type: "button",
           onClick: () => setSelectedBoardId(b.id),
-          className: `rounded px-2 py-1 text-xs transition-colors ${b.id === activeBoardId ? "bg-notion-sidebar-hover font-medium text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"}`,
+          className: `rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${b.id === activeBoardId ? "bg-notion-sidebar text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"}`,
           children: b.name
         },
         b.id
@@ -33659,10 +35052,11 @@ function BoardView({ projectId }) {
           onDragStart: handleDragStart,
           onDragEnd: handleDragEnd,
           children: [
-            columns.map((column) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+            columns.map((column, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(
               KanbanColumn,
               {
                 column,
+                columnIndex: index,
                 projectId,
                 boardId: activeBoardId,
                 onTaskClick: (taskId) => setSelectedTaskId(taskId)
@@ -33829,7 +35223,14 @@ function ListView({ projectId }) {
                 month: "short",
                 day: "numeric"
               }) : "—" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-3 py-2.5", children: task.assignee && /* @__PURE__ */ jsxRuntimeExports.jsx(Avatar, { name: task.assignee.name, src: task.assignee.avatarUrl, size: "sm" }) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-3 py-2.5", children: task.assignee && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Avatar,
+                {
+                  name: task.assignee.displayName ?? task.assignee.name,
+                  src: task.assignee.avatarUrl,
+                  size: "sm"
+                }
+              ) })
             ]
           },
           task.id
@@ -34028,6 +35429,11 @@ const tabs = [
   { key: "list", label: "List", icon: List },
   { key: "calendar", label: "Calendar", icon: Calendar }
 ];
+const tabHint = {
+  board: "Kanban",
+  list: "Table",
+  calendar: "Schedule"
+};
 function ProjectDetailPage() {
   const { projectId } = useParams();
   const [activeTab, setActiveTab] = reactExports.useState("board");
@@ -34037,24 +35443,31 @@ function ProjectDetailPage() {
     enabled: !!projectId
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full flex-col", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "shrink-0 border-b border-notion-border px-6 pt-6 pb-0", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-lg font-semibold text-notion-text", children: project?.name || "Loading..." }),
-      project?.description && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-notion-text-secondary", children: project.description }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 flex gap-0", children: tabs.map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "shrink-0 border-b border-notion-border bg-notion-bg px-8 pb-3 pt-8", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-notion-sidebar text-lg font-semibold text-notion-text", children: (project?.name || "P").charAt(0).toUpperCase() }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-semibold tracking-tight text-notion-text", children: project?.name || "Loading..." }),
+          project?.description && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm leading-relaxed text-notion-text-secondary", children: project.description })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-6 flex flex-wrap items-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-flex rounded-lg bg-notion-sidebar p-1", children: tabs.map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
+          type: "button",
+          title: tabHint[tab.key],
           onClick: () => setActiveTab(tab.key),
           className: cn(
-            "flex items-center gap-1.5 border-b-2 px-3 pb-2 text-sm transition-colors",
-            activeTab === tab.key ? "border-notion-text font-medium text-notion-text" : "border-transparent text-notion-text-secondary hover:text-notion-text"
+            "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-all",
+            activeTab === tab.key ? "bg-notion-bg font-medium text-notion-text shadow-sm" : "text-notion-text-secondary hover:text-notion-text"
           ),
           children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(tab.icon, { className: "h-3.5 w-3.5" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(tab.icon, { className: "h-3.5 w-3.5 opacity-80" }),
             tab.label
           ]
         },
         tab.key
-      )) })
+      )) }) })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-hidden", children: [
       activeTab === "board" && /* @__PURE__ */ jsxRuntimeExports.jsx(BoardView, { projectId }),
@@ -34152,10 +35565,11 @@ function MembersPage() {
     }
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-2xl px-12 py-10", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8 flex items-center gap-3", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-2 flex items-center gap-3", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "h-5 w-5 text-notion-text-secondary" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-lg font-semibold text-notion-text", children: "Members" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-lg font-semibold text-notion-text", children: "Workspace access" })
     ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-8 text-sm text-notion-text-secondary", children: "Optional: invite others only if you use shared workspaces. Solo use works without inviting anyone." }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8 flex gap-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
         Input,
@@ -34185,13 +35599,13 @@ function MembersPage() {
       EmptyState,
       {
         icon: Users,
-        title: "No members yet",
-        description: "Invite team members to collaborate in this workspace."
+        title: "Just you for now",
+        description: "Add someone later if this workspace ever needs to be shared."
       }
     ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "divide-y divide-notion-border rounded-lg border border-notion-border", children: members.map((member) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 px-4 py-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Avatar, { name: member.user.name, src: member.user.avatarUrl, size: "md" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Avatar, { name: member.user.displayName, src: member.user.avatarUrl, size: "md" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-notion-text truncate", children: member.user.name }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-notion-text truncate", children: member.user.displayName }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-notion-text-secondary truncate", children: member.user.email })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { children: member.role }),
@@ -34247,6 +35661,26 @@ const router = createHashRouter([
               {
                 path: "projects/:projectId",
                 element: /* @__PURE__ */ jsxRuntimeExports.jsx(ProjectDetailPage, {})
+              },
+              {
+                path: "inbox",
+                element: /* @__PURE__ */ jsxRuntimeExports.jsx(InboxApp, {})
+              },
+              {
+                path: "documents",
+                element: /* @__PURE__ */ jsxRuntimeExports.jsx(DocumentApp, {})
+              },
+              {
+                path: "documents/:docId",
+                element: /* @__PURE__ */ jsxRuntimeExports.jsx(DocumentApp, {})
+              },
+              {
+                path: "files",
+                element: /* @__PURE__ */ jsxRuntimeExports.jsx(FilesApp, {})
+              },
+              {
+                path: "files/:folderId",
+                element: /* @__PURE__ */ jsxRuntimeExports.jsx(FilesApp, {})
               }
             ]
           }

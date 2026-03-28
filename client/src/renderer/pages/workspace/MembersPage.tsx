@@ -40,10 +40,13 @@ export function MembersPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-12 py-10">
-      <div className="mb-8 flex items-center gap-3">
+      <div className="mb-2 flex items-center gap-3">
         <Users className="h-5 w-5 text-notion-text-secondary" />
-        <h1 className="text-lg font-semibold text-notion-text">Members</h1>
+        <h1 className="text-lg font-semibold text-notion-text">Workspace access</h1>
       </div>
+      <p className="mb-8 text-sm text-notion-text-secondary">
+        Optional: invite others only if you use shared workspaces. Solo use works without inviting anyone.
+      </p>
 
       {/* Invite form */}
       <div className="mb-8 flex gap-2">
@@ -71,17 +74,17 @@ export function MembersPage() {
       {members.length === 0 ? (
         <EmptyState
           icon={Users}
-          title="No members yet"
-          description="Invite team members to collaborate in this workspace."
+          title="Just you for now"
+          description="Add someone later if this workspace ever needs to be shared."
         />
       ) : (
         <div className="divide-y divide-notion-border rounded-lg border border-notion-border">
           {members.map((member: WorkspaceMember) => (
             <div key={member.id} className="flex items-center gap-3 px-4 py-3">
-              <Avatar name={member.user.name} src={member.user.avatarUrl} size="md" />
+              <Avatar name={member.user.displayName} src={member.user.avatarUrl} size="md" />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-notion-text truncate">
-                  {member.user.name}
+                  {member.user.displayName}
                 </p>
                 <p className="text-xs text-notion-text-secondary truncate">
                   {member.user.email}
