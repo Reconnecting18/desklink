@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type AppId = 'home' | 'inbox' | 'documents' | 'whiteboard' | 'files'
+export type AppId = 'home' | 'inbox' | 'documents' | 'whiteboard' | 'files' | 'settings'
 
 export interface PageTab {
   id: string
@@ -101,7 +101,8 @@ export const useUIStore = create<UIState>((set, get) => ({
       inbox: 'Inbox',
       documents: 'New page',
       whiteboard: 'Whiteboard',
-      files: 'Files'
+      files: 'Files',
+      settings: 'Settings'
     }
     const newPage: PageTab = {
       id,

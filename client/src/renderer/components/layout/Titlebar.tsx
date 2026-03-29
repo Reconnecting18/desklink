@@ -1,5 +1,19 @@
 import { useState, useEffect, useRef } from 'react'
-import { Minus, Square, X, Copy, Plus, Home, Inbox, FileText, PenTool, FolderOpen } from 'lucide-react'
+import {
+  Minus,
+  Square,
+  X,
+  Copy,
+  Plus,
+  Home,
+  Inbox,
+  FileText,
+  PenTool,
+  FolderOpen,
+  Settings,
+  PanelLeft,
+  PanelRight
+} from 'lucide-react'
 import { cn } from '@/lib/cn'
 import deskLinkLogoUrl from '@/assets/FreeSample-Vectorizer-io-D.svg'
 import { useUIStore, type AppId, type PageTab } from '@/stores/uiStore'
@@ -9,7 +23,8 @@ const APP_ICONS: Record<AppId, React.ElementType> = {
   inbox: Inbox,
   documents: FileText,
   whiteboard: PenTool,
-  files: FolderOpen
+  files: FolderOpen,
+  settings: Settings
 }
 
 function Tab({ page, isActive }: { page: PageTab; isActive: boolean }) {
@@ -65,13 +80,13 @@ function Tab({ page, isActive }: { page: PageTab; isActive: boolean }) {
 }
 
 export interface TitlebarProps {
-  /** When true, show page tabs and new-tab control to the right of the DeskLink brand. */
+  /** When true, show page tabs and new-tab control after the brand row. */
   showTabs?: boolean
 }
 
 export function Titlebar({ showTabs = false }: TitlebarProps) {
   const [isMaximized, setIsMaximized] = useState(false)
-  const { pages, activePageId, addPage } = useUIStore()
+  const { pages, activePageId, addPage, toggleSidebar, sidebarOpen } = useUIStore()
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -86,7 +101,7 @@ export function Titlebar({ showTabs = false }: TitlebarProps) {
   }, [activePageId, showTabs])
 
   const brand = (
-    <div className="flex items-center gap-2.5">
+    <div className="flex items-center gap-2">
       <img
         src={deskLinkLogoUrl}
         alt=""
@@ -95,7 +110,21 @@ export function Titlebar({ showTabs = false }: TitlebarProps) {
         className="h-5 w-5 shrink-0 object-contain"
         aria-hidden
       />
-      <span className="text-xs font-semibold tracking-wide text-notion-text-secondary">DeskLink</span>
+      {showTabs && (
+        <button
+          type="button"
+          onClick={() => toggleSidebar()}
+          title={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+          aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+          className="no-drag flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
+        >
+          {sidebarOpen ? (
+            <PanelLeft className="h-4 w-4" strokeWidth={1.75} />
+          ) : (
+            <PanelRight className="h-4 w-4" strokeWidth={1.75} />
+          )}
+        </button>
+      )}
     </div>
   )
 
@@ -103,7 +132,7 @@ export function Titlebar({ showTabs = false }: TitlebarProps) {
     <div className="drag-region flex h-10 min-h-10 shrink-0 items-stretch border-b border-notion-border bg-notion-sidebar">
       {showTabs ? (
         <>
-          <div className="flex shrink-0 items-center border-r border-notion-border bg-notion-sidebar px-3.5 py-2">
+          <div className="flex shrink-0 items-center gap-1 border-r border-notion-border bg-notion-sidebar px-3 py-2">
             {brand}
           </div>
 

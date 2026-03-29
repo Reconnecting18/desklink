@@ -66,6 +66,8 @@
       --tw-backdrop-opacity: initial;
       --tw-backdrop-saturate: initial;
       --tw-backdrop-sepia: initial;
+      --tw-duration: initial;
+      --tw-ease: initial;
       --tw-content: "";
     }
   }
@@ -113,13 +115,13 @@
     --font-weight-bold: 700;
     --tracking-tight: -.025em;
     --tracking-wide: .025em;
-    --tracking-wider: .05em;
     --leading-snug: 1.375;
     --leading-normal: 1.5;
     --leading-relaxed: 1.625;
     --radius-md: .375rem;
     --radius-lg: .5rem;
     --radius-xl: .75rem;
+    --ease-in-out: cubic-bezier(.4, 0, .2, 1);
     --animate-spin: spin 1s linear infinite;
     --blur-sm: 8px;
     --default-transition-duration: .15s;
@@ -431,8 +433,8 @@
     right: calc(var(--spacing) * 0);
   }
 
-  .right-3 {
-    right: calc(var(--spacing) * 3);
+  .right-4 {
+    right: calc(var(--spacing) * 4);
   }
 
   .bottom-0 {
@@ -451,8 +453,8 @@
     left: calc(var(--spacing) * 2);
   }
 
-  .left-3 {
-    left: calc(var(--spacing) * 3);
+  .left-4 {
+    left: calc(var(--spacing) * 4);
   }
 
   .z-10 {
@@ -469,10 +471,6 @@
 
   .mx-auto {
     margin-inline: auto;
-  }
-
-  .my-1 {
-    margin-block: calc(var(--spacing) * 1);
   }
 
   .mt-0\.5 {
@@ -511,6 +509,10 @@
     margin-right: calc(var(--spacing) * 1.5);
   }
 
+  .mr-2 {
+    margin-right: calc(var(--spacing) * 2);
+  }
+
   .mb-1 {
     margin-bottom: calc(var(--spacing) * 1);
   }
@@ -539,8 +541,12 @@
     margin-bottom: calc(var(--spacing) * 8);
   }
 
-  .ml-0\.5 {
-    margin-left: calc(var(--spacing) * .5);
+  .mb-10 {
+    margin-bottom: calc(var(--spacing) * 10);
+  }
+
+  .ml-1 {
+    margin-left: calc(var(--spacing) * 1);
   }
 
   .ml-auto {
@@ -626,6 +632,10 @@
     height: calc(var(--spacing) * 10);
   }
 
+  .h-11 {
+    height: calc(var(--spacing) * 11);
+  }
+
   .h-12 {
     height: calc(var(--spacing) * 12);
   }
@@ -642,8 +652,8 @@
     height: 2px;
   }
 
-  .h-\[18px\] {
-    height: 18px;
+  .h-\[19px\] {
+    height: 19px;
   }
 
   .h-full {
@@ -684,6 +694,10 @@
 
   .min-h-\[400px\] {
     min-height: 400px;
+  }
+
+  .w-0 {
+    width: calc(var(--spacing) * 0);
   }
 
   .w-1 {
@@ -774,12 +788,12 @@
     width: calc(var(--spacing) * 96);
   }
 
-  .w-\[18px\] {
-    width: 18px;
+  .w-\[19px\] {
+    width: 19px;
   }
 
-  .w-\[52px\] {
-    width: 52px;
+  .w-\[56px\] {
+    width: 56px;
   }
 
   .w-\[248px\] {
@@ -849,10 +863,6 @@
 
   .rotate-2 {
     rotate: 2deg;
-  }
-
-  .rotate-180 {
-    rotate: 180deg;
   }
 
   .transform {
@@ -947,14 +957,22 @@
     gap: calc(var(--spacing) * 4);
   }
 
+  .gap-5 {
+    gap: calc(var(--spacing) * 5);
+  }
+
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
 
-  :where(.space-y-0\.5 > :not(:last-child)) {
+  .gap-10 {
+    gap: calc(var(--spacing) * 10);
+  }
+
+  :where(.space-y-1 > :not(:last-child)) {
     --tw-space-y-reverse: 0;
-    margin-block-start: calc(calc(var(--spacing) * .5) * var(--tw-space-y-reverse));
-    margin-block-end: calc(calc(var(--spacing) * .5) * calc(1 - var(--tw-space-y-reverse)));
+    margin-block-start: calc(calc(var(--spacing) * 1) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));
   }
 
   :where(.divide-y > :not(:last-child)) {
@@ -1331,10 +1349,6 @@
     padding: calc(var(--spacing) * 8);
   }
 
-  .px-0\.5 {
-    padding-inline: calc(var(--spacing) * .5);
-  }
-
   .px-1 {
     padding-inline: calc(var(--spacing) * 1);
   }
@@ -1373,6 +1387,10 @@
 
   .px-8 {
     padding-inline: calc(var(--spacing) * 8);
+  }
+
+  .px-10 {
+    padding-inline: calc(var(--spacing) * 10);
   }
 
   .px-12 {
@@ -1451,28 +1469,36 @@
     padding-top: calc(var(--spacing) * 1);
   }
 
-  .pt-3 {
-    padding-top: calc(var(--spacing) * 3);
+  .pt-2 {
+    padding-top: calc(var(--spacing) * 2);
+  }
+
+  .pt-4 {
+    padding-top: calc(var(--spacing) * 4);
   }
 
   .pt-8 {
     padding-top: calc(var(--spacing) * 8);
   }
 
-  .pr-2 {
-    padding-right: calc(var(--spacing) * 2);
+  .pt-10 {
+    padding-top: calc(var(--spacing) * 10);
   }
 
-  .pb-2 {
-    padding-bottom: calc(var(--spacing) * 2);
+  .pr-2 {
+    padding-right: calc(var(--spacing) * 2);
   }
 
   .pb-3 {
     padding-bottom: calc(var(--spacing) * 3);
   }
 
-  .pl-3 {
-    padding-left: calc(var(--spacing) * 3);
+  .pb-6 {
+    padding-bottom: calc(var(--spacing) * 6);
+  }
+
+  .pl-4 {
+    padding-left: calc(var(--spacing) * 4);
   }
 
   .pl-6 {
@@ -1571,11 +1597,6 @@
   .tracking-wide {
     --tw-tracking: var(--tracking-wide);
     letter-spacing: var(--tracking-wide);
-  }
-
-  .tracking-wider {
-    --tw-tracking: var(--tracking-wider);
-    letter-spacing: var(--tracking-wider);
   }
 
   .whitespace-nowrap {
@@ -1687,10 +1708,6 @@
     opacity: .7;
   }
 
-  .opacity-75 {
-    opacity: .75;
-  }
-
   .opacity-80 {
     opacity: .8;
   }
@@ -1750,6 +1767,12 @@
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
 
+  .transition-\[width\] {
+    transition-property: width;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+
   .transition-all {
     transition-property: all;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -1772,6 +1795,16 @@
     transition-property: box-shadow;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+
+  .duration-200 {
+    --tw-duration: .2s;
+    transition-duration: .2s;
+  }
+
+  .ease-in-out {
+    --tw-ease: var(--ease-in-out);
+    transition-timing-function: var(--ease-in-out);
   }
 
   .outline-none {
@@ -2004,6 +2037,10 @@
   @media (min-width: 48rem) {
     .md\:px-12 {
       padding-inline: calc(var(--spacing) * 12);
+    }
+
+    .md\:px-14 {
+      padding-inline: calc(var(--spacing) * 14);
     }
   }
 
@@ -2566,6 +2603,16 @@ button, a {
 }
 
 @property --tw-backdrop-sepia {
+  syntax: "*";
+  inherits: false
+}
+
+@property --tw-duration {
+  syntax: "*";
+  inherits: false
+}
+
+@property --tw-ease {
   syntax: "*";
   inherits: false
 }
