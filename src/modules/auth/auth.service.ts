@@ -71,15 +71,17 @@ export async function refresh(refreshToken: string) {
     const decoded = jwt.verify(refreshToken, config.JWT_SECRET) as JwtPayload;
     const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
     if (!user) {
-      throw new AuthenticationError('User not found');
+      throw new AuthenticationError('Invalid refresh token');
     }
-
     const payload: JwtPayload = { userId: user.id, email: user.email };
-    const newAccessToken = signAccessToken(payload);
-    const newRefreshToken = signRefreshToken(payload);
-
-    return { accessToken: newAccessToken, refreshToken: newRefreshToken };
-  } catch {
+    return {
+      accessToken: signAccessToken(payload),
+      refreshToken: signRefreshToken(payload),
+    };
+  } catch (err) {
+    if (err instanceof AuthenticationError) {
+      throw err;
+    }
     throw new AuthenticationError('Invalid refresh token');
   }
 }

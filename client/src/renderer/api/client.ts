@@ -1,9 +1,8 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 
-const API_BASE = import.meta.env.DEV
-  ? 'http://localhost:3000/api'
-  : 'http://localhost:3000/api'
+/** API origin for REST calls (refresh uses raw axios to avoid interceptor loops). */
+export const API_BASE = 'http://localhost:3000/api'
 
 const apiClient = axios.create({
   baseURL: API_BASE,
@@ -75,7 +74,11 @@ apiClient.interceptors.response.use(
         }
 
         const response = await axios.post(`${API_BASE}/auth/refresh`, { refreshToken })
-        const { accessToken: newToken, refreshToken: newRefresh } = response.data.data
+        const body = response.data as { success?: boolean; data?: { accessToken: string; refreshToken: string } }
+        if (!body?.success || !body.data?.accessToken || !body.data?.refreshToken) {
+          throw new Error('Invalid refresh response')
+        }
+        const { accessToken: newToken, refreshToken: newRefresh } = body.data
 
         useAuthStore.getState().setToken(newToken)
         await window.api.storeToken('refreshToken', newRefresh)

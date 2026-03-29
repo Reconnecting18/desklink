@@ -1,31 +1,20 @@
 import { useEffect } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
-import { getMe } from '@/api/auth'
+import { restoreSession } from '@/api/session'
 
 export function ProtectedRoute() {
-  const { isAuthenticated, isLoading, setAuth, setLoading, accessToken } = useAuthStore()
+  const { isAuthenticated, isLoading } = useAuthStore()
 
   useEffect(() => {
     async function init() {
-      try {
-        const storedToken = await window.api.getToken('accessToken')
-        if (storedToken) {
-          useAuthStore.setState({ accessToken: storedToken })
-          const user = await getMe()
-          setAuth(user, storedToken)
-        } else {
-          setLoading(false)
-        }
-      } catch {
-        setLoading(false)
-      }
+      await restoreSession()
     }
 
     if (isLoading) {
-      init()
+      void init()
     }
-  }, [isLoading, setAuth, setLoading])
+  }, [isLoading])
 
   if (isLoading) {
     return (

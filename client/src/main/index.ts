@@ -2,10 +2,9 @@
 // instead of the npm package path string. This is needed because Node.js finds
 // node_modules/electron before Electron's built-in module interception kicks in.
 import { createRequire } from 'module'
-import { app, BrowserWindow, ipcMain, shell, safeStorage } from 'electron'
+import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { join } from 'path'
-
-const tokenStore = new Map<string, Buffer>()
+import * as tokenStorage from './tokenStorage'
 
 function createWindow(): BrowserWindow {
   const mainWindow = new BrowserWindow({
@@ -64,38 +63,28 @@ function registerIpcHandlers() {
     return BrowserWindow.fromWebContents(event.sender)?.isMaximized() ?? false
   })
 
-  // IPC: Secure token storage using safeStorage
+  // IPC: Secure token storage (OS keychain-backed encryption + disk persistence)
   ipcMain.handle('token:store', (_event, key: string, value: string) => {
-    if (safeStorage.isEncryptionAvailable()) {
-      tokenStore.set(key, safeStorage.encryptString(value))
-    } else {
-      tokenStore.set(key, Buffer.from(value, 'utf-8'))
-    }
-    return true
+    return tokenStorage.storeToken(key, value)
   })
 
   ipcMain.handle('token:get', (_event, key: string) => {
-    const encrypted = tokenStore.get(key)
-    if (!encrypted) return null
-    if (safeStorage.isEncryptionAvailable()) {
-      return safeStorage.decryptString(encrypted)
-    }
-    return encrypted.toString('utf-8')
+    return tokenStorage.getToken(key)
   })
 
   ipcMain.handle('token:delete', (_event, key: string) => {
-    tokenStore.delete(key)
-    return true
+    return tokenStorage.deleteToken(key)
   })
 
   ipcMain.handle('token:clear', () => {
-    tokenStore.clear()
+    tokenStorage.clearTokens()
     return true
   })
 }
 
 // App lifecycle
 app.whenReady().then(() => {
+  tokenStorage.initTokenStorage(app.getPath('userData'))
   registerIpcHandlers()
   createWindow()
 
