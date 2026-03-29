@@ -1,24 +1,15 @@
 import { useState } from 'react'
 import { NavLink, useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import {
-  LayoutDashboard,
-  ChevronDown,
-  ChevronRight,
-  Search,
-  Home,
-  SquarePen
-} from 'lucide-react'
+import { LayoutDashboard, ChevronDown, Search, Home, SquarePen } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useUIStore } from '@/stores/uiStore'
 import { listWorkspaces, type Workspace } from '@/api/workspaces'
-import { listProjects, type Project } from '@/api/projects'
 
 export function Sidebar() {
   const { workspaceId } = useParams()
   const navigate = useNavigate()
   const { setActiveWorkspaceId, openOrFocusApp, requestNewDocument } = useUIStore()
-  const [plannerOpen, setPlannerOpen] = useState(true)
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false)
 
   const { data: workspaces = [] } = useQuery({
@@ -26,17 +17,11 @@ export function Sidebar() {
     queryFn: listWorkspaces
   })
 
-  const { data: projects = [] } = useQuery({
-    queryKey: ['projects', workspaceId],
-    queryFn: () => listProjects(workspaceId!),
-    enabled: !!workspaceId
-  })
-
   const currentWorkspace = workspaces.find((w: Workspace) => w.id === workspaceId)
 
   const handleWorkspaceSwitch = (ws: Workspace) => {
     setActiveWorkspaceId(ws.id)
-    navigate(`/w/${ws.id}/projects`)
+    navigate(`/w/${ws.id}`)
     setWorkspaceMenuOpen(false)
   }
 
@@ -104,7 +89,7 @@ export function Sidebar() {
         </button>
 
         <NavLink
-          to={`/w/${workspaceId}/projects`}
+          to={`/w/${workspaceId}`}
           end
           className={({ isActive }) =>
             cn(
@@ -119,38 +104,20 @@ export function Sidebar() {
           Home
         </NavLink>
 
-        <div className="mt-4 border-t border-notion-border/80 pt-4">
-          <button
-            type="button"
-            onClick={() => setPlannerOpen(!plannerOpen)}
-            className="mb-2 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary hover:bg-notion-sidebar-hover"
-          >
-            {plannerOpen ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
-            Projects
-          </button>
-
-          {plannerOpen && (
-            <div className="ml-1 space-y-1 border-l border-notion-border/80 pl-4">
-              {projects.map((project: Project) => (
-                <NavLink
-                  key={project.id}
-                  to={`/w/${workspaceId}/projects/${project.id}`}
-                  className={({ isActive }) =>
-                    cn(
-                      'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
-                      isActive
-                        ? 'bg-notion-sidebar-hover font-medium text-notion-text'
-                        : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
-                    )
-                  }
-                >
-                  <LayoutDashboard className="h-4 w-4 shrink-0 opacity-80" />
-                  <span className="truncate">{project.name}</span>
-                </NavLink>
-              ))}
-            </div>
-          )}
-        </div>
+        <NavLink
+          to={`/w/${workspaceId}/projects`}
+          className={({ isActive }) =>
+            cn(
+              'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors',
+              isActive
+                ? 'bg-notion-sidebar-hover font-medium text-notion-text'
+                : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
+            )
+          }
+        >
+          <LayoutDashboard className="h-4 w-4 shrink-0 opacity-80" />
+          Planner
+        </NavLink>
       </nav>
     </div>
   )

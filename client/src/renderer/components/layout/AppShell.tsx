@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { useQuery } from '@tanstack/react-query'
 import { Titlebar } from './Titlebar'
 import { Sidebar } from './Sidebar'
 import { AppSwitcherRail } from './AppSwitcherRail'
-import { useUIStore } from '@/stores/uiStore'
+import { useUIStore, type AppId } from '@/stores/uiStore'
 import { useAuthStore } from '@/stores/authStore'
 import { listWorkspaces } from '@/api/workspaces'
 import { getMe } from '@/api/auth'
@@ -14,10 +14,41 @@ import { WhiteboardApp } from '@/pages/whiteboard/WhiteboardApp'
 import { FilesApp } from '@/pages/files/FilesApp'
 import { DocumentApp } from '@/pages/documents/DocumentApp'
 
+function recentVisitForPath(pathname: string, workspaceId: string): { title: string; appId: AppId; href: string } | null {
+  const base = `/w/${workspaceId}`
+  const href = pathname
+  if (pathname === base) {
+    return { title: 'Dashboard', appId: 'home', href }
+  }
+  if (pathname === `${base}/projects`) {
+    return { title: 'Planner', appId: 'home', href }
+  }
+  if (pathname.startsWith(`${base}/projects/`)) {
+    return { title: 'Project', appId: 'home', href }
+  }
+  if (pathname.includes('/inbox')) {
+    return { title: 'Inbox', appId: 'inbox', href }
+  }
+  if (pathname.includes('/whiteboard')) {
+    return { title: 'Whiteboard', appId: 'whiteboard', href }
+  }
+  if (pathname.includes('/files')) {
+    return { title: 'Files', appId: 'files', href }
+  }
+  if (pathname.includes('/settings')) {
+    return { title: 'Settings', appId: 'settings', href }
+  }
+  if (pathname.includes('/members')) {
+    return { title: 'Members', appId: 'home', href }
+  }
+  return null
+}
+
 export function AppShell() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { activeWorkspaceId, setActiveWorkspaceId, activeApp, setActiveApp, sidebarOpen } =
+  const { workspaceId } = useParams<{ workspaceId: string }>()
+  const { activeWorkspaceId, setActiveWorkspaceId, activeApp, setActiveApp, sidebarOpen, pushRecentVisit } =
     useUIStore()
   const { setUser, accessToken } = useAuthStore()
 
@@ -57,10 +88,21 @@ export function AppShell() {
       setActiveApp('whiteboard')
     } else if (path.includes('/files')) {
       setActiveApp('files')
-    } else if (path.includes('/projects') || path.includes('/members')) {
+    } else if (
+      path.includes('/projects') ||
+      path.includes('/members') ||
+      (workspaceId && path === `/w/${workspaceId}`)
+    ) {
       setActiveApp('home')
     }
-  }, [location.pathname, setActiveApp])
+  }, [location.pathname, setActiveApp, workspaceId])
+
+  // Record recently visited routes for the home dashboard (deduped in store).
+  useEffect(() => {
+    if (!workspaceId) return
+    const meta = recentVisitForPath(location.pathname, workspaceId)
+    if (meta) pushRecentVisit(meta)
+  }, [location.pathname, workspaceId, pushRecentVisit])
 
   return (
     // Root shell: full viewport, column layout, no overflow

@@ -101,13 +101,13 @@ export function Titlebar({ showTabs = false }: TitlebarProps) {
   }, [activePageId, showTabs])
 
   const brand = (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2.5">
       <img
         src={deskLinkLogoUrl}
         alt=""
         width={20}
         height={20}
-        className="h-5 w-5 shrink-0 object-contain"
+        className="h-5 w-5 shrink-0 object-contain opacity-90 dark:opacity-100"
         aria-hidden
       />
       {showTabs && (

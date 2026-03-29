@@ -1,4 +1,4 @@
-import { createHashRouter, Navigate } from 'react-router-dom'
+import { createHashRouter } from 'react-router-dom'
 import { ProtectedRoute } from './ProtectedRoute'
 import { WorkspaceRoot } from './WorkspaceRoot'
 import { AppShell } from '@/components/layout/AppShell'
@@ -11,6 +11,7 @@ import { MembersPage } from '@/pages/workspace/MembersPage'
 import { InboxApp } from '@/pages/inbox/InboxApp'
 import { WhiteboardApp } from '@/pages/whiteboard/WhiteboardApp'
 import { FilesApp } from '@/pages/files/FilesApp'
+import { HomeDashboardPage } from '@/pages/home/HomeDashboardPage'
 
 export const router = createHashRouter([
   {
@@ -36,7 +37,7 @@ export const router = createHashRouter([
             children: [
               {
                 index: true,
-                element: <Navigate to="projects" replace />
+                element: <HomeDashboardPage />
               },
               {
                 path: 'settings',

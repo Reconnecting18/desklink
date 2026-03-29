@@ -156,20 +156,20 @@ export function InboxApp() {
         </div>
 
         {/* Filter tabs */}
-        <div className="flex border-b border-notion-border px-3 pt-2">
+        <div className="flex gap-1 border-b border-notion-border px-3 pb-0 pt-2">
           {(['all', 'unread', 'mentions'] as FilterTab[]).map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setFilter(tab)}
               className={cn(
-                'px-3 py-2 text-xs font-medium capitalize transition-colors',
+                'min-w-[4.5rem] shrink-0 rounded-t px-3 py-2.5 text-xs font-medium capitalize transition-colors',
                 filter === tab
                   ? 'border-b-2 border-notion-accent text-notion-accent'
-                  : 'text-notion-text-secondary hover:text-notion-text'
+                  : 'mb-[2px] text-notion-text-secondary hover:text-notion-text'
               )}
             >
-              {tab}
+              {tab === 'all' ? 'All' : tab === 'unread' ? 'Unread' : 'Mentions'}
             </button>
           ))}
         </div>
@@ -207,20 +207,20 @@ export function InboxApp() {
                       {msg.senderInitials}
                     </div>
 
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-2">
+                    <div className="min-w-0 flex-1 space-y-1.5">
+                      <div className="flex items-center justify-between gap-3">
                         <span className={cn('truncate text-sm font-medium leading-snug', msg.unread ? 'text-notion-text' : 'text-notion-text-secondary')}>
                           {msg.sender}
                         </span>
                         <span className="shrink-0 text-[11px] text-notion-text-tertiary">{msg.timestamp}</span>
                       </div>
-                      <div className="mt-1 flex items-center gap-1.5">
-                        <TypeIcon className="h-3 w-3 shrink-0 text-notion-text-tertiary" />
+                      <div className="flex items-start gap-2">
+                        <TypeIcon className="mt-0.5 h-3.5 w-3.5 shrink-0 text-notion-text-tertiary" />
                         <p className={cn('line-clamp-2 text-xs leading-snug', msg.unread ? 'text-notion-text' : 'text-notion-text-tertiary')}>
                           {msg.subject}
                         </p>
                       </div>
-                      <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-notion-text-tertiary">
+                      <p className="line-clamp-2 pl-0.5 text-xs leading-relaxed text-notion-text-tertiary">
                         {msg.preview}
                       </p>
                     </div>
@@ -242,8 +242,8 @@ export function InboxApp() {
         {selected ? (
           <>
             {/* Detail header */}
-            <div className="border-b border-notion-border px-10 py-6">
-              <div className="flex items-start gap-3">
+            <div className="border-b border-notion-border px-10 py-7">
+              <div className="flex items-start gap-4">
                 <div
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
                   style={{ backgroundColor: selected.senderColor }}
@@ -261,11 +261,9 @@ export function InboxApp() {
             </div>
 
             {/* Detail body */}
-            <div className="flex-1 overflow-y-auto px-10 py-8">
-              <div className="max-w-2xl">
-                <p className="whitespace-pre-line text-sm leading-relaxed text-notion-text">
-                  {selected.body}
-                </p>
+            <div className="flex-1 overflow-y-auto px-10 py-10">
+              <div className="max-w-2xl border-l-2 border-notion-accent/20 py-1 pl-6">
+                <p className="whitespace-pre-line text-sm leading-[1.65] text-notion-text">{selected.body}</p>
               </div>
             </div>
           </>

@@ -89,31 +89,31 @@ export function WhiteboardApp() {
       </div>
 
       {/* Tab bar */}
-      <div className="flex shrink-0 border-b border-notion-border px-10">
+      <div className="flex shrink-0 gap-1 border-b border-notion-border px-10">
         {(['whiteboards', 'mockups'] as WhiteboardTab[]).map((tab) => (
           <button
             key={tab}
             type="button"
             onClick={() => setActiveTab(tab)}
             className={cn(
-              'flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium capitalize transition-colors',
+              'flex items-center gap-2.5 px-4 py-3 text-sm font-medium capitalize transition-colors',
               activeTab === tab
                 ? 'border-b-2 border-notion-accent text-notion-accent'
-                : 'text-notion-text-secondary hover:text-notion-text'
+                : 'mb-[2px] text-notion-text-secondary hover:text-notion-text'
             )}
           >
             {tab === 'whiteboards' ? (
-              <PenTool className="h-3.5 w-3.5" />
+              <PenTool className="h-4 w-4 shrink-0" />
             ) : (
-              <Layers className="h-3.5 w-3.5" />
+              <Layers className="h-4 w-4 shrink-0" />
             )}
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            <span className="pt-px">{tab.charAt(0).toUpperCase() + tab.slice(1)}</span>
           </button>
         ))}
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-10 py-8">
+      <div className="flex-1 overflow-y-auto px-10 py-10">
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-4 py-28 text-center">
             <Icon className="h-12 w-12 text-notion-text-tertiary" />

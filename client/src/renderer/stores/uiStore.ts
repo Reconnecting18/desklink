@@ -2,6 +2,31 @@ import { create } from 'zustand'
 
 export type AppId = 'home' | 'inbox' | 'documents' | 'whiteboard' | 'files' | 'settings'
 
+const RECENT_VISITS_KEY = 'desklink-recent-visits'
+
+export interface RecentVisit {
+  id: string
+  title: string
+  href: string
+  appId: AppId
+  visitedAt: number
+}
+
+function loadRecentVisits(): RecentVisit[] {
+  try {
+    const raw = localStorage.getItem(RECENT_VISITS_KEY)
+    if (!raw) return []
+    const parsed = JSON.parse(raw) as RecentVisit[]
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+function persistRecentVisits(visits: RecentVisit[]) {
+  localStorage.setItem(RECENT_VISITS_KEY, JSON.stringify(visits.slice(0, 8)))
+}
+
 export interface PageTab {
   id: string
   title: string
@@ -44,13 +69,17 @@ interface UIState {
   setActivePage: (id: string) => void
   closePage: (id: string) => void
   updatePageTitle: (id: string, title: string) => void
+
+  /** Recently opened places (persisted, max 8). Deduped by href. */
+  recentVisits: RecentVisit[]
+  pushRecentVisit: (entry: { title: string; href: string; appId: AppId }) => void
 }
 
 let _nextPageId = 2 // start at 2 since we seed one default tab
 
 const defaultPage: PageTab = {
   id: 'page-1',
-  title: 'Home',
+  title: 'Dashboard',
   appId: 'home'
 }
 
@@ -97,7 +126,7 @@ export const useUIStore = create<UIState>((set, get) => ({
     const id = `page-${_nextPageId++}`
     const appId: AppId = partial.appId ?? get().activeApp
     const titleMap: Record<AppId, string> = {
-      home: 'New page',
+      home: 'Dashboard',
       inbox: 'Inbox',
       documents: 'New page',
       whiteboard: 'Whiteboard',
@@ -146,5 +175,23 @@ export const useUIStore = create<UIState>((set, get) => ({
     set((state) => ({
       pages: state.pages.map((p) => (p.id === id ? { ...p, title } : p))
     }))
+  },
+
+  recentVisits: loadRecentVisits(),
+
+  pushRecentVisit: (entry) => {
+    const visit: RecentVisit = {
+      id: crypto.randomUUID(),
+      title: entry.title,
+      href: entry.href,
+      appId: entry.appId,
+      visitedAt: Date.now()
+    }
+    set((state) => {
+      const filtered = state.recentVisits.filter((v) => v.href !== visit.href)
+      const next = [visit, ...filtered].slice(0, 8)
+      persistRecentVisits(next)
+      return { recentVisits: next }
+    })
   }
 }))

@@ -30,7 +30,7 @@ export function AppSwitcherRail() {
     if (!workspaceId) return
     switch (appId) {
       case 'home':
-        navigate(`/w/${workspaceId}/projects`)
+        navigate(`/w/${workspaceId}`)
         break
       case 'settings':
         navigate(`/w/${workspaceId}/settings`)
@@ -52,7 +52,7 @@ export function AppSwitcherRail() {
   return (
     <div
       className={cn(
-        'flex w-[56px] shrink-0 flex-col items-center gap-2 border-r border-notion-border bg-notion-sidebar px-2 py-3',
+        'flex w-[56px] shrink-0 flex-col items-center gap-2.5 border-r border-notion-border bg-notion-sidebar px-2 py-3.5',
         'relative z-10'
       )}
     >

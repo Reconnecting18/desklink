@@ -274,9 +274,9 @@ export function FilesApp() {
       {/* Right panel — file listing */}
       <div className="flex flex-1 flex-col overflow-hidden bg-notion-bg">
         {/* Toolbar */}
-        <div className="flex flex-wrap items-center gap-3 border-b border-notion-border px-5 py-3">
+        <div className="flex flex-wrap items-center gap-4 border-b border-notion-border px-5 py-3">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-1 text-xs text-notion-text-secondary">
+          <div className="flex min-w-0 shrink-0 items-center gap-2 text-xs text-notion-text-secondary">
             <span
               className="cursor-pointer hover:text-notion-text"
               onClick={() => setSelectedNode(null)}
@@ -291,16 +291,16 @@ export function FilesApp() {
             )}
           </div>
 
-          <div className="ml-auto flex flex-wrap items-center gap-2">
+          <div className="ml-auto flex min-w-0 flex-wrap items-center gap-3">
             {/* Search */}
-            <div className="relative">
-              <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-notion-text-tertiary" />
+            <div className="relative min-w-[12rem] flex-1 sm:max-w-md sm:flex-initial">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-notion-text-tertiary" />
               <input
                 type="text"
                 placeholder="Search files…"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-9 min-w-[10rem] rounded-md border border-notion-border bg-notion-sidebar pl-9 pr-3 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:border-notion-accent focus:outline-none"
+                className="h-9 w-full rounded-md border border-notion-border bg-notion-sidebar py-2 pl-10 pr-3 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:border-notion-accent focus:outline-none"
               />
             </div>
 
