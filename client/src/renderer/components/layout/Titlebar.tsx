@@ -1,72 +1,168 @@
-import { useState, useEffect } from 'react'
-import { Minus, Square, X, Copy } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Minus, Square, X, Copy, Plus, Home, Inbox, FileText, PenTool, FolderOpen } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import deskLinkLogoUrl from '@/assets/FreeSample-Vectorizer-io-D.svg'
+import { useUIStore, type AppId, type PageTab } from '@/stores/uiStore'
 
-/** DeskLink logo — inlined from FreeSample-Vectorizer-io-D.svg */
-function DeskLinkLogo({ className }: { className?: string }) {
+const APP_ICONS: Record<AppId, React.ElementType> = {
+  home: Home,
+  inbox: Inbox,
+  documents: FileText,
+  whiteboard: PenTool,
+  files: FolderOpen
+}
+
+function Tab({ page, isActive }: { page: PageTab; isActive: boolean }) {
+  const { setActivePage, closePage, pages } = useUIStore()
+  const Icon = APP_ICONS[page.appId]
+  const canClose = pages.length > 1
+
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1024 1024"
-      className={className}
-      aria-label="DeskLink logo"
+    <button
+      type="button"
+      onClick={() => setActivePage(page.id)}
+      className={cn(
+        'group relative flex h-full max-w-[220px] min-w-[112px] items-center gap-2 border-r border-notion-border px-4 py-2 text-xs transition-colors select-none',
+        isActive
+          ? 'bg-notion-bg text-notion-text'
+          : 'bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text'
+      )}
     >
-      {/* Black paths */}
-      <g fill="currentColor">
-        <path d="M266 606 l0 -265 21.5 0 21.5 0 0 243 0 243 224.5 0 224.5 0 0 22 0 22 -246 0 -246 0 0 -265z" />
-        <path d="M451.2 744.5 c-8.8 -4.1 -19.3 -11.4 -26.9 -18.8 -6.2 -5.9 -7.3 -7.6 -7.3 -10.3 0 -3.9 -1.8 -3.3 19.4 -6.4 139 -20.1 245.7 -142.3 245.6 -281 -0.1 -65 -21.9 -127.1 -62.9 -179 -16.3 -20.6 -41.5 -43.8 -64.6 -59.3 -36.8 -24.9 -82.5 -42.2 -123 -46.7 -15 -1.7 -14.5 -1.5 -14.5 -5.4 0 -2.9 1.1 -4.3 7.3 -10.2 12.1 -11.6 29 -21.4 36.7 -21.4 2.2 0 10.3 1.6 17.9 3.5 49.3 12.4 97.1 37.8 135.2 71.8 58.9 52.6 95.6 122.2 106.4 201.7 2.5 18.5 3.1 61.3 1.1 80 -4.6 42.7 -17.9 85 -38.3 122.4 -7.7 13.9 -24.6 38.6 -35.6 51.6 -43.2 51.6 -103.4 89.8 -167.3 106.1 -18 4.6 -22 4.8 -29.2 1.4z" />
-      </g>
-    </svg>
+      {isActive && (
+        <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-notion-accent" />
+      )}
+
+      <Icon className="h-3.5 w-3.5 shrink-0 opacity-70" />
+
+      <span className="min-w-0 flex-1 truncate text-left leading-snug">{page.title}</span>
+
+      {canClose && (
+        <span
+          role="button"
+          tabIndex={0}
+          onClick={(e) => {
+            e.stopPropagation()
+            closePage(page.id)
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.stopPropagation()
+              closePage(page.id)
+            }
+          }}
+          className={cn(
+            'flex h-5 w-5 shrink-0 items-center justify-center rounded transition-colors',
+            isActive
+              ? 'opacity-60 hover:bg-notion-sidebar-hover hover:opacity-100'
+              : 'opacity-0 group-hover:opacity-60 hover:!opacity-100 hover:bg-notion-sidebar-hover'
+          )}
+        >
+          <X className="h-2.5 w-2.5" />
+        </span>
+      )}
+    </button>
   )
 }
 
-export function Titlebar() {
+export interface TitlebarProps {
+  /** When true, show page tabs and new-tab control to the right of the DeskLink brand. */
+  showTabs?: boolean
+}
+
+export function Titlebar({ showTabs = false }: TitlebarProps) {
   const [isMaximized, setIsMaximized] = useState(false)
+  const { pages, activePageId, addPage } = useUIStore()
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     window.api.isMaximized().then(setIsMaximized)
-
-    const cleanup = window.api.onMaximizeChange(setIsMaximized)
-    return cleanup
+    return window.api.onMaximizeChange(setIsMaximized)
   }, [])
 
-  return (
-    <div className="drag-region flex h-9 shrink-0 items-center justify-between border-b border-notion-border bg-notion-sidebar">
-      <div className="flex items-center gap-2 pl-3">
-        <DeskLinkLogo className="h-5 w-5 shrink-0 text-notion-text" />
-        <span className="text-xs font-semibold text-notion-text-secondary tracking-wide">
-          DeskLink
-        </span>
-      </div>
+  useEffect(() => {
+    if (!scrollRef.current || !showTabs) return
+    const activeEl = scrollRef.current.querySelector('[data-active="true"]')
+    activeEl?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+  }, [activePageId, showTabs])
 
-      <div className="no-drag flex h-full">
+  const brand = (
+    <div className="flex items-center gap-2.5">
+      <img
+        src={deskLinkLogoUrl}
+        alt=""
+        width={20}
+        height={20}
+        className="h-5 w-5 shrink-0 object-contain"
+        aria-hidden
+      />
+      <span className="text-xs font-semibold tracking-wide text-notion-text-secondary">DeskLink</span>
+    </div>
+  )
+
+  return (
+    <div className="drag-region flex h-10 min-h-10 shrink-0 items-stretch border-b border-notion-border bg-notion-sidebar">
+      {showTabs ? (
+        <>
+          <div className="flex shrink-0 items-center border-r border-notion-border bg-notion-sidebar px-3.5 py-2">
+            {brand}
+          </div>
+
+          <div
+            ref={scrollRef}
+            className="no-drag flex min-h-10 min-w-0 flex-1 items-stretch overflow-x-auto overflow-y-hidden"
+            style={{ scrollbarWidth: 'none' }}
+          >
+            {pages.map((page) => (
+              <div key={page.id} data-active={page.id === activePageId ? 'true' : undefined}>
+                <Tab page={page} isActive={page.id === activePageId} />
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => addPage()}
+            title="New page"
+            aria-label="New page"
+            className="no-drag flex h-full min-w-[2.75rem] shrink-0 items-center justify-center border-l border-notion-border px-3 text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
+          >
+            <Plus className="h-4 w-4" />
+          </button>
+        </>
+      ) : (
+        <>
+          <div className="flex shrink-0 items-center px-3.5 py-2">{brand}</div>
+          <div className="min-w-0 flex-1" />
+        </>
+      )}
+
+      <div className="no-drag flex h-full shrink-0 border-l border-notion-border">
         <button
+          type="button"
           onClick={() => window.api.minimize()}
           className={cn(
             'flex h-full w-11 items-center justify-center',
-            'text-notion-text-secondary hover:bg-notion-sidebar-hover transition-colors'
+            'text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover'
           )}
         >
           <Minus className="h-3.5 w-3.5" />
         </button>
         <button
+          type="button"
           onClick={() => window.api.maximize()}
           className={cn(
             'flex h-full w-11 items-center justify-center',
-            'text-notion-text-secondary hover:bg-notion-sidebar-hover transition-colors'
+            'text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover'
           )}
         >
-          {isMaximized ? (
-            <Copy className="h-3 w-3" />
-          ) : (
-            <Square className="h-3 w-3" />
-          )}
+          {isMaximized ? <Copy className="h-3 w-3" /> : <Square className="h-3 w-3" />}
         </button>
         <button
+          type="button"
           onClick={() => window.api.close()}
           className={cn(
             'flex h-full w-11 items-center justify-center',
-            'text-notion-text-secondary hover:bg-notion-red hover:text-white transition-colors'
+            'text-notion-text-secondary transition-colors hover:bg-notion-red hover:text-white'
           )}
         >
           <X className="h-3.5 w-3.5" />

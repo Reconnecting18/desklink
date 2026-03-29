@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query'
 import { Titlebar } from './Titlebar'
 import { Sidebar } from './Sidebar'
 import { AppSwitcherRail } from './AppSwitcherRail'
-import { PageTabBar } from './PageTabBar'
 import { useUIStore } from '@/stores/uiStore'
 import { useAuthStore } from '@/stores/authStore'
 import { listWorkspaces } from '@/api/workspaces'
@@ -60,11 +59,8 @@ export function AppShell() {
   return (
     // Root shell: full viewport, column layout, no overflow
     <div className="flex h-screen flex-col overflow-hidden">
-      {/* Window chrome */}
-      <Titlebar />
-
-      {/* Page tab bar — sits below titlebar, above content */}
-      <PageTabBar />
+      {/* Window chrome: brand + tabs + new tab + window controls (single row) */}
+      <Titlebar showTabs />
 
       {/* Body row: app switcher rail + sidebar + main content */}
       <div className="flex flex-1 overflow-hidden">

@@ -80,7 +80,7 @@ export function Sidebar() {
 
   if (!sidebarOpen) {
     return (
-      <div className="flex w-10 shrink-0 flex-col items-center border-r border-notion-border bg-notion-sidebar py-2">
+      <div className="flex w-10 shrink-0 flex-col items-center border-r border-notion-border bg-notion-sidebar px-1 py-2">
         <button
           type="button"
           onClick={toggleSidebar}
@@ -94,11 +94,11 @@ export function Sidebar() {
 
   return (
     <div className="flex w-[248px] shrink-0 flex-col border-r border-notion-border bg-notion-sidebar">
-      <div className="relative flex items-center gap-1 px-2 pt-2 pb-1">
+      <div className="relative flex items-center gap-1 px-3 pt-3 pb-2">
         <button
           type="button"
           onClick={() => setWorkspaceMenuOpen(!workspaceMenuOpen)}
-          className="flex min-w-0 flex-1 items-center gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-notion-sidebar-hover"
+          className="flex min-w-0 flex-1 items-center gap-2 rounded-md px-2.5 py-2 transition-colors hover:bg-notion-sidebar-hover"
         >
           <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-notion-text text-xs font-semibold text-notion-bg">
             {currentWorkspace?.name?.charAt(0).toUpperCase() || 'D'}
@@ -118,7 +118,7 @@ export function Sidebar() {
         </button>
 
         {workspaceMenuOpen && (
-          <div className="absolute left-2 right-2 top-full z-50 mt-1 rounded-md border border-notion-border bg-notion-bg py-1 shadow-lg">
+          <div className="absolute left-3 right-3 top-full z-50 mt-1 rounded-md border border-notion-border bg-notion-bg py-1 shadow-lg">
             {workspaces.map((ws: Workspace) => (
               <button
                 key={ws.id}
@@ -148,11 +148,11 @@ export function Sidebar() {
         )}
       </div>
 
-      <nav className="flex flex-1 flex-col overflow-y-auto px-2 pb-2 pt-1">
+      <nav className="flex flex-1 flex-col overflow-y-auto px-3 pb-3 pt-1">
         <button
           type="button"
           disabled
-          className="mb-1 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-secondary opacity-90"
+          className="mb-1 flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-sm text-notion-text-secondary opacity-90"
           title="Coming soon"
         >
           <Search className="h-4 w-4 shrink-0 opacity-80" />
@@ -164,7 +164,7 @@ export function Sidebar() {
           end
           className={({ isActive }) =>
             cn(
-              'mb-2 flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
+              'mb-2 flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
               isActive
                 ? 'bg-notion-sidebar-hover font-medium text-notion-text'
                 : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
@@ -175,7 +175,7 @@ export function Sidebar() {
           Home
         </NavLink>
 
-        <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary">
+        <p className="mb-1.5 px-0.5 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary">
           Apps
         </p>
         <div className="mb-3 space-y-0.5">
@@ -184,7 +184,7 @@ export function Sidebar() {
               key={app.id}
               type="button"
               onClick={() => openOrFocusApp(app.id)}
-              className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
+              className="flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
             >
               <app.icon className="h-4 w-4 shrink-0 opacity-90" />
               {app.label}
@@ -192,28 +192,28 @@ export function Sidebar() {
           ))}
         </div>
 
-        <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary">
+        <p className="mb-1.5 px-0.5 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary">
           Tasks
         </p>
         <div className="mb-1">
           <button
             type="button"
             onClick={() => setPlannerOpen(!plannerOpen)}
-            className="flex w-full items-center gap-1 rounded px-2 py-1 text-xs font-medium text-notion-text-secondary hover:bg-notion-sidebar-hover"
+            className="flex w-full items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-notion-text-secondary hover:bg-notion-sidebar-hover"
           >
             {plannerOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
             Projects
           </button>
 
           {plannerOpen && (
-            <div className="ml-0.5 mt-0.5 space-y-0.5 border-l border-notion-border/80 pl-2">
+            <div className="ml-0.5 mt-1 space-y-0.5 border-l border-notion-border/80 pl-3">
               {projects.map((project: Project) => (
                 <NavLink
                   key={project.id}
                   to={`/w/${workspaceId}/projects/${project.id}`}
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center gap-2 rounded-md px-2 py-1 text-sm transition-colors',
+                      'flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm transition-colors',
                       isActive
                         ? 'bg-notion-sidebar-hover font-medium text-notion-text'
                         : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
@@ -228,19 +228,19 @@ export function Sidebar() {
           )}
         </div>
 
-        <p className="mb-1 mt-3 px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary">
+        <p className="mb-1.5 mt-3 px-0.5 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary">
           More
         </p>
         <div className="space-y-0.5">
           <div
-            className="flex items-center gap-2 rounded-md px-2 py-1 text-sm text-notion-text-secondary opacity-75"
+            className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-notion-text-secondary opacity-75"
             title="Coming soon"
           >
             <Layers className="h-4 w-4 shrink-0" />
             Mockups
           </div>
           <div
-            className="flex items-center gap-2 rounded-md px-2 py-1 text-sm text-notion-text-secondary opacity-75"
+            className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-notion-text-secondary opacity-75"
             title="Coming soon"
           >
             <Sparkles className="h-4 w-4 shrink-0" />
@@ -249,17 +249,17 @@ export function Sidebar() {
         </div>
       </nav>
 
-      <div className="border-t border-notion-border px-2 py-2">
+      <div className="border-t border-notion-border px-3 py-3">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex min-w-0 flex-1 items-center gap-2 px-1">
+          <div className="flex min-w-0 flex-1 items-center gap-2.5 px-0.5">
             {user && <Avatar name={user.displayName} src={user.avatarUrl} size="sm" />}
             <span className="truncate text-xs leading-snug text-notion-text-secondary">{user?.displayName}</span>
           </div>
-          <div className="flex shrink-0 items-center gap-0.5">
+          <div className="flex shrink-0 items-center gap-1">
             <button
               type="button"
               onClick={handleLogout}
-              className="flex h-6 w-6 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
+              className="flex h-8 w-8 items-center justify-center rounded-md text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
               title="Log out"
             >
               <LogOut className="h-3.5 w-3.5" />
@@ -267,7 +267,7 @@ export function Sidebar() {
             <button
               type="button"
               onClick={toggleSidebar}
-              className="flex h-6 w-6 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
+              className="flex h-8 w-8 items-center justify-center rounded-md text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
               title="Collapse sidebar"
             >
               <ChevronsLeft className="h-3.5 w-3.5" />

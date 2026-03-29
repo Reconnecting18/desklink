@@ -26,7 +26,7 @@ export function AppSwitcherRail() {
   return (
     <div
       className={cn(
-        'flex w-[52px] shrink-0 flex-col items-center gap-1 border-r border-notion-border bg-notion-sidebar py-2',
+        'flex w-[52px] shrink-0 flex-col items-center gap-1 border-r border-notion-border bg-notion-sidebar px-1.5 py-2',
         'relative z-10' // sit above main content, below dropdowns
       )}
     >

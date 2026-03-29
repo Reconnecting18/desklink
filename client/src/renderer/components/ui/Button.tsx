@@ -25,7 +25,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             'bg-notion-red text-white hover:bg-red-600': variant === 'danger'
           },
           {
-            'min-h-8 px-3 py-1.5 text-xs': size === 'sm',
+            'min-h-9 px-4 py-2 text-xs': size === 'sm',
             'min-h-9 px-4 py-2 text-sm': size === 'md',
             'min-h-11 px-5 py-2.5 text-sm': size === 'lg'
           },

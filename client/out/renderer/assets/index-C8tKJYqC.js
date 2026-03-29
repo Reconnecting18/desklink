@@ -24533,7 +24533,11 @@ apiClient.interceptors.response.use(
           throw new Error("No refresh token");
         }
         const response = await axios.post(`${API_BASE}/auth/refresh`, { refreshToken });
-        const { accessToken: newToken, refreshToken: newRefresh } = response.data.data;
+        const body = response.data;
+        if (!body?.success || !body.data?.accessToken || !body.data?.refreshToken) {
+          throw new Error("Invalid refresh response");
+        }
+        const { accessToken: newToken, refreshToken: newRefresh } = body.data;
         useAuthStore.getState().setToken(newToken);
         await window.api.storeToken("refreshToken", newRefresh);
         processQueue(null, newToken);
@@ -24562,34 +24566,201 @@ async function register(displayName, email, password) {
 async function getMe() {
   return apiClient.get("/auth/me");
 }
+async function restoreSession() {
+  const { setAuth, setLoading, logout } = useAuthStore.getState();
+  const accessToken = await window.api.getToken("accessToken");
+  const refreshToken = await window.api.getToken("refreshToken");
+  if (!accessToken && !refreshToken) {
+    setLoading(false);
+    return;
+  }
+  if (accessToken) {
+    useAuthStore.setState({ accessToken });
+    try {
+      const user = await getMe();
+      const tokenAfterMe = useAuthStore.getState().accessToken ?? accessToken;
+      setAuth(user, tokenAfterMe);
+      return;
+    } catch {
+    }
+  }
+  const rt = await window.api.getToken("refreshToken");
+  if (rt) {
+    try {
+      const response = await axios.post(`${API_BASE}/auth/refresh`, { refreshToken: rt });
+      const body = response.data;
+      if (!body?.success || !body.data?.accessToken || !body.data?.refreshToken) {
+        throw new Error("Invalid refresh response");
+      }
+      const { accessToken: newAccess, refreshToken: newRefresh } = body.data;
+      await window.api.storeToken("accessToken", newAccess);
+      await window.api.storeToken("refreshToken", newRefresh);
+      useAuthStore.setState({ accessToken: newAccess });
+      const user = await getMe();
+      const tokenAfterMe = useAuthStore.getState().accessToken ?? newAccess;
+      setAuth(user, tokenAfterMe);
+      return;
+    } catch {
+      logout();
+    }
+  }
+  setLoading(false);
+}
 function ProtectedRoute() {
-  const { isAuthenticated, isLoading, setAuth, setLoading, accessToken } = useAuthStore();
+  const { isAuthenticated: isAuthenticated2, isLoading } = useAuthStore();
   reactExports.useEffect(() => {
     async function init() {
-      try {
-        const storedToken = await window.api.getToken("accessToken");
-        if (storedToken) {
-          useAuthStore.setState({ accessToken: storedToken });
-          const user = await getMe();
-          setAuth(user, storedToken);
-        } else {
-          setLoading(false);
-        }
-      } catch {
-        setLoading(false);
-      }
+      await restoreSession();
     }
     if (isLoading) {
-      init();
+      void init();
     }
-  }, [isLoading, setAuth, setLoading]);
+  }, [isLoading]);
   if (isLoading) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-screen items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 w-8 animate-spin rounded-full border-2 border-notion-accent border-t-transparent" }) });
   }
-  if (!isAuthenticated) {
+  if (!isAuthenticated2) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/login", replace: true });
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {});
+}
+let _nextPageId = 2;
+const defaultPage = {
+  id: "page-1",
+  title: "Home",
+  appId: "home"
+};
+const useUIStore = create((set, get) => ({
+  // Sidebar
+  sidebarOpen: true,
+  sidebarWidth: 240,
+  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+  setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
+  setSidebarWidth: (sidebarWidth) => set({ sidebarWidth }),
+  // Workspace
+  activeWorkspaceId: null,
+  setActiveWorkspaceId: (activeWorkspaceId) => set({ activeWorkspaceId }),
+  // Command palette
+  commandPaletteOpen: false,
+  setCommandPaletteOpen: (commandPaletteOpen) => set({ commandPaletteOpen }),
+  pendingDocumentAction: null,
+  requestNewDocument: () => set({ pendingDocumentAction: "new" }),
+  clearPendingDocumentAction: () => set({ pendingDocumentAction: null }),
+  // App switcher
+  activeApp: "home",
+  setActiveApp: (activeApp) => set({ activeApp }),
+  openOrFocusApp: (appId) => {
+    const { pages } = get();
+    const existing = pages.find((p) => p.appId === appId);
+    if (existing) {
+      set({ activePageId: existing.id, activeApp: appId });
+    } else {
+      get().addPage({ appId });
+      set({ activeApp: appId });
+    }
+  },
+  // Page tabs
+  pages: [defaultPage],
+  activePageId: defaultPage.id,
+  addPage: (partial = {}) => {
+    const id = `page-${_nextPageId++}`;
+    const appId = partial.appId ?? get().activeApp;
+    const titleMap = {
+      home: "New page",
+      inbox: "Inbox",
+      documents: "New page",
+      whiteboard: "Whiteboard",
+      files: "Files"
+    };
+    const newPage = {
+      id,
+      title: partial.title ?? titleMap[appId],
+      appId,
+      path: partial.path
+    };
+    set((state) => ({
+      pages: [...state.pages, newPage],
+      activePageId: id
+    }));
+  },
+  setActivePage: (id) => {
+    const page = get().pages.find((p) => p.id === id);
+    if (page) {
+      set({ activePageId: id, activeApp: page.appId });
+    }
+  },
+  closePage: (id) => {
+    const { pages, activePageId } = get();
+    if (pages.length <= 1) return;
+    const idx = pages.findIndex((p) => p.id === id);
+    const remaining = pages.filter((p) => p.id !== id);
+    let nextActiveId = activePageId;
+    if (activePageId === id) {
+      const newIdx = Math.max(0, idx - 1);
+      nextActiveId = remaining[newIdx]?.id ?? null;
+    }
+    const nextPage = remaining.find((p) => p.id === nextActiveId);
+    set({
+      pages: remaining,
+      activePageId: nextActiveId,
+      ...nextPage ? { activeApp: nextPage.appId } : {}
+    });
+  },
+  updatePageTitle: (id, title) => {
+    set((state) => ({
+      pages: state.pages.map((p) => p.id === id ? { ...p, title } : p)
+    }));
+  }
+}));
+async function listWorkspaces() {
+  return apiClient.get("/workspaces");
+}
+async function getWorkspace(id) {
+  return apiClient.get(`/workspaces/${id}`);
+}
+async function updateWorkspace(id, data) {
+  return apiClient.patch(`/workspaces/${id}`, data);
+}
+async function listMembers(workspaceId) {
+  return apiClient.get(`/workspaces/${workspaceId}/members`);
+}
+async function addMember(workspaceId, data) {
+  return apiClient.post(`/workspaces/${workspaceId}/members`, data);
+}
+async function removeMember(workspaceId, userId) {
+  return apiClient.delete(`/workspaces/${workspaceId}/members/${userId}`);
+}
+function WorkspaceRoot() {
+  const navigate = useNavigate();
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const activeWorkspaceId = useUIStore((s) => s.activeWorkspaceId);
+  const { data: workspaces, isPending, isError } = useQuery({
+    queryKey: ["workspaces"],
+    queryFn: listWorkspaces,
+    enabled: !!accessToken
+  });
+  reactExports.useEffect(() => {
+    if (!workspaces?.length || !activeWorkspaceId) return;
+    if (!workspaces.some((w) => w.id === activeWorkspaceId)) return;
+    navigate(`/w/${activeWorkspaceId}`, { replace: true });
+  }, [workspaces, activeWorkspaceId, navigate]);
+  if (!accessToken) {
+    return null;
+  }
+  if (isPending) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-full min-h-[200px] items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 w-8 animate-spin rounded-full border-2 border-notion-accent border-t-transparent" }) });
+  }
+  if (isError) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-full min-h-[200px] flex-col items-center justify-center gap-2 px-4 text-center text-sm text-notion-text-secondary", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Could not load workspaces." }) });
+  }
+  const ws = workspaces ?? [];
+  if (ws.length === 0) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full min-h-[200px] flex-col items-center justify-center gap-2 px-4 text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-notion-text", children: "No workspaces yet" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "max-w-sm text-xs text-notion-text-secondary", children: "Create a workspace from the API or run the database seed, then refresh." })
+    ] });
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-full min-h-[200px] items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 w-8 animate-spin rounded-full border-2 border-notion-accent border-t-transparent" }) });
 }
 /**
  * @license lucide-react v0.479.0 - ISC
@@ -28557,41 +28728,120 @@ const twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
-function DeskLinkLogo({ className }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "svg",
+const deskLinkLogoUrl = "data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='utf-8'?%3e%3c!DOCTYPE%20svg%20PUBLIC%20'-//W3C//DTD%20SVG%201.0//EN'%20'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'%3e%3csvg%20version='1.0'%20xmlns='http://www.w3.org/2000/svg'%20width='1024px'%20height='1024px'%20viewBox='0%200%201024%201024'%20preserveAspectRatio='xMidYMid%20meet'%3e%3cg%20fill='%23000000'%3e%3cpath%20d='M266%20606%20l0%20-265%2021.5%200%2021.5%200%200%20243%200%20243%20224.5%200%20224.5%200%200%2022%200%2022%20-246%200%20-246%200%200%20-265z'/%3e%3cpath%20d='M451.2%20744.5%20c-8.8%20-4.1%20-19.3%20-11.4%20-26.9%20-18.8%20-6.2%20-5.9%20-7.3%20-7.6%20-7.3%20-10.3%200%20-3.9%20-1.8%20-3.3%2019.4%20-6.4%20139%20-20.1%20245.7%20-142.3%20245.6%20-281%20-0.1%20-65%20-21.9%20-127.1%20-62.9%20-179%20-16.3%20-20.6%20-41.5%20-43.8%20-64.6%20-59.3%20-36.8%20-24.9%20-82.5%20-42.2%20-123%20-46.7%20-15%20-1.7%20-14.5%20-1.5%20-14.5%20-5.4%200%20-2.9%201.1%20-4.3%207.3%20-10.2%2012.1%20-11.6%2029%20-21.4%2036.7%20-21.4%202.2%200%2010.3%201.6%2017.9%203.5%2049.3%2012.4%2097.1%2037.8%20135.2%2071.8%2058.9%2052.6%2095.6%20122.2%20106.4%20201.7%202.5%2018.5%203.1%2061.3%201.1%2080%20-4.6%2042.7%20-17.9%2085%20-38.3%20122.4%20-7.7%2013.9%20-24.6%2038.6%20-35.6%2051.6%20-43.2%2051.6%20-103.4%2089.8%20-167.3%20106.1%20-18%204.6%20-22%204.8%20-29.2%201.4z'/%3e%3c/g%3e%3cg%20fill='%23ffffff'%3e%3cpath%20d='M0%20512%20l0%20-512%20512%200%20512%200%200%20512%200%20512%20-512%200%20-512%200%200%20-512z%20m755%20337%20l0%20-19%20-224.5%200%20-224.5%200%200%20-243%200%20-243%20-18.5%200%20-18.5%200%200%20262%200%20262%20243%200%20243%200%200%20-19z%20m-277.6%20-108.9%20c63.9%20-16.3%20124.1%20-54.5%20167.3%20-106.1%2011%20-13%2027.9%20-37.7%2035.6%20-51.6%2020.3%20-37.2%2033.6%20-79.4%2038.3%20-121.9%201.9%20-17.9%201.4%20-56%20-1.1%20-74.5%20-10.7%20-79.3%20-47.5%20-149.1%20-106.4%20-201.7%20-38.5%20-34.4%20-87.5%20-60.2%20-137.1%20-72.3%20l-13.5%20-3.3%20-7.4%203.7%20c-4.1%202%20-9.9%205.4%20-13%207.4%20-6.1%204.1%20-20.4%2017.2%20-19.6%2018%200.3%200.3%205.7%201.1%2012%201.8%2042.7%204.9%2087.6%2021.8%20125%2047.1%2023.1%2015.5%2048.3%2038.7%2064.6%2059.3%2020.5%2026%2037.3%2056.7%2048.1%2088%2014.8%2043%2018.9%2094.7%2011.2%20141%20-20.3%20121.9%20-119.7%20219.3%20-242%20237%20-8.2%201.2%20-16%202.4%20-17.3%202.7%20-2.3%200.4%20-2%200.8%204%206.9%209%209.2%2029.4%2022.3%2034.6%2022.4%200.7%200%208.2%20-1.8%2016.7%20-3.9z'/%3e%3c/g%3e%3c/svg%3e";
+const APP_ICONS = {
+  home: House,
+  inbox: Inbox,
+  documents: FileText,
+  whiteboard: PenTool,
+  files: FolderOpen
+};
+function Tab({ page, isActive }) {
+  const { setActivePage, closePage, pages } = useUIStore();
+  const Icon2 = APP_ICONS[page.appId];
+  const canClose = pages.length > 1;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "button",
     {
-      xmlns: "http://www.w3.org/2000/svg",
-      viewBox: "0 0 1024 1024",
-      className,
-      "aria-label": "DeskLink logo",
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { fill: "currentColor", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M266 606 l0 -265 21.5 0 21.5 0 0 243 0 243 224.5 0 224.5 0 0 22 0 22 -246 0 -246 0 0 -265z" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M451.2 744.5 c-8.8 -4.1 -19.3 -11.4 -26.9 -18.8 -6.2 -5.9 -7.3 -7.6 -7.3 -10.3 0 -3.9 -1.8 -3.3 19.4 -6.4 139 -20.1 245.7 -142.3 245.6 -281 -0.1 -65 -21.9 -127.1 -62.9 -179 -16.3 -20.6 -41.5 -43.8 -64.6 -59.3 -36.8 -24.9 -82.5 -42.2 -123 -46.7 -15 -1.7 -14.5 -1.5 -14.5 -5.4 0 -2.9 1.1 -4.3 7.3 -10.2 12.1 -11.6 29 -21.4 36.7 -21.4 2.2 0 10.3 1.6 17.9 3.5 49.3 12.4 97.1 37.8 135.2 71.8 58.9 52.6 95.6 122.2 106.4 201.7 2.5 18.5 3.1 61.3 1.1 80 -4.6 42.7 -17.9 85 -38.3 122.4 -7.7 13.9 -24.6 38.6 -35.6 51.6 -43.2 51.6 -103.4 89.8 -167.3 106.1 -18 4.6 -22 4.8 -29.2 1.4z" })
-      ] })
+      type: "button",
+      onClick: () => setActivePage(page.id),
+      className: cn(
+        "group relative flex h-full max-w-[220px] min-w-[112px] items-center gap-2 border-r border-notion-border px-4 py-2 text-xs transition-colors select-none",
+        isActive ? "bg-notion-bg text-notion-text" : "bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text"
+      ),
+      children: [
+        isActive && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute bottom-0 left-0 right-0 h-[2px] bg-notion-accent" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: "h-3.5 w-3.5 shrink-0 opacity-70" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0 flex-1 truncate text-left leading-snug", children: page.title }),
+        canClose && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "span",
+          {
+            role: "button",
+            tabIndex: 0,
+            onClick: (e) => {
+              e.stopPropagation();
+              closePage(page.id);
+            },
+            onKeyDown: (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.stopPropagation();
+                closePage(page.id);
+              }
+            },
+            className: cn(
+              "flex h-5 w-5 shrink-0 items-center justify-center rounded transition-colors",
+              isActive ? "opacity-60 hover:bg-notion-sidebar-hover hover:opacity-100" : "opacity-0 group-hover:opacity-60 hover:!opacity-100 hover:bg-notion-sidebar-hover"
+            ),
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "h-2.5 w-2.5" })
+          }
+        )
+      ]
     }
   );
 }
-function Titlebar() {
+function Titlebar({ showTabs = false }) {
   const [isMaximized, setIsMaximized] = reactExports.useState(false);
+  const { pages, activePageId, addPage } = useUIStore();
+  const scrollRef = reactExports.useRef(null);
   reactExports.useEffect(() => {
     window.api.isMaximized().then(setIsMaximized);
-    const cleanup = window.api.onMaximizeChange(setIsMaximized);
-    return cleanup;
+    return window.api.onMaximizeChange(setIsMaximized);
   }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "drag-region flex h-9 shrink-0 items-center justify-between border-b border-notion-border bg-notion-sidebar", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 pl-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(DeskLinkLogo, { className: "h-5 w-5 shrink-0 text-notion-text" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-notion-text-secondary tracking-wide", children: "DeskLink" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "no-drag flex h-full", children: [
+  reactExports.useEffect(() => {
+    if (!scrollRef.current || !showTabs) return;
+    const activeEl = scrollRef.current.querySelector('[data-active="true"]');
+    activeEl?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [activePageId, showTabs]);
+  const brand = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "img",
+      {
+        src: deskLinkLogoUrl,
+        alt: "",
+        width: 20,
+        height: 20,
+        className: "h-5 w-5 shrink-0 object-contain",
+        "aria-hidden": true
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold tracking-wide text-notion-text-secondary", children: "DeskLink" })
+  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "drag-region flex h-10 min-h-10 shrink-0 items-stretch border-b border-notion-border bg-notion-sidebar", children: [
+    showTabs ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex shrink-0 items-center border-r border-notion-border bg-notion-sidebar px-3.5 py-2", children: brand }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          ref: scrollRef,
+          className: "no-drag flex min-h-10 min-w-0 flex-1 items-stretch overflow-x-auto overflow-y-hidden",
+          style: { scrollbarWidth: "none" },
+          children: pages.map((page) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { "data-active": page.id === activePageId ? "true" : void 0, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Tab, { page, isActive: page.id === activePageId }) }, page.id))
+        }
+      ),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
+          type: "button",
+          onClick: () => addPage(),
+          title: "New page",
+          "aria-label": "New page",
+          className: "no-drag flex h-full min-w-[2.75rem] shrink-0 items-center justify-center border-l border-notion-border px-3 text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-4 w-4" })
+        }
+      )
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex shrink-0 items-center px-3.5 py-2", children: brand }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-w-0 flex-1" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "no-drag flex h-full shrink-0 border-l border-notion-border", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
           onClick: () => window.api.minimize(),
           className: cn(
             "flex h-full w-11 items-center justify-center",
-            "text-notion-text-secondary hover:bg-notion-sidebar-hover transition-colors"
+            "text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover"
           ),
           children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { className: "h-3.5 w-3.5" })
         }
@@ -28599,10 +28849,11 @@ function Titlebar() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
+          type: "button",
           onClick: () => window.api.maximize(),
           className: cn(
             "flex h-full w-11 items-center justify-center",
-            "text-notion-text-secondary hover:bg-notion-sidebar-hover transition-colors"
+            "text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover"
           ),
           children: isMaximized ? /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "h-3 w-3" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { className: "h-3 w-3" })
         }
@@ -28610,10 +28861,11 @@ function Titlebar() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
+          type: "button",
           onClick: () => window.api.close(),
           className: cn(
             "flex h-full w-11 items-center justify-center",
-            "text-notion-text-secondary hover:bg-notion-red hover:text-white transition-colors"
+            "text-notion-text-secondary transition-colors hover:bg-notion-red hover:text-white"
           ),
           children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "h-3.5 w-3.5" })
         }
@@ -28621,94 +28873,6 @@ function Titlebar() {
     ] })
   ] });
 }
-let _nextPageId = 2;
-const defaultPage = {
-  id: "page-1",
-  title: "Home",
-  appId: "home"
-};
-const useUIStore = create((set, get) => ({
-  // Sidebar
-  sidebarOpen: true,
-  sidebarWidth: 240,
-  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
-  setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
-  setSidebarWidth: (sidebarWidth) => set({ sidebarWidth }),
-  // Workspace
-  activeWorkspaceId: null,
-  setActiveWorkspaceId: (activeWorkspaceId) => set({ activeWorkspaceId }),
-  // Command palette
-  commandPaletteOpen: false,
-  setCommandPaletteOpen: (commandPaletteOpen) => set({ commandPaletteOpen }),
-  pendingDocumentAction: null,
-  requestNewDocument: () => set({ pendingDocumentAction: "new" }),
-  clearPendingDocumentAction: () => set({ pendingDocumentAction: null }),
-  // App switcher
-  activeApp: "home",
-  setActiveApp: (activeApp) => set({ activeApp }),
-  openOrFocusApp: (appId) => {
-    const { pages } = get();
-    const existing = pages.find((p) => p.appId === appId);
-    if (existing) {
-      set({ activePageId: existing.id, activeApp: appId });
-    } else {
-      get().addPage({ appId });
-      set({ activeApp: appId });
-    }
-  },
-  // Page tabs
-  pages: [defaultPage],
-  activePageId: defaultPage.id,
-  addPage: (partial = {}) => {
-    const id = `page-${_nextPageId++}`;
-    const appId = partial.appId ?? get().activeApp;
-    const titleMap = {
-      home: "New page",
-      inbox: "Inbox",
-      documents: "New page",
-      whiteboard: "Whiteboard",
-      files: "Files"
-    };
-    const newPage = {
-      id,
-      title: partial.title ?? titleMap[appId],
-      appId,
-      path: partial.path
-    };
-    set((state) => ({
-      pages: [...state.pages, newPage],
-      activePageId: id
-    }));
-  },
-  setActivePage: (id) => {
-    const page = get().pages.find((p) => p.id === id);
-    if (page) {
-      set({ activePageId: id, activeApp: page.appId });
-    }
-  },
-  closePage: (id) => {
-    const { pages, activePageId } = get();
-    if (pages.length <= 1) return;
-    const idx = pages.findIndex((p) => p.id === id);
-    const remaining = pages.filter((p) => p.id !== id);
-    let nextActiveId = activePageId;
-    if (activePageId === id) {
-      const newIdx = Math.max(0, idx - 1);
-      nextActiveId = remaining[newIdx]?.id ?? null;
-    }
-    const nextPage = remaining.find((p) => p.id === nextActiveId);
-    set({
-      pages: remaining,
-      activePageId: nextActiveId,
-      ...nextPage ? { activeApp: nextPage.appId } : {}
-    });
-  },
-  updatePageTitle: (id, title) => {
-    set((state) => ({
-      pages: state.pages.map((p) => p.id === id ? { ...p, title } : p)
-    }));
-  }
-}));
 function getInitials(name) {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) return "?";
@@ -28759,24 +28923,6 @@ function Avatar({ name, src, size = "md", className }) {
       children: getInitials(label)
     }
   );
-}
-async function listWorkspaces() {
-  return apiClient.get("/workspaces");
-}
-async function getWorkspace(id) {
-  return apiClient.get(`/workspaces/${id}`);
-}
-async function updateWorkspace(id, data) {
-  return apiClient.patch(`/workspaces/${id}`, data);
-}
-async function listMembers(workspaceId) {
-  return apiClient.get(`/workspaces/${workspaceId}/members`);
-}
-async function addMember(workspaceId, data) {
-  return apiClient.post(`/workspaces/${workspaceId}/members`, data);
-}
-async function removeMember(workspaceId, userId) {
-  return apiClient.delete(`/workspaces/${workspaceId}/members/${userId}`);
 }
 async function listProjects(workspaceId) {
   const res = await apiClient.get(
@@ -28830,7 +28976,7 @@ function Sidebar() {
     requestNewDocument();
   };
   if (!sidebarOpen) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-10 shrink-0 flex-col items-center border-r border-notion-border bg-notion-sidebar py-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-10 shrink-0 flex-col items-center border-r border-notion-border bg-notion-sidebar px-1 py-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
       "button",
       {
         type: "button",
@@ -28841,13 +28987,13 @@ function Sidebar() {
     ) });
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-[248px] shrink-0 flex-col border-r border-notion-border bg-notion-sidebar", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative flex items-center gap-1 px-2 pt-2 pb-1", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative flex items-center gap-1 px-3 pt-3 pb-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           type: "button",
           onClick: () => setWorkspaceMenuOpen(!workspaceMenuOpen),
-          className: "flex min-w-0 flex-1 items-center gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-notion-sidebar-hover",
+          className: "flex min-w-0 flex-1 items-center gap-2 rounded-md px-2.5 py-2 transition-colors hover:bg-notion-sidebar-hover",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-6 w-6 shrink-0 items-center justify-center rounded bg-notion-text text-xs font-semibold text-notion-bg", children: currentWorkspace?.name?.charAt(0).toUpperCase() || "D" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0 flex-1 truncate text-left text-sm font-medium text-notion-text", children: currentWorkspace?.name || "My desk" }),
@@ -28865,7 +29011,7 @@ function Sidebar() {
           children: /* @__PURE__ */ jsxRuntimeExports.jsx(SquarePen, { className: "h-4 w-4" })
         }
       ),
-      workspaceMenuOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute left-2 right-2 top-full z-50 mt-1 rounded-md border border-notion-border bg-notion-bg py-1 shadow-lg", children: [
+      workspaceMenuOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute left-3 right-3 top-full z-50 mt-1 rounded-md border border-notion-border bg-notion-bg py-1 shadow-lg", children: [
         workspaces.map((ws) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
@@ -28897,13 +29043,13 @@ function Sidebar() {
         )
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "flex flex-1 flex-col overflow-y-auto px-2 pb-2 pt-1", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "flex flex-1 flex-col overflow-y-auto px-3 pb-3 pt-1", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           type: "button",
           disabled: true,
-          className: "mb-1 flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-secondary opacity-90",
+          className: "mb-1 flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-sm text-notion-text-secondary opacity-90",
           title: "Coming soon",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "h-4 w-4 shrink-0 opacity-80" }),
@@ -28917,7 +29063,7 @@ function Sidebar() {
           to: `/w/${workspaceId}/projects`,
           end: true,
           className: ({ isActive }) => cn(
-            "mb-2 flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
+            "mb-2 flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
             isActive ? "bg-notion-sidebar-hover font-medium text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"
           ),
           children: [
@@ -28926,13 +29072,13 @@ function Sidebar() {
           ]
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary", children: "Apps" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-1.5 px-0.5 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary", children: "Apps" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-3 space-y-0.5", children: APP_SHORTCUTS.filter((a) => a.show).map((app) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           type: "button",
           onClick: () => openOrFocusApp(app.id),
-          className: "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text",
+          className: "flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(app.icon, { className: "h-4 w-4 shrink-0 opacity-90" }),
             app.label
@@ -28940,26 +29086,26 @@ function Sidebar() {
         },
         app.id
       )) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary", children: "Tasks" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-1.5 px-0.5 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary", children: "Tasks" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-1", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
             type: "button",
             onClick: () => setPlannerOpen(!plannerOpen),
-            className: "flex w-full items-center gap-1 rounded px-2 py-1 text-xs font-medium text-notion-text-secondary hover:bg-notion-sidebar-hover",
+            className: "flex w-full items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-notion-text-secondary hover:bg-notion-sidebar-hover",
             children: [
               plannerOpen ? /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3 w-3" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "h-3 w-3" }),
               "Projects"
             ]
           }
         ),
-        plannerOpen && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "ml-0.5 mt-0.5 space-y-0.5 border-l border-notion-border/80 pl-2", children: projects.map((project) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        plannerOpen && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "ml-0.5 mt-1 space-y-0.5 border-l border-notion-border/80 pl-3", children: projects.map((project) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
           NavLink,
           {
             to: `/w/${workspaceId}/projects/${project.id}`,
             className: ({ isActive }) => cn(
-              "flex items-center gap-2 rounded-md px-2 py-1 text-sm transition-colors",
+              "flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm transition-colors",
               isActive ? "bg-notion-sidebar-hover font-medium text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"
             ),
             children: [
@@ -28970,12 +29116,12 @@ function Sidebar() {
           project.id
         )) })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-1 mt-3 px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary", children: "More" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mb-1.5 mt-3 px-0.5 text-[11px] font-semibold uppercase tracking-wider text-notion-text-tertiary", children: "More" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-0.5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "flex items-center gap-2 rounded-md px-2 py-1 text-sm text-notion-text-secondary opacity-75",
+            className: "flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-notion-text-secondary opacity-75",
             title: "Coming soon",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { className: "h-4 w-4 shrink-0" }),
@@ -28986,7 +29132,7 @@ function Sidebar() {
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "flex items-center gap-2 rounded-md px-2 py-1 text-sm text-notion-text-secondary opacity-75",
+            className: "flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-notion-text-secondary opacity-75",
             title: "Coming soon",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "h-4 w-4 shrink-0" }),
@@ -28996,18 +29142,18 @@ function Sidebar() {
         )
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-t border-notion-border px-2 py-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-w-0 flex-1 items-center gap-2 px-1", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-t border-notion-border px-3 py-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-w-0 flex-1 items-center gap-2.5 px-0.5", children: [
         user && /* @__PURE__ */ jsxRuntimeExports.jsx(Avatar, { name: user.displayName, src: user.avatarUrl, size: "sm" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate text-xs leading-snug text-notion-text-secondary", children: user?.displayName })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 items-center gap-0.5", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 items-center gap-1", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
             type: "button",
             onClick: handleLogout,
-            className: "flex h-6 w-6 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
+            className: "flex h-8 w-8 items-center justify-center rounded-md text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
             title: "Log out",
             children: /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "h-3.5 w-3.5" })
           }
@@ -29017,7 +29163,7 @@ function Sidebar() {
           {
             type: "button",
             onClick: toggleSidebar,
-            className: "flex h-6 w-6 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
+            className: "flex h-8 w-8 items-center justify-center rounded-md text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
             title: "Collapse sidebar",
             children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronsLeft, { className: "h-3.5 w-3.5" })
           }
@@ -29042,7 +29188,7 @@ function AppSwitcherRail() {
     "div",
     {
       className: cn(
-        "flex w-[52px] shrink-0 flex-col items-center gap-1 border-r border-notion-border bg-notion-sidebar py-2",
+        "flex w-[52px] shrink-0 flex-col items-center gap-1 border-r border-notion-border bg-notion-sidebar px-1.5 py-2",
         "relative z-10"
         // sit above main content, below dropdowns
       ),
@@ -29069,86 +29215,6 @@ function AppSwitcherRail() {
       })
     }
   );
-}
-const APP_ICONS = {
-  home: House,
-  inbox: Inbox,
-  documents: FileText,
-  whiteboard: PenTool,
-  files: FolderOpen
-};
-function Tab({ page, isActive }) {
-  const { setActivePage, closePage, pages } = useUIStore();
-  const Icon2 = APP_ICONS[page.appId];
-  const canClose = pages.length > 1;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "button",
-    {
-      type: "button",
-      onClick: () => setActivePage(page.id),
-      className: cn(
-        "group relative flex h-full max-w-[200px] min-w-[104px] items-center gap-1.5 border-r border-notion-border px-3 py-1 text-xs transition-colors select-none",
-        isActive ? "bg-notion-bg text-notion-text" : "bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text"
-      ),
-      children: [
-        isActive && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute bottom-0 left-0 right-0 h-[2px] bg-notion-accent" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: "h-3 w-3 shrink-0 opacity-70" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0 flex-1 truncate text-left leading-snug", children: page.title }),
-        canClose && /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "span",
-          {
-            role: "button",
-            tabIndex: 0,
-            onClick: (e) => {
-              e.stopPropagation();
-              closePage(page.id);
-            },
-            onKeyDown: (e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.stopPropagation();
-                closePage(page.id);
-              }
-            },
-            className: cn(
-              "flex h-4 w-4 shrink-0 items-center justify-center rounded transition-colors",
-              isActive ? "opacity-60 hover:bg-notion-sidebar-hover hover:opacity-100" : "opacity-0 group-hover:opacity-60 hover:!opacity-100 hover:bg-notion-sidebar-hover"
-            ),
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "h-2.5 w-2.5" })
-          }
-        )
-      ]
-    }
-  );
-}
-function PageTabBar() {
-  const { pages, activePageId, addPage } = useUIStore();
-  const scrollRef = reactExports.useRef(null);
-  reactExports.useEffect(() => {
-    if (!scrollRef.current) return;
-    const activeEl = scrollRef.current.querySelector('[data-active="true"]');
-    activeEl?.scrollIntoView({ block: "nearest", inline: "nearest" });
-  }, [activePageId]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-9 min-h-9 shrink-0 items-stretch border-b border-notion-border bg-notion-sidebar", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        ref: scrollRef,
-        className: "flex flex-1 items-stretch overflow-x-auto overflow-y-hidden",
-        style: { scrollbarWidth: "none" },
-        children: pages.map((page) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { "data-active": page.id === activePageId ? "true" : void 0, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Tab, { page, isActive: page.id === activePageId }) }, page.id))
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        type: "button",
-        onClick: () => addPage(),
-        title: "New page",
-        className: "flex h-full w-8 shrink-0 items-center justify-center border-l border-notion-border text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-3.5 w-3.5" })
-      }
-    )
-  ] });
 }
 const MOCK_MESSAGES = [
   {
@@ -30109,8 +30175,7 @@ function AppShell() {
   return (
     // Root shell: full viewport, column layout, no overflow
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-screen flex-col overflow-hidden", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Titlebar, {}),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(PageTabBar, {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Titlebar, { showTabs: true }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 overflow-hidden", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(AppSwitcherRail, {}),
         activeApp === "home" && /* @__PURE__ */ jsxRuntimeExports.jsx(Sidebar, {}),
@@ -30144,7 +30209,7 @@ const Button = reactExports.forwardRef(
             "bg-notion-red text-white hover:bg-red-600": variant === "danger"
           },
           {
-            "min-h-8 px-3 py-1.5 text-xs": size === "sm",
+            "min-h-9 px-4 py-2 text-xs": size === "sm",
             "min-h-9 px-4 py-2 text-sm": size === "md",
             "min-h-11 px-5 py-2.5 text-sm": size === "lg"
           },
@@ -30204,6 +30269,9 @@ function LoginPage() {
       setLoading(false);
     }
   };
+  if (isAuthenticated) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/", replace: true });
+  }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-screen flex-col", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Titlebar, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 items-center justify-center bg-gradient-to-b from-notion-sidebar to-notion-bg px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-sm rounded-xl border border-notion-border/80 bg-notion-bg/95 p-8 shadow-lg shadow-neutral-900/[0.06] ring-1 ring-black/[0.03] backdrop-blur-sm", children: [
@@ -30249,7 +30317,7 @@ function LoginPage() {
 }
 function RegisterPage() {
   const navigate = useNavigate();
-  const { setAuth } = useAuthStore();
+  const { setAuth, isAuthenticated: isAuthenticated2 } = useAuthStore();
   const [name, setName] = reactExports.useState("");
   const [email, setEmail] = reactExports.useState("");
   const [password, setPassword] = reactExports.useState("");
@@ -30270,6 +30338,9 @@ function RegisterPage() {
       setLoading(false);
     }
   };
+  if (isAuthenticated2) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/", replace: true });
+  }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-screen flex-col", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Titlebar, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 items-center justify-center bg-gradient-to-b from-notion-sidebar to-notion-bg px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-sm rounded-xl border border-notion-border/80 bg-notion-bg/95 p-8 shadow-lg shadow-neutral-900/[0.06] ring-1 ring-black/[0.03] backdrop-blur-sm", children: [
@@ -35782,7 +35853,7 @@ const router = createHashRouter([
         children: [
           {
             path: "/",
-            element: /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/login", replace: true })
+            element: /* @__PURE__ */ jsxRuntimeExports.jsx(WorkspaceRoot, {})
           },
           {
             path: "/w/:workspaceId",

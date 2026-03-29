@@ -1,7 +1,86 @@
 "use strict";
 const electron = require("electron");
 const path = require("path");
-const tokenStore = /* @__PURE__ */ new Map();
+const fs = require("fs");
+const ALLOWED_KEYS = /* @__PURE__ */ new Set(["accessToken", "refreshToken"]);
+const tokenMap = /* @__PURE__ */ new Map();
+let persistPath = "";
+function encryptValue(value) {
+  if (electron.safeStorage.isEncryptionAvailable()) {
+    return electron.safeStorage.encryptString(value);
+  }
+  return Buffer.from(value, "utf-8");
+}
+function decryptValue(buf) {
+  if (electron.safeStorage.isEncryptionAvailable()) {
+    return electron.safeStorage.decryptString(buf);
+  }
+  return buf.toString("utf-8");
+}
+function loadFromDisk() {
+  if (!persistPath || !fs.existsSync(persistPath)) return;
+  try {
+    const raw = fs.readFileSync(persistPath, "utf-8");
+    const parsed = JSON.parse(raw);
+    if (parsed.v !== 1 || !parsed.entries || typeof parsed.entries !== "object") return;
+    tokenMap.clear();
+    for (const [key, b64] of Object.entries(parsed.entries)) {
+      if (!ALLOWED_KEYS.has(key) || typeof b64 !== "string") continue;
+      tokenMap.set(key, Buffer.from(b64, "base64"));
+    }
+  } catch {
+    tokenMap.clear();
+  }
+}
+function saveToDisk() {
+  if (!persistPath) return;
+  try {
+    fs.mkdirSync(path.dirname(persistPath), { recursive: true });
+    const entries = {};
+    for (const [key, buf] of tokenMap.entries()) {
+      entries[key] = buf.toString("base64");
+    }
+    fs.writeFileSync(persistPath, JSON.stringify({ v: 1, entries }), {
+      encoding: "utf-8",
+      mode: 384
+    });
+  } catch {
+  }
+}
+function initTokenStorage(userDataPath) {
+  persistPath = path.join(userDataPath, "desklink-tokens.json");
+  loadFromDisk();
+}
+function storeToken(key, value) {
+  if (!ALLOWED_KEYS.has(key) || typeof value !== "string" || value.length === 0) {
+    return false;
+  }
+  tokenMap.set(key, encryptValue(value));
+  saveToDisk();
+  return true;
+}
+function getToken(key) {
+  if (!ALLOWED_KEYS.has(key)) return null;
+  const encrypted = tokenMap.get(key);
+  if (!encrypted) return null;
+  try {
+    return decryptValue(encrypted);
+  } catch {
+    tokenMap.delete(key);
+    saveToDisk();
+    return null;
+  }
+}
+function deleteToken(key) {
+  if (!ALLOWED_KEYS.has(key)) return false;
+  tokenMap.delete(key);
+  saveToDisk();
+  return true;
+}
+function clearTokens() {
+  tokenMap.clear();
+  saveToDisk();
+}
 function createWindow() {
   const mainWindow = new electron.BrowserWindow({
     width: 1280,
@@ -50,31 +129,21 @@ function registerIpcHandlers() {
     return electron.BrowserWindow.fromWebContents(event.sender)?.isMaximized() ?? false;
   });
   electron.ipcMain.handle("token:store", (_event, key, value) => {
-    if (electron.safeStorage.isEncryptionAvailable()) {
-      tokenStore.set(key, electron.safeStorage.encryptString(value));
-    } else {
-      tokenStore.set(key, Buffer.from(value, "utf-8"));
-    }
-    return true;
+    return storeToken(key, value);
   });
   electron.ipcMain.handle("token:get", (_event, key) => {
-    const encrypted = tokenStore.get(key);
-    if (!encrypted) return null;
-    if (electron.safeStorage.isEncryptionAvailable()) {
-      return electron.safeStorage.decryptString(encrypted);
-    }
-    return encrypted.toString("utf-8");
+    return getToken(key);
   });
   electron.ipcMain.handle("token:delete", (_event, key) => {
-    tokenStore.delete(key);
-    return true;
+    return deleteToken(key);
   });
   electron.ipcMain.handle("token:clear", () => {
-    tokenStore.clear();
+    clearTokens();
     return true;
   });
 }
 electron.app.whenReady().then(() => {
+  initTokenStorage(electron.app.getPath("userData"));
   registerIpcHandlers();
   createWindow();
   electron.app.on("activate", () => {

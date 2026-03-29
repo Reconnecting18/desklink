@@ -4,6 +4,8 @@
 
 DeskLink provides a comprehensive REST + WebSocket API for managing workspaces, whiteboards, mockups, project planning, documents, file storage, and AI-powered productivity features.
 
+Contributor and AI agent conventions (architecture, API contracts, IPC, commits): see [AGENTS.md](AGENTS.md).
+
 ## Features
 
 | Module | Description |
