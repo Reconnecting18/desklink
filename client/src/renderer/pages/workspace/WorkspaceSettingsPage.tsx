@@ -41,8 +41,8 @@ export function WorkspaceSettingsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-10 py-12 md:px-14">
-      <div className="mb-10 flex items-center gap-4">
+    <div className="mx-auto max-w-2xl px-8 py-10 md:px-12 md:py-12">
+      <div className="mb-10 flex items-center gap-5">
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-notion-sidebar">
           <Settings className="h-5 w-5 text-notion-text-secondary" />
         </div>

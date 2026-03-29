@@ -143,7 +143,7 @@ export function BoardView({ projectId }: BoardViewProps) {
   return (
     <div className="flex h-full flex-col">
       {/* Board tabs */}
-      <div className="flex shrink-0 flex-wrap items-center gap-1 border-b border-notion-border bg-notion-bg px-6 py-2">
+      <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-notion-border bg-notion-bg px-8 py-3">
         {boards.map((b: Board) => (
           <button
             key={b.id}
@@ -183,7 +183,7 @@ export function BoardView({ projectId }: BoardViewProps) {
       </div>
 
       {/* Kanban columns */}
-      <div className="flex flex-1 gap-4 overflow-x-auto p-6">
+      <div className="flex flex-1 gap-3 overflow-x-auto px-8 py-6">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}

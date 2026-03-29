@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { PenTool, Layers, Plus, MoreHorizontal, Clock, Users } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { Button } from '@/components/ui/Button'
 
 type WhiteboardTab = 'whiteboards' | 'mockups'
 
@@ -26,7 +27,7 @@ const MOCK_MOCKUPS: BoardItem[] = [
 
 function BoardCard({ item }: { item: BoardItem }) {
   return (
-    <div className="group flex flex-col overflow-hidden rounded-lg border border-notion-border bg-notion-bg transition-shadow hover:shadow-md cursor-pointer">
+    <div className="group flex cursor-pointer flex-col overflow-hidden rounded-xl border border-notion-border bg-notion-bg transition-shadow hover:shadow-md">
       {/* Thumbnail */}
       <div
         className="flex h-36 items-center justify-center"
@@ -39,25 +40,25 @@ function BoardCard({ item }: { item: BoardItem }) {
       </div>
 
       {/* Info */}
-      <div className="flex items-start justify-between gap-2 px-4 py-3">
+      <div className="flex items-start justify-between gap-3 px-4 py-4">
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium text-notion-text">{item.name}</p>
-          <div className="mt-1 flex items-center gap-3 text-xs text-notion-text-tertiary">
-            <span className="flex items-center gap-1">
-              <Clock className="h-3 w-3" />
+          <p className="truncate text-sm font-medium leading-snug text-notion-text">{item.name}</p>
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-notion-text-tertiary">
+            <span className="flex items-center gap-1.5">
+              <Clock className="h-3.5 w-3.5" />
               {item.updatedAt}
             </span>
-            <span className="flex items-center gap-1">
-              <Users className="h-3 w-3" />
+            <span className="flex items-center gap-1.5">
+              <Users className="h-3.5 w-3.5" />
               {item.collaborators}
             </span>
           </div>
         </div>
         <button
           type="button"
-          className="flex h-6 w-6 shrink-0 items-center justify-center rounded text-notion-text-tertiary opacity-0 transition-opacity group-hover:opacity-100 hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-notion-text-tertiary opacity-0 transition-opacity group-hover:opacity-100 hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
         >
-          <MoreHorizontal className="h-3.5 w-3.5" />
+          <MoreHorizontal className="h-4 w-4" />
         </button>
       </div>
     </div>
@@ -74,24 +75,21 @@ export function WhiteboardApp() {
   return (
     <div className="flex h-full flex-col overflow-hidden bg-notion-bg">
       {/* Header */}
-      <div className="flex shrink-0 items-center justify-between border-b border-notion-border px-8 py-4">
+      <div className="flex shrink-0 items-center justify-between border-b border-notion-border px-10 py-5">
         <div className="flex items-center gap-3">
-          <Icon className="h-5 w-5 text-notion-text-secondary" />
-          <h1 className="text-lg font-semibold text-notion-text">
+          <Icon className="h-6 w-6 text-notion-text-secondary" />
+          <h1 className="text-xl font-semibold tracking-tight text-notion-text">
             {activeTab === 'whiteboards' ? 'Whiteboards' : 'Mockups'}
           </h1>
         </div>
-        <button
-          type="button"
-          className="flex items-center gap-1.5 rounded-md bg-notion-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-notion-accent-hover"
-        >
+        <Button size="sm" type="button">
           <Plus className="h-3.5 w-3.5" />
           New {label}
-        </button>
+        </Button>
       </div>
 
       {/* Tab bar */}
-      <div className="flex shrink-0 border-b border-notion-border px-8">
+      <div className="flex shrink-0 border-b border-notion-border px-10">
         {(['whiteboards', 'mockups'] as WhiteboardTab[]).map((tab) => (
           <button
             key={tab}
@@ -115,24 +113,21 @@ export function WhiteboardApp() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-8 py-6">
+      <div className="flex-1 overflow-y-auto px-10 py-8">
         {items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-3 py-24 text-center">
-            <Icon className="h-10 w-10 text-notion-text-tertiary" />
+          <div className="flex flex-col items-center justify-center gap-4 py-28 text-center">
+            <Icon className="h-12 w-12 text-notion-text-tertiary" />
             <div>
               <p className="text-sm font-medium text-notion-text-secondary">No {label.toLowerCase()}s yet</p>
-              <p className="mt-1 text-xs text-notion-text-tertiary">Create your first {label.toLowerCase()} to get started</p>
+              <p className="mt-2 text-sm text-notion-text-tertiary">Create your first {label.toLowerCase()} to get started</p>
             </div>
-            <button
-              type="button"
-              className="mt-2 flex items-center gap-1.5 rounded-md bg-notion-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-notion-accent-hover"
-            >
+            <Button size="sm" type="button" className="mt-2">
               <Plus className="h-3.5 w-3.5" />
               New {label}
-            </button>
+            </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {items.map((item) => (
               <BoardCard key={item.id} item={item} />
             ))}

@@ -41,8 +41,8 @@ export function ProjectsPage() {
   })
 
   return (
-    <div className="mx-auto max-w-3xl px-8 py-10 md:px-12">
-      <div className="mb-8 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mx-auto max-w-3xl px-8 py-10 md:px-12 md:py-12">
+      <div className="mb-10 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold tracking-tight text-notion-text">Projects</h1>
           <p className="mt-1 text-sm text-notion-text-secondary">
@@ -57,8 +57,8 @@ export function ProjectsPage() {
 
       {/* Create project inline form */}
       {showCreate && (
-        <div className="mb-6 rounded-lg border border-notion-border bg-white p-4">
-          <div className="flex flex-col gap-3">
+        <div className="mb-8 rounded-lg border border-notion-border bg-white p-5">
+          <div className="flex flex-col gap-4">
             <Input
               id="project-name"
               placeholder="Project name"
@@ -109,12 +109,12 @@ export function ProjectsPage() {
           onAction={() => setShowCreate(true)}
         />
       ) : (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {projects.map((project: Project) => (
             <div
               key={project.id}
               onClick={() => navigate(`/w/${workspaceId}/projects/${project.id}`)}
-              className="group cursor-pointer rounded-xl border border-notion-border bg-notion-bg p-4 shadow-sm transition-all hover:border-notion-text-tertiary/60 hover:shadow-md"
+              className="group cursor-pointer rounded-xl border border-notion-border bg-notion-bg p-5 shadow-sm transition-all hover:border-notion-text-tertiary/60 hover:shadow-md"
             >
               <div className="flex items-start justify-between">
                 <div className="min-w-0 flex-1">

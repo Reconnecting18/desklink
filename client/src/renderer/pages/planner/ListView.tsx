@@ -67,15 +67,15 @@ export function ListView({ projectId }: ListViewProps) {
   return (
     <div className="flex h-full flex-col">
       {/* Toolbar */}
-      <div className="flex shrink-0 items-center justify-between border-b border-notion-border px-6 py-2">
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-notion-text-secondary">Sort by:</span>
+      <div className="flex shrink-0 items-center justify-between border-b border-notion-border px-8 py-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm text-notion-text-secondary">Sort by:</span>
           {(['priority', 'dueDate', 'title'] as const).map((s) => (
             <button
               key={s}
               onClick={() => setSortBy(s)}
               className={cn(
-                'rounded px-2 py-0.5 text-xs transition-colors',
+                'rounded-md px-2.5 py-1 text-xs transition-colors',
                 sortBy === s
                   ? 'bg-notion-sidebar-hover font-medium text-notion-text'
                   : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
@@ -105,17 +105,17 @@ export function ListView({ projectId }: ListViewProps) {
           <table className="w-full">
             <thead>
               <tr className="border-b border-notion-border text-left">
-                <th className="px-6 py-2 text-xs font-medium text-notion-text-secondary">Title</th>
-                <th className="px-3 py-2 text-xs font-medium text-notion-text-secondary w-24">Priority</th>
-                <th className="px-3 py-2 text-xs font-medium text-notion-text-secondary w-24">Status</th>
-                <th className="px-3 py-2 text-xs font-medium text-notion-text-secondary w-28">Due date</th>
-                <th className="px-3 py-2 text-xs font-medium text-notion-text-secondary w-16">Assignee</th>
+                <th className="px-8 py-3 text-xs font-medium text-notion-text-secondary">Title</th>
+                <th className="w-24 px-3 py-3 text-xs font-medium text-notion-text-secondary">Priority</th>
+                <th className="w-24 px-3 py-3 text-xs font-medium text-notion-text-secondary">Status</th>
+                <th className="w-28 px-3 py-3 text-xs font-medium text-notion-text-secondary">Due date</th>
+                <th className="w-16 px-3 py-3 text-xs font-medium text-notion-text-secondary">Assignee</th>
               </tr>
             </thead>
             <tbody>
               {showNewTask && (
                 <tr className="border-b border-notion-border">
-                  <td colSpan={5} className="px-6 py-2">
+                  <td colSpan={5} className="px-8 py-3">
                     <input
                       value={newTitle}
                       onChange={(e) => setNewTitle(e.target.value)}
@@ -136,14 +136,14 @@ export function ListView({ projectId }: ListViewProps) {
                   onClick={() => setSelectedTaskId(task.id)}
                   className="cursor-pointer border-b border-notion-border hover:bg-notion-sidebar-hover/50 transition-colors"
                 >
-                  <td className="px-6 py-2.5 text-sm text-notion-text">{task.title}</td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-8 py-3 text-sm text-notion-text">{task.title}</td>
+                  <td className="px-3 py-3">
                     <Badge variant={priorityVariant[task.priority]}>{task.priority}</Badge>
                   </td>
-                  <td className="px-3 py-2.5 text-xs text-notion-text-secondary">
+                  <td className="px-3 py-3 text-xs text-notion-text-secondary">
                     {task.status}
                   </td>
-                  <td className="px-3 py-2.5 text-xs text-notion-text-secondary">
+                  <td className="px-3 py-3 text-xs text-notion-text-secondary">
                     {task.dueDate
                       ? new Date(task.dueDate).toLocaleDateString('en-US', {
                           month: 'short',
@@ -151,7 +151,7 @@ export function ListView({ projectId }: ListViewProps) {
                         })
                       : '—'}
                   </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-3 py-3">
                     {task.assignee && (
                       <Avatar
                         name={task.assignee.displayName ?? task.assignee.name}

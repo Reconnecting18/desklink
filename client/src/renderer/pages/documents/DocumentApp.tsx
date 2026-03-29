@@ -138,42 +138,42 @@ export function DocumentApp() {
   return (
     <div className="flex h-full overflow-hidden">
       {/* Left panel — document list */}
-      <div className="flex w-56 shrink-0 flex-col border-r border-notion-border bg-notion-sidebar overflow-hidden">
+      <div className="flex w-64 min-w-[16rem] shrink-0 flex-col overflow-hidden border-r border-notion-border bg-notion-sidebar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-notion-border px-3 py-2.5">
-          <span className="text-xs font-semibold text-notion-text">Documents</span>
+        <div className="flex items-center justify-between border-b border-notion-border px-4 py-3">
+          <span className="text-sm font-semibold text-notion-text">Documents</span>
           <button
             type="button"
             onClick={handleNewDoc}
             title="New document"
-            className="flex h-6 w-6 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text transition-colors"
+            className="flex h-9 w-9 items-center justify-center rounded-md text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
           >
-            <Plus className="h-3.5 w-3.5" />
+            <Plus className="h-4 w-4" />
           </button>
         </div>
 
         {/* Doc list */}
-        <div className="flex-1 overflow-y-auto py-1">
+        <div className="flex-1 overflow-y-auto py-2">
           {docs.map((doc) => (
             <button
               key={doc.id}
               type="button"
               onClick={() => handleSelectDoc(doc)}
               className={cn(
-                'group flex w-full items-center gap-2 px-3 py-1.5 text-left transition-colors',
+                'group flex w-full items-center gap-2.5 px-4 py-2.5 text-left transition-colors',
                 doc.id === selectedDocId
                   ? 'bg-notion-sidebar-hover text-notion-text'
                   : 'text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text'
               )}
             >
-              <FileText className="h-3.5 w-3.5 shrink-0 opacity-60" />
-              <span className="flex-1 truncate text-xs">{doc.title}</span>
+              <FileText className="h-4 w-4 shrink-0 opacity-60" />
+              <span className="flex-1 truncate text-sm leading-snug">{doc.title}</span>
               <button
                 type="button"
                 onClick={(e) => handleDeleteDoc(e, doc.id)}
-                className="hidden h-5 w-5 shrink-0 items-center justify-center rounded text-notion-text-tertiary hover:text-notion-red group-hover:flex"
+                className="hidden h-7 w-7 shrink-0 items-center justify-center rounded-md text-notion-text-tertiary hover:text-notion-red group-hover:flex"
               >
-                <Trash2 className="h-3 w-3" />
+                <Trash2 className="h-3.5 w-3.5" />
               </button>
             </button>
           ))}
@@ -185,7 +185,7 @@ export function DocumentApp() {
         {selectedDoc && (
           <>
             {/* Formatting toolbar */}
-            <div className="flex items-center gap-0.5 border-b border-notion-border bg-notion-sidebar px-4 py-1.5">
+            <div className="flex min-h-10 items-center gap-1 border-b border-notion-border bg-notion-sidebar px-4 py-2">
               {TOOLBAR_ACTIONS.map(({ cmd, icon: Icon, title }) => (
                 <button
                   key={cmd}
@@ -195,27 +195,27 @@ export function DocumentApp() {
                     e.preventDefault() // prevent losing focus
                     execFormat(cmd)
                   }}
-                  className="flex h-7 w-7 items-center justify-center rounded text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
                 >
-                  <Icon className="h-3.5 w-3.5" />
+                  <Icon className="h-4 w-4" />
                 </button>
               ))}
-              <div className="ml-auto flex items-center gap-1">
-                <span className="text-[11px] text-notion-text-tertiary">
+              <div className="ml-auto flex items-center gap-2">
+                <span className="text-xs text-notion-text-tertiary">
                   Edited {selectedDoc.updatedAt}
                 </span>
                 <button
                   type="button"
-                  className="flex h-7 w-7 items-center justify-center rounded text-notion-text-tertiary hover:bg-notion-sidebar-hover"
+                  className="flex h-9 w-9 items-center justify-center rounded-md text-notion-text-tertiary hover:bg-notion-sidebar-hover"
                 >
-                  <MoreHorizontal className="h-3.5 w-3.5" />
+                  <MoreHorizontal className="h-4 w-4" />
                 </button>
               </div>
             </div>
 
             {/* Editor area */}
             <div className="flex-1 overflow-y-auto">
-              <div className="mx-auto max-w-3xl px-16 py-12">
+              <div className="mx-auto max-w-3xl px-10 py-12 md:px-16 md:py-14">
                 {/* Editable title */}
                 <div
                   ref={titleRef}

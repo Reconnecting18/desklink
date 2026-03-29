@@ -78,7 +78,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
   return (
     <div className="fixed inset-y-0 right-0 z-50 flex w-96 flex-col border-l border-notion-border bg-white shadow-lg">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-notion-border px-4 py-3">
+      <div className="flex items-center justify-between border-b border-notion-border px-5 py-4">
         <span className="text-xs font-medium text-notion-text-secondary">Task details</span>
         <div className="flex items-center gap-1">
           <button
@@ -97,7 +97,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-4 py-4">
+      <div className="flex-1 space-y-6 overflow-y-auto px-6 py-6">
         {/* Title */}
         {editingTitle ? (
           <input
@@ -128,7 +128,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
         )}
 
         {/* Properties */}
-        <div className="mt-4 flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {/* Priority */}
           <div className="flex items-center gap-3">
             <span className="flex w-20 items-center gap-1.5 text-xs text-notion-text-secondary">
@@ -190,8 +190,8 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
         </div>
 
         {/* Description */}
-        <div className="mt-6">
-          <h3 className="mb-2 text-xs font-medium text-notion-text-secondary">Description</h3>
+        <div>
+          <h3 className="mb-3 text-xs font-medium text-notion-text-secondary">Description</h3>
           {editingDesc ? (
             <textarea
               value={description}
@@ -220,15 +220,15 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
         </div>
 
         {/* Comments */}
-        <div className="mt-6">
-          <h3 className="mb-3 flex items-center gap-1.5 text-xs font-medium text-notion-text-secondary">
+        <div>
+          <h3 className="mb-4 flex items-center gap-2 text-xs font-medium text-notion-text-secondary">
             <MessageSquare className="h-3.5 w-3.5" />
             Comments ({comments.length})
           </h3>
 
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {comments.map((comment: Comment) => (
-              <div key={comment.id} className="flex gap-2">
+              <div key={comment.id} className="flex gap-3">
                 <Avatar
                   name={comment.author?.displayName ?? comment.author?.name}
                   src={comment.author?.avatarUrl}
@@ -250,7 +250,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
           </div>
 
           {/* New comment */}
-          <div className="mt-3 flex gap-2">
+          <div className="mt-4 flex gap-2">
             <input
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}

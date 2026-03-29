@@ -52,10 +52,10 @@ export function KanbanColumn({
 
   return (
     <div className="flex w-[272px] shrink-0 flex-col">
-      <div className="mb-2 flex items-center justify-between px-1">
-        <div className="flex min-w-0 items-center gap-2">
+      <div className="mb-3 flex items-center justify-between px-1">
+        <div className="flex min-w-0 items-center gap-2.5">
           <span className={cn('h-2 w-2 shrink-0 rounded-full', accent)} aria-hidden />
-          <span className="truncate text-[13px] font-semibold text-notion-text">{column.name}</span>
+          <span className="truncate text-sm font-semibold text-notion-text">{column.name}</span>
           <span className="flex h-5 min-w-[20px] shrink-0 items-center justify-center rounded-full bg-notion-sidebar px-1.5 text-[11px] font-medium tabular-nums text-notion-text-secondary">
             {tasks.length}
           </span>
@@ -72,7 +72,7 @@ export function KanbanColumn({
       <div
         ref={setNodeRef}
         className={cn(
-          'flex min-h-[120px] flex-1 flex-col gap-2 rounded-xl border border-transparent bg-notion-sidebar/40 p-1.5 transition-colors',
+          'flex min-h-[120px] flex-1 flex-col gap-3 rounded-xl border border-transparent bg-notion-sidebar/40 p-2 transition-colors',
           isOver && 'border-notion-accent/25 bg-notion-accent/5'
         )}
       >
@@ -84,7 +84,7 @@ export function KanbanColumn({
 
         {/* New task inline form */}
         {showNewTask && (
-          <div className="rounded-lg border border-notion-border bg-notion-bg p-2 shadow-sm">
+          <div className="rounded-lg border border-notion-border bg-notion-bg p-3 shadow-sm">
             <input
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}

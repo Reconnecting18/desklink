@@ -143,12 +143,12 @@ function TreeNode({ node, depth, selectedId, expandedIds, onSelect, onToggle }: 
           if (node.type === 'folder') onToggle(node.id)
         }}
         className={cn(
-          'flex w-full items-center gap-1.5 rounded px-2 py-1 text-left text-xs transition-colors',
+          'flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-sm transition-colors',
           isSelected
             ? 'bg-notion-sidebar-hover text-notion-text'
             : 'text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text'
         )}
-        style={{ paddingLeft: `${8 + depth * 14}px` }}
+        style={{ paddingLeft: `${10 + depth * 16}px` }}
       >
         {node.type === 'folder' ? (
           <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center">
@@ -225,9 +225,9 @@ export function FilesApp() {
   return (
     <div className="flex h-full overflow-hidden">
       {/* Left panel — directory tree */}
-      <div className="flex w-56 shrink-0 flex-col border-r border-notion-border bg-notion-sidebar overflow-hidden">
+      <div className="flex w-64 min-w-[16rem] shrink-0 flex-col overflow-hidden border-r border-notion-border bg-notion-sidebar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-notion-border px-3 py-2.5">
+        <div className="flex items-center justify-between border-b border-notion-border px-4 py-3">
           <span className="text-xs font-semibold text-notion-text">Files</span>
           <button
             type="button"
@@ -239,13 +239,13 @@ export function FilesApp() {
         </div>
 
         {/* Tree */}
-        <div className="flex-1 overflow-y-auto py-1">
+        <div className="flex-1 overflow-y-auto py-2">
           {/* All Files root */}
           <button
             type="button"
             onClick={() => { setSelectedNode(null); setSelectedFileId(null) }}
             className={cn(
-              'flex w-full items-center gap-2 rounded px-2 py-1 text-left text-xs transition-colors',
+              'flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors',
               selectedNode === null
                 ? 'bg-notion-sidebar-hover text-notion-text'
                 : 'text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text'
@@ -274,7 +274,7 @@ export function FilesApp() {
       {/* Right panel — file listing */}
       <div className="flex flex-1 flex-col overflow-hidden bg-notion-bg">
         {/* Toolbar */}
-        <div className="flex items-center gap-2 border-b border-notion-border px-4 py-2">
+        <div className="flex flex-wrap items-center gap-3 border-b border-notion-border px-5 py-3">
           {/* Breadcrumb */}
           <div className="flex items-center gap-1 text-xs text-notion-text-secondary">
             <span
@@ -291,16 +291,16 @@ export function FilesApp() {
             )}
           </div>
 
-          <div className="ml-auto flex items-center gap-1.5">
+          <div className="ml-auto flex flex-wrap items-center gap-2">
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-notion-text-tertiary" />
+              <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-notion-text-tertiary" />
               <input
                 type="text"
                 placeholder="Search files…"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-7 rounded border border-notion-border bg-notion-sidebar pl-6 pr-2 text-xs text-notion-text placeholder:text-notion-text-tertiary focus:border-notion-accent focus:outline-none"
+                className="h-9 min-w-[10rem] rounded-md border border-notion-border bg-notion-sidebar pl-9 pr-3 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:border-notion-accent focus:outline-none"
               />
             </div>
 
@@ -308,19 +308,19 @@ export function FilesApp() {
             <button
               type="button"
               title="Upload files"
-              className="flex h-7 items-center gap-1.5 rounded border border-notion-border bg-notion-sidebar px-2 text-xs text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text transition-colors"
+              className="flex h-9 items-center gap-2 rounded-md border border-notion-border bg-notion-sidebar px-3 text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
             >
               <Upload className="h-3 w-3" />
               Upload
             </button>
 
             {/* View toggle */}
-            <div className="flex rounded border border-notion-border overflow-hidden">
+            <div className="flex overflow-hidden rounded-md border border-notion-border">
               <button
                 type="button"
                 onClick={() => setViewMode('list')}
                 className={cn(
-                  'flex h-7 w-7 items-center justify-center transition-colors',
+                  'flex h-9 w-9 items-center justify-center transition-colors',
                   viewMode === 'list'
                     ? 'bg-notion-sidebar-hover text-notion-text'
                     : 'bg-notion-sidebar text-notion-text-tertiary hover:text-notion-text-secondary'
@@ -332,7 +332,7 @@ export function FilesApp() {
                 type="button"
                 onClick={() => setViewMode('grid')}
                 className={cn(
-                  'flex h-7 w-7 items-center justify-center border-l border-notion-border transition-colors',
+                  'flex h-9 w-9 items-center justify-center border-l border-notion-border transition-colors',
                   viewMode === 'grid'
                     ? 'bg-notion-sidebar-hover text-notion-text'
                     : 'bg-notion-sidebar text-notion-text-tertiary hover:text-notion-text-secondary'
@@ -357,13 +357,13 @@ export function FilesApp() {
               </p>
             </div>
           ) : viewMode === 'list' ? (
-            <table className="w-full text-xs">
+            <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-notion-border bg-notion-sidebar/50">
-                  <th className="px-4 py-2 text-left font-medium text-notion-text-tertiary">Name</th>
-                  <th className="px-4 py-2 text-left font-medium text-notion-text-tertiary">Modified</th>
-                  <th className="px-4 py-2 text-left font-medium text-notion-text-tertiary">Size</th>
-                  <th className="w-8 px-2 py-2" />
+                  <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary">Name</th>
+                  <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary">Modified</th>
+                  <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary">Size</th>
+                  <th className="w-10 px-2 py-3" />
                 </tr>
               </thead>
               <tbody>
@@ -381,18 +381,18 @@ export function FilesApp() {
                         isSelected ? 'bg-notion-sidebar-hover' : 'hover:bg-notion-sidebar/60'
                       )}
                     >
-                      <td className="px-4 py-2">
-                        <div className="flex items-center gap-2">
+                      <td className="px-5 py-3">
+                        <div className="flex items-center gap-3">
                           <Icon className={cn(
                             'h-4 w-4 shrink-0',
                             file.type === 'folder' ? 'text-notion-orange' : getMimeColor(file.mimeType)
                           )} />
-                          <span className="text-notion-text">{file.name}</span>
+                          <span className="leading-snug text-notion-text">{file.name}</span>
                         </div>
                       </td>
-                      <td className="px-4 py-2 text-notion-text-tertiary">{file.modified ?? '—'}</td>
-                      <td className="px-4 py-2 text-notion-text-tertiary">{file.size ?? '—'}</td>
-                      <td className="px-2 py-2">
+                      <td className="px-5 py-3 text-notion-text-tertiary">{file.modified ?? '—'}</td>
+                      <td className="px-5 py-3 text-notion-text-tertiary">{file.size ?? '—'}</td>
+                      <td className="px-2 py-3">
                         <button
                           type="button"
                           onClick={(e) => e.stopPropagation()}
@@ -408,7 +408,7 @@ export function FilesApp() {
             </table>
           ) : (
             /* Grid view */
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-3 p-4">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(128px,1fr))] gap-4 p-6">
               {filteredFiles.map((file) => {
                 const Icon = file.type === 'folder'
                   ? Folder
@@ -420,7 +420,7 @@ export function FilesApp() {
                     type="button"
                     onClick={() => handleSelectNode(file)}
                     className={cn(
-                      'flex flex-col items-center gap-2 rounded-lg border p-3 text-center transition-all',
+                      'flex flex-col items-center gap-2.5 rounded-xl border p-4 text-center transition-all',
                       isSelected
                         ? 'border-notion-accent bg-notion-accent/5'
                         : 'border-notion-border hover:border-notion-text-tertiary/60 hover:bg-notion-sidebar/60'
@@ -430,9 +430,9 @@ export function FilesApp() {
                       'h-8 w-8',
                       file.type === 'folder' ? 'text-notion-orange' : getMimeColor(file.mimeType)
                     )} />
-                    <span className="w-full truncate text-[11px] text-notion-text">{file.name}</span>
+                    <span className="w-full truncate text-xs leading-snug text-notion-text">{file.name}</span>
                     {file.size && (
-                      <span className="text-[10px] text-notion-text-tertiary">{file.size}</span>
+                      <span className="text-[11px] text-notion-text-tertiary">{file.size}</span>
                     )}
                   </button>
                 )
@@ -442,7 +442,7 @@ export function FilesApp() {
         </div>
 
         {/* Status bar */}
-        <div className="flex items-center border-t border-notion-border px-4 py-1.5">
+        <div className="flex items-center border-t border-notion-border px-5 py-2.5">
           <span className="text-[11px] text-notion-text-tertiary">
             {filteredFiles.length} item{filteredFiles.length !== 1 ? 's' : ''}
             {searchQuery && ` matching "${searchQuery}"`}

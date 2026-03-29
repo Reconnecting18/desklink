@@ -131,9 +131,9 @@ export function InboxApp() {
   return (
     <div className="flex h-full overflow-hidden">
       {/* Left panel — message list */}
-      <div className="flex w-72 shrink-0 flex-col border-r border-notion-border bg-notion-sidebar overflow-hidden">
+      <div className="flex w-80 min-w-[18rem] shrink-0 flex-col overflow-hidden border-r border-notion-border bg-notion-sidebar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-notion-border px-4 py-3">
+        <div className="flex items-center justify-between border-b border-notion-border px-4 py-4">
           <div className="flex items-center gap-2">
             <h2 className="text-sm font-semibold text-notion-text">Inbox</h2>
             {unreadCount > 0 && (
@@ -156,14 +156,14 @@ export function InboxApp() {
         </div>
 
         {/* Filter tabs */}
-        <div className="flex border-b border-notion-border px-2 pt-1">
+        <div className="flex border-b border-notion-border px-3 pt-2">
           {(['all', 'unread', 'mentions'] as FilterTab[]).map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setFilter(tab)}
               className={cn(
-                'px-3 py-1.5 text-xs font-medium capitalize transition-colors',
+                'px-3 py-2 text-xs font-medium capitalize transition-colors',
                 filter === tab
                   ? 'border-b-2 border-notion-accent text-notion-accent'
                   : 'text-notion-text-secondary hover:text-notion-text'
@@ -192,35 +192,35 @@ export function InboxApp() {
                   type="button"
                   onClick={() => handleSelect(msg)}
                   className={cn(
-                    'w-full border-b border-notion-border/60 px-3 py-2.5 text-left transition-colors',
+                    'w-full border-b border-notion-border/60 px-4 py-3 text-left transition-colors',
                     isSelected
                       ? 'bg-notion-sidebar-hover'
                       : 'hover:bg-notion-sidebar-hover/60'
                   )}
                 >
-                  <div className="flex items-start gap-2.5">
+                  <div className="flex items-start gap-3">
                     {/* Avatar */}
                     <div
-                      className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                      className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white"
                       style={{ backgroundColor: msg.senderColor }}
                     >
                       {msg.senderInitials}
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className={cn('truncate text-xs font-medium', msg.unread ? 'text-notion-text' : 'text-notion-text-secondary')}>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className={cn('truncate text-sm font-medium leading-snug', msg.unread ? 'text-notion-text' : 'text-notion-text-secondary')}>
                           {msg.sender}
                         </span>
-                        <span className="shrink-0 text-[10px] text-notion-text-tertiary">{msg.timestamp}</span>
+                        <span className="shrink-0 text-[11px] text-notion-text-tertiary">{msg.timestamp}</span>
                       </div>
-                      <div className="mt-0.5 flex items-center gap-1">
-                        <TypeIcon className="h-2.5 w-2.5 shrink-0 text-notion-text-tertiary" />
-                        <p className={cn('truncate text-[11px]', msg.unread ? 'text-notion-text' : 'text-notion-text-tertiary')}>
+                      <div className="mt-1 flex items-center gap-1.5">
+                        <TypeIcon className="h-3 w-3 shrink-0 text-notion-text-tertiary" />
+                        <p className={cn('line-clamp-2 text-xs leading-snug', msg.unread ? 'text-notion-text' : 'text-notion-text-tertiary')}>
                           {msg.subject}
                         </p>
                       </div>
-                      <p className="mt-0.5 truncate text-[11px] text-notion-text-tertiary">
+                      <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-notion-text-tertiary">
                         {msg.preview}
                       </p>
                     </div>
@@ -242,7 +242,7 @@ export function InboxApp() {
         {selected ? (
           <>
             {/* Detail header */}
-            <div className="border-b border-notion-border px-8 py-5">
+            <div className="border-b border-notion-border px-10 py-6">
               <div className="flex items-start gap-3">
                 <div
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
@@ -261,7 +261,7 @@ export function InboxApp() {
             </div>
 
             {/* Detail body */}
-            <div className="flex-1 overflow-y-auto px-8 py-6">
+            <div className="flex-1 overflow-y-auto px-10 py-8">
               <div className="max-w-2xl">
                 <p className="whitespace-pre-line text-sm leading-relaxed text-notion-text">
                   {selected.body}

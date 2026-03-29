@@ -42,7 +42,7 @@ export function TaskCard({ task, isDragging, onClick }: TaskCardProps) {
       {...listeners}
       onClick={onClick}
       className={cn(
-        'cursor-pointer rounded-lg border border-notion-border/90 bg-notion-bg p-3 shadow-sm transition-shadow',
+        'cursor-pointer rounded-lg border border-notion-border/90 bg-notion-bg p-3.5 shadow-sm transition-shadow',
         'hover:shadow-md',
         isDragging && 'rotate-2 shadow-lg',
         isSortDragging && 'opacity-50'
@@ -60,7 +60,7 @@ export function TaskCard({ task, isDragging, onClick }: TaskCardProps) {
       )}
 
       {/* Title */}
-      <p className="text-sm text-notion-text">{task.title}</p>
+      <p className="text-sm leading-snug text-notion-text">{task.title}</p>
 
       {/* Meta row */}
       <div className="mt-2 flex items-center justify-between">

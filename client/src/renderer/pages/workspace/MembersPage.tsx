@@ -39,18 +39,18 @@ export function MembersPage() {
   })
 
   return (
-    <div className="mx-auto max-w-2xl px-12 py-10">
-      <div className="mb-2 flex items-center gap-3">
-        <Users className="h-5 w-5 text-notion-text-secondary" />
-        <h1 className="text-lg font-semibold text-notion-text">Workspace access</h1>
+    <div className="mx-auto max-w-2xl px-8 py-10 md:px-12 md:py-12">
+      <div className="mb-4 flex items-center gap-3">
+        <Users className="h-6 w-6 text-notion-text-secondary" />
+        <h1 className="text-xl font-semibold tracking-tight text-notion-text">Workspace access</h1>
       </div>
-      <p className="mb-8 text-sm text-notion-text-secondary">
+      <p className="mb-10 text-sm leading-relaxed text-notion-text-secondary">
         Optional: invite others only if you use shared workspaces. Solo use works without inviting anyone.
       </p>
 
       {/* Invite form */}
-      <div className="mb-8 flex gap-2">
-        <div className="flex-1">
+      <div className="mb-10 flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
+        <div className="min-w-0 flex-1">
           <Input
             id="invite-email"
             placeholder="Invite by email address"
@@ -80,7 +80,7 @@ export function MembersPage() {
       ) : (
         <div className="divide-y divide-notion-border rounded-lg border border-notion-border">
           {members.map((member: WorkspaceMember) => (
-            <div key={member.id} className="flex items-center gap-3 px-4 py-3">
+            <div key={member.id} className="flex items-center gap-4 px-5 py-4">
               <Avatar name={member.user.displayName} src={member.user.avatarUrl} size="md" />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-notion-text truncate">
