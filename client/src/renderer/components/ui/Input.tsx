@@ -19,7 +19,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={id}
           className={cn(
-            'min-h-9 w-full rounded-md border bg-white px-3 py-2 text-sm leading-snug text-notion-text',
+            'min-h-9 w-full rounded-md border bg-notion-bg px-3 py-2 text-sm leading-snug text-notion-text',
             'placeholder:text-notion-text-tertiary',
             'focus:outline-none focus:ring-2 focus:ring-notion-accent focus:border-transparent',
             'transition-colors',

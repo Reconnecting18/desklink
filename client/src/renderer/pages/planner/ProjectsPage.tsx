@@ -57,7 +57,7 @@ export function ProjectsPage() {
 
       {/* Create project inline form */}
       {showCreate && (
-        <div className="mb-8 rounded-lg border border-notion-border bg-white p-5">
+        <div className="mb-8 rounded-lg border border-notion-border bg-notion-bg p-5">
           <div className="flex flex-col gap-4">
             <Input
               id="project-name"

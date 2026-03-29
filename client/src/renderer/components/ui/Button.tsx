@@ -19,7 +19,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'disabled:pointer-events-none disabled:opacity-50',
           {
             'bg-notion-accent text-white hover:bg-notion-accent-hover': variant === 'primary',
-            'border border-notion-border bg-white text-notion-text hover:bg-notion-sidebar':
+            'border border-notion-border bg-notion-bg text-notion-text hover:bg-notion-sidebar':
               variant === 'secondary',
             'text-notion-text hover:bg-notion-sidebar-hover': variant === 'ghost',
             'bg-notion-red text-white hover:bg-red-600': variant === 'danger'

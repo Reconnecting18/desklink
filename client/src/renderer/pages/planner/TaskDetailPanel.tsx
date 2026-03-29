@@ -69,14 +69,14 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
 
   if (!task) {
     return (
-      <div className="fixed inset-y-0 right-0 z-50 flex w-96 items-center justify-center border-l border-notion-border bg-white shadow-lg">
+      <div className="fixed inset-y-0 right-0 z-50 flex w-96 items-center justify-center border-l border-notion-border bg-notion-bg shadow-lg">
         <div className="h-6 w-6 animate-spin rounded-full border-2 border-notion-accent border-t-transparent" />
       </div>
     )
   }
 
   return (
-    <div className="fixed inset-y-0 right-0 z-50 flex w-96 flex-col border-l border-notion-border bg-white shadow-lg">
+    <div className="fixed inset-y-0 right-0 z-50 flex w-96 flex-col border-l border-notion-border bg-notion-bg shadow-lg">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-notion-border px-5 py-4">
         <span className="text-xs font-medium text-notion-text-secondary">Task details</span>

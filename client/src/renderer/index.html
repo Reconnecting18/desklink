@@ -6,6 +6,23 @@
     <title>DeskLink</title>
   </head>
   <body>
+    <script>
+      (function () {
+        try {
+          var raw = localStorage.getItem('desklink-theme')
+          var pref = 'system'
+          if (raw) {
+            var j = JSON.parse(raw)
+            if (j && j.state && j.state.themePreference) pref = j.state.themePreference
+          }
+          var dark = false
+          if (pref === 'dark') dark = true
+          else if (pref === 'light') dark = false
+          else dark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          if (dark) document.documentElement.classList.add('dark')
+        } catch (e) {}
+      })()
+    </script>
     <div id="root"></div>
     <script type="module" src="./main.tsx"></script>
   </body>

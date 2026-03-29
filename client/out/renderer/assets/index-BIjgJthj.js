@@ -24624,10 +24624,24 @@ function ProtectedRoute() {
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {});
 }
+const RECENT_VISITS_KEY = "desklink-recent-visits";
+function loadRecentVisits() {
+  try {
+    const raw = localStorage.getItem(RECENT_VISITS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+function persistRecentVisits(visits) {
+  localStorage.setItem(RECENT_VISITS_KEY, JSON.stringify(visits.slice(0, 8)));
+}
 let _nextPageId = 2;
 const defaultPage = {
   id: "page-1",
-  title: "Home",
+  title: "Dashboard",
   appId: "home"
 };
 const useUIStore = create((set, get) => ({
@@ -24666,7 +24680,7 @@ const useUIStore = create((set, get) => ({
     const id = `page-${_nextPageId++}`;
     const appId = partial.appId ?? get().activeApp;
     const titleMap = {
-      home: "New page",
+      home: "Dashboard",
       inbox: "Inbox",
       documents: "New page",
       whiteboard: "Whiteboard",
@@ -24711,16 +24725,26 @@ const useUIStore = create((set, get) => ({
     set((state) => ({
       pages: state.pages.map((p) => p.id === id ? { ...p, title } : p)
     }));
+  },
+  recentVisits: loadRecentVisits(),
+  pushRecentVisit: (entry) => {
+    const visit = {
+      id: crypto.randomUUID(),
+      title: entry.title,
+      href: entry.href,
+      appId: entry.appId,
+      visitedAt: Date.now()
+    };
+    set((state) => {
+      const filtered = state.recentVisits.filter((v) => v.href !== visit.href);
+      const next = [visit, ...filtered].slice(0, 8);
+      persistRecentVisits(next);
+      return { recentVisits: next };
+    });
   }
 }));
 async function listWorkspaces() {
   return apiClient.get("/workspaces");
-}
-async function getWorkspace(id) {
-  return apiClient.get(`/workspaces/${id}`);
-}
-async function updateWorkspace(id, data) {
-  return apiClient.patch(`/workspaces/${id}`, data);
 }
 async function listMembers(workspaceId) {
   return apiClient.get(`/workspaces/${workspaceId}/members`);
@@ -28038,30 +28062,41 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$P = [
+const __iconNode$S = [
   ["rect", { width: "20", height: "5", x: "2", y: "3", rx: "1", key: "1wp1u1" }],
   ["path", { d: "M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8", key: "1s80jp" }],
   ["path", { d: "M10 12h4", key: "a56b0p" }]
 ];
-const Archive = createLucideIcon("Archive", __iconNode$P);
+const Archive = createLucideIcon("Archive", __iconNode$S);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$O = [
+const __iconNode$R = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
+];
+const ArrowRight = createLucideIcon("ArrowRight", __iconNode$R);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$Q = [
   ["circle", { cx: "12", cy: "12", r: "4", key: "4exip2" }],
   ["path", { d: "M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8", key: "7n84p3" }]
 ];
-const AtSign = createLucideIcon("AtSign", __iconNode$O);
+const AtSign = createLucideIcon("AtSign", __iconNode$Q);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$N = [
+const __iconNode$P = [
   ["path", { d: "M10.268 21a2 2 0 0 0 3.464 0", key: "vwvbt9" }],
   [
     "path",
@@ -28071,7 +28106,33 @@ const __iconNode$N = [
     }
   ]
 ];
-const Bell = createLucideIcon("Bell", __iconNode$N);
+const Bell = createLucideIcon("Bell", __iconNode$P);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$O = [
+  [
+    "path",
+    { d: "M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8", key: "mg9rjx" }
+  ]
+];
+const Bold = createLucideIcon("Bold", __iconNode$O);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$N = [
+  ["path", { d: "M8 2v4", key: "1cmpym" }],
+  ["path", { d: "M16 2v4", key: "4m81vk" }],
+  ["rect", { width: "18", height: "18", x: "3", y: "4", rx: "2", key: "1hopcy" }],
+  ["path", { d: "M3 10h18", key: "8toen8" }]
+];
+const Calendar = createLucideIcon("Calendar", __iconNode$N);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28079,68 +28140,65 @@ const Bell = createLucideIcon("Bell", __iconNode$N);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$M = [
-  [
-    "path",
-    { d: "M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8", key: "mg9rjx" }
-  ]
-];
-const Bold = createLucideIcon("Bold", __iconNode$M);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$L = [
-  ["path", { d: "M8 2v4", key: "1cmpym" }],
-  ["path", { d: "M16 2v4", key: "4m81vk" }],
-  ["rect", { width: "18", height: "18", x: "3", y: "4", rx: "2", key: "1hopcy" }],
-  ["path", { d: "M3 10h18", key: "8toen8" }]
-];
-const Calendar = createLucideIcon("Calendar", __iconNode$L);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$K = [
   ["path", { d: "M18 6 7 17l-5-5", key: "116fxf" }],
   ["path", { d: "m22 10-7.5 7.5L13 16", key: "ke71qq" }]
 ];
-const CheckCheck = createLucideIcon("CheckCheck", __iconNode$K);
+const CheckCheck = createLucideIcon("CheckCheck", __iconNode$M);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$J = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
-const ChevronDown = createLucideIcon("ChevronDown", __iconNode$J);
+const __iconNode$L = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
+const ChevronDown = createLucideIcon("ChevronDown", __iconNode$L);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$I = [["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]];
-const ChevronLeft = createLucideIcon("ChevronLeft", __iconNode$I);
+const __iconNode$K = [["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]];
+const ChevronLeft = createLucideIcon("ChevronLeft", __iconNode$K);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$H = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
-const ChevronRight = createLucideIcon("ChevronRight", __iconNode$H);
+const __iconNode$J = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
+const ChevronRight = createLucideIcon("ChevronRight", __iconNode$J);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$G = [["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }]];
-const Circle = createLucideIcon("Circle", __iconNode$G);
+const __iconNode$I = [["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }]];
+const Circle = createLucideIcon("Circle", __iconNode$I);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$H = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["polyline", { points: "12 6 12 12 16 14", key: "68esgv" }]
+];
+const Clock = createLucideIcon("Clock", __iconNode$H);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$G = [
+  ["path", { d: "m18 16 4-4-4-4", key: "1inbqp" }],
+  ["path", { d: "m6 8-4 4 4 4", key: "15zrgr" }],
+  ["path", { d: "m14.5 4-5 16", key: "e7oirm" }]
+];
+const CodeXml = createLucideIcon("CodeXml", __iconNode$G);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28148,10 +28206,10 @@ const Circle = createLucideIcon("Circle", __iconNode$G);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$F = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["polyline", { points: "12 6 12 12 16 14", key: "68esgv" }]
+  ["polyline", { points: "16 18 22 12 16 6", key: "z7tu5w" }],
+  ["polyline", { points: "8 6 2 12 8 18", key: "1eg1df" }]
 ];
-const Clock = createLucideIcon("Clock", __iconNode$F);
+const Code = createLucideIcon("Code", __iconNode$F);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28159,11 +28217,10 @@ const Clock = createLucideIcon("Clock", __iconNode$F);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$E = [
-  ["path", { d: "m18 16 4-4-4-4", key: "1inbqp" }],
-  ["path", { d: "m6 8-4 4 4 4", key: "15zrgr" }],
-  ["path", { d: "m14.5 4-5 16", key: "e7oirm" }]
+  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
+  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
 ];
-const CodeXml = createLucideIcon("CodeXml", __iconNode$E);
+const Copy = createLucideIcon("Copy", __iconNode$E);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28171,10 +28228,11 @@ const CodeXml = createLucideIcon("CodeXml", __iconNode$E);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$D = [
-  ["polyline", { points: "16 18 22 12 16 6", key: "z7tu5w" }],
-  ["polyline", { points: "8 6 2 12 8 18", key: "1eg1df" }]
+  ["circle", { cx: "12", cy: "12", r: "1", key: "41hilf" }],
+  ["circle", { cx: "19", cy: "12", r: "1", key: "1wjl8i" }],
+  ["circle", { cx: "5", cy: "12", r: "1", key: "1pcz8c" }]
 ];
-const Code = createLucideIcon("Code", __iconNode$D);
+const Ellipsis = createLucideIcon("Ellipsis", __iconNode$D);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28182,10 +28240,13 @@ const Code = createLucideIcon("Code", __iconNode$D);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$C = [
-  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
-  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
+  ["path", { d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z", key: "1rqfz7" }],
+  ["path", { d: "M14 2v4a2 2 0 0 0 2 2h4", key: "tnqrlb" }],
+  ["path", { d: "M10 9H8", key: "b1mrlr" }],
+  ["path", { d: "M16 13H8", key: "t4e002" }],
+  ["path", { d: "M16 17H8", key: "z1uh3a" }]
 ];
-const Copy = createLucideIcon("Copy", __iconNode$C);
+const FileText = createLucideIcon("FileText", __iconNode$C);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28193,32 +28254,6 @@ const Copy = createLucideIcon("Copy", __iconNode$C);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$B = [
-  ["circle", { cx: "12", cy: "12", r: "1", key: "41hilf" }],
-  ["circle", { cx: "19", cy: "12", r: "1", key: "1wjl8i" }],
-  ["circle", { cx: "5", cy: "12", r: "1", key: "1pcz8c" }]
-];
-const Ellipsis = createLucideIcon("Ellipsis", __iconNode$B);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$A = [
-  ["path", { d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z", key: "1rqfz7" }],
-  ["path", { d: "M14 2v4a2 2 0 0 0 2 2h4", key: "tnqrlb" }],
-  ["path", { d: "M10 9H8", key: "b1mrlr" }],
-  ["path", { d: "M16 13H8", key: "t4e002" }],
-  ["path", { d: "M16 17H8", key: "z1uh3a" }]
-];
-const FileText = createLucideIcon("FileText", __iconNode$A);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$z = [
   ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
   ["path", { d: "M7 3v18", key: "bbkbws" }],
   ["path", { d: "M3 7.5h4", key: "zfgn84" }],
@@ -28228,25 +28263,25 @@ const __iconNode$z = [
   ["path", { d: "M17 7.5h4", key: "myr1c1" }],
   ["path", { d: "M17 16.5h4", key: "go4c1d" }]
 ];
-const Film = createLucideIcon("Film", __iconNode$z);
+const Film = createLucideIcon("Film", __iconNode$B);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$y = [
+const __iconNode$A = [
   ["path", { d: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z", key: "i9b6wo" }],
   ["line", { x1: "4", x2: "4", y1: "22", y2: "15", key: "1cm3nv" }]
 ];
-const Flag = createLucideIcon("Flag", __iconNode$y);
+const Flag = createLucideIcon("Flag", __iconNode$A);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$x = [
+const __iconNode$z = [
   [
     "path",
     {
@@ -28258,14 +28293,14 @@ const __iconNode$x = [
   ["path", { d: "M12 10v2", key: "hh53o1" }],
   ["path", { d: "M16 10v6", key: "1d6xys" }]
 ];
-const FolderKanban = createLucideIcon("FolderKanban", __iconNode$x);
+const FolderKanban = createLucideIcon("FolderKanban", __iconNode$z);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$w = [
+const __iconNode$y = [
   [
     "path",
     {
@@ -28274,14 +28309,14 @@ const __iconNode$w = [
     }
   ]
 ];
-const FolderOpen = createLucideIcon("FolderOpen", __iconNode$w);
+const FolderOpen = createLucideIcon("FolderOpen", __iconNode$y);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$v = [
+const __iconNode$x = [
   [
     "path",
     {
@@ -28290,7 +28325,33 @@ const __iconNode$v = [
     }
   ]
 ];
-const Folder = createLucideIcon("Folder", __iconNode$v);
+const Folder = createLucideIcon("Folder", __iconNode$x);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$w = [
+  ["path", { d: "M4 12h8", key: "17cfdx" }],
+  ["path", { d: "M4 18V6", key: "1rz3zl" }],
+  ["path", { d: "M12 18V6", key: "zqpxq5" }],
+  ["path", { d: "m17 12 3-2v8", key: "1hhhft" }]
+];
+const Heading1 = createLucideIcon("Heading1", __iconNode$w);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$v = [
+  ["path", { d: "M4 12h8", key: "17cfdx" }],
+  ["path", { d: "M4 18V6", key: "1rz3zl" }],
+  ["path", { d: "M12 18V6", key: "zqpxq5" }],
+  ["path", { d: "M21 18h-4c0-4 4-3 4-6 0-1.5-2-2.5-4-1", key: "9jr5yi" }]
+];
+const Heading2 = createLucideIcon("Heading2", __iconNode$v);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28298,32 +28359,6 @@ const Folder = createLucideIcon("Folder", __iconNode$v);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$u = [
-  ["path", { d: "M4 12h8", key: "17cfdx" }],
-  ["path", { d: "M4 18V6", key: "1rz3zl" }],
-  ["path", { d: "M12 18V6", key: "zqpxq5" }],
-  ["path", { d: "m17 12 3-2v8", key: "1hhhft" }]
-];
-const Heading1 = createLucideIcon("Heading1", __iconNode$u);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$t = [
-  ["path", { d: "M4 12h8", key: "17cfdx" }],
-  ["path", { d: "M4 18V6", key: "1rz3zl" }],
-  ["path", { d: "M12 18V6", key: "zqpxq5" }],
-  ["path", { d: "M21 18h-4c0-4 4-3 4-6 0-1.5-2-2.5-4-1", key: "9jr5yi" }]
-];
-const Heading2 = createLucideIcon("Heading2", __iconNode$t);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$s = [
   ["path", { d: "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8", key: "5wwlr5" }],
   [
     "path",
@@ -28333,26 +28368,26 @@ const __iconNode$s = [
     }
   ]
 ];
-const House = createLucideIcon("House", __iconNode$s);
+const House = createLucideIcon("House", __iconNode$u);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$r = [
+const __iconNode$t = [
   ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
   ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
   ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
 ];
-const Image = createLucideIcon("Image", __iconNode$r);
+const Image = createLucideIcon("Image", __iconNode$t);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$q = [
+const __iconNode$s = [
   ["polyline", { points: "22 12 16 12 14 15 10 15 8 12 2 12", key: "o97t9d" }],
   [
     "path",
@@ -28362,26 +28397,26 @@ const __iconNode$q = [
     }
   ]
 ];
-const Inbox = createLucideIcon("Inbox", __iconNode$q);
+const Inbox = createLucideIcon("Inbox", __iconNode$s);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$p = [
+const __iconNode$r = [
   ["line", { x1: "19", x2: "10", y1: "4", y2: "4", key: "15jd3p" }],
   ["line", { x1: "14", x2: "5", y1: "20", y2: "20", key: "bu0au3" }],
   ["line", { x1: "15", x2: "9", y1: "4", y2: "20", key: "uljnxc" }]
 ];
-const Italic = createLucideIcon("Italic", __iconNode$p);
+const Italic = createLucideIcon("Italic", __iconNode$r);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$o = [
+const __iconNode$q = [
   [
     "path",
     {
@@ -28404,7 +28439,33 @@ const __iconNode$o = [
     }
   ]
 ];
-const Layers = createLucideIcon("Layers", __iconNode$o);
+const Layers = createLucideIcon("Layers", __iconNode$q);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$p = [
+  ["rect", { width: "7", height: "9", x: "3", y: "3", rx: "1", key: "10lvy0" }],
+  ["rect", { width: "7", height: "5", x: "14", y: "3", rx: "1", key: "16une8" }],
+  ["rect", { width: "7", height: "9", x: "14", y: "12", rx: "1", key: "1hutg5" }],
+  ["rect", { width: "7", height: "5", x: "3", y: "16", rx: "1", key: "ldoo1y" }]
+];
+const LayoutDashboard = createLucideIcon("LayoutDashboard", __iconNode$p);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$o = [
+  ["rect", { width: "7", height: "7", x: "3", y: "3", rx: "1", key: "1g98yp" }],
+  ["rect", { width: "7", height: "7", x: "14", y: "3", rx: "1", key: "6d4xhi" }],
+  ["rect", { width: "7", height: "7", x: "14", y: "14", rx: "1", key: "nxv5o0" }],
+  ["rect", { width: "7", height: "7", x: "3", y: "14", rx: "1", key: "1bb6yr" }]
+];
+const LayoutGrid = createLucideIcon("LayoutGrid", __iconNode$o);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28412,32 +28473,6 @@ const Layers = createLucideIcon("Layers", __iconNode$o);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$n = [
-  ["rect", { width: "7", height: "9", x: "3", y: "3", rx: "1", key: "10lvy0" }],
-  ["rect", { width: "7", height: "5", x: "14", y: "3", rx: "1", key: "16une8" }],
-  ["rect", { width: "7", height: "9", x: "14", y: "12", rx: "1", key: "1hutg5" }],
-  ["rect", { width: "7", height: "5", x: "3", y: "16", rx: "1", key: "ldoo1y" }]
-];
-const LayoutDashboard = createLucideIcon("LayoutDashboard", __iconNode$n);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$m = [
-  ["rect", { width: "7", height: "7", x: "3", y: "3", rx: "1", key: "1g98yp" }],
-  ["rect", { width: "7", height: "7", x: "14", y: "3", rx: "1", key: "6d4xhi" }],
-  ["rect", { width: "7", height: "7", x: "14", y: "14", rx: "1", key: "nxv5o0" }],
-  ["rect", { width: "7", height: "7", x: "3", y: "14", rx: "1", key: "1bb6yr" }]
-];
-const LayoutGrid = createLucideIcon("LayoutGrid", __iconNode$m);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$l = [
   ["path", { d: "M3 12h.01", key: "nlz23k" }],
   ["path", { d: "M3 18h.01", key: "1tta3j" }],
   ["path", { d: "M3 6h.01", key: "1rqtza" }],
@@ -28445,19 +28480,37 @@ const __iconNode$l = [
   ["path", { d: "M8 18h13", key: "1lx6n3" }],
   ["path", { d: "M8 6h13", key: "ik3vkj" }]
 ];
-const List = createLucideIcon("List", __iconNode$l);
+const List = createLucideIcon("List", __iconNode$n);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$k = [
+const __iconNode$m = [
   ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }],
   ["polyline", { points: "16 17 21 12 16 7", key: "1gabdz" }],
   ["line", { x1: "21", x2: "9", y1: "12", y2: "12", key: "1uyos4" }]
 ];
-const LogOut = createLucideIcon("LogOut", __iconNode$k);
+const LogOut = createLucideIcon("LogOut", __iconNode$m);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$l = [
+  ["path", { d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z", key: "1lielz" }]
+];
+const MessageSquare = createLucideIcon("MessageSquare", __iconNode$l);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$k = [["path", { d: "M5 12h14", key: "1ays0h" }]];
+const Minus = createLucideIcon("Minus", __iconNode$k);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28465,17 +28518,22 @@ const LogOut = createLucideIcon("LogOut", __iconNode$k);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$j = [
-  ["path", { d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z", key: "1lielz" }]
+  ["path", { d: "M9 18V5l12-2v13", key: "1jmyc2" }],
+  ["circle", { cx: "6", cy: "18", r: "3", key: "fqmcym" }],
+  ["circle", { cx: "18", cy: "16", r: "3", key: "1hluhg" }]
 ];
-const MessageSquare = createLucideIcon("MessageSquare", __iconNode$j);
+const Music = createLucideIcon("Music", __iconNode$j);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$i = [["path", { d: "M5 12h14", key: "1ays0h" }]];
-const Minus = createLucideIcon("Minus", __iconNode$i);
+const __iconNode$i = [
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
+  ["path", { d: "M9 3v18", key: "fh3hqa" }]
+];
+const PanelLeft = createLucideIcon("PanelLeft", __iconNode$i);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28483,11 +28541,10 @@ const Minus = createLucideIcon("Minus", __iconNode$i);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$h = [
-  ["path", { d: "M9 18V5l12-2v13", key: "1jmyc2" }],
-  ["circle", { cx: "6", cy: "18", r: "3", key: "fqmcym" }],
-  ["circle", { cx: "18", cy: "16", r: "3", key: "1hluhg" }]
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
+  ["path", { d: "M15 3v18", key: "14nvp0" }]
 ];
-const Music = createLucideIcon("Music", __iconNode$h);
+const PanelRight = createLucideIcon("PanelRight", __iconNode$h);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28495,28 +28552,6 @@ const Music = createLucideIcon("Music", __iconNode$h);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$g = [
-  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
-  ["path", { d: "M9 3v18", key: "fh3hqa" }]
-];
-const PanelLeft = createLucideIcon("PanelLeft", __iconNode$g);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$f = [
-  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
-  ["path", { d: "M15 3v18", key: "14nvp0" }]
-];
-const PanelRight = createLucideIcon("PanelRight", __iconNode$f);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$e = [
   [
     "path",
     {
@@ -28534,7 +28569,29 @@ const __iconNode$e = [
   ["path", { d: "m2.3 2.3 7.286 7.286", key: "1wuzzi" }],
   ["circle", { cx: "11", cy: "11", r: "2", key: "xmgehs" }]
 ];
-const PenTool = createLucideIcon("PenTool", __iconNode$e);
+const PenTool = createLucideIcon("PenTool", __iconNode$g);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$f = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "M12 5v14", key: "s699le" }]
+];
+const Plus = createLucideIcon("Plus", __iconNode$f);
+/**
+ * @license lucide-react v0.479.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$e = [
+  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }],
+  ["path", { d: "m21 21-4.3-4.3", key: "1qie3q" }]
+];
+const Search = createLucideIcon("Search", __iconNode$e);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28542,10 +28599,16 @@ const PenTool = createLucideIcon("PenTool", __iconNode$e);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$d = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "M12 5v14", key: "s699le" }]
+  [
+    "path",
+    {
+      d: "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z",
+      key: "1ffxy3"
+    }
+  ],
+  ["path", { d: "m21.854 2.147-10.94 10.939", key: "12cjpa" }]
 ];
-const Plus = createLucideIcon("Plus", __iconNode$d);
+const Send = createLucideIcon("Send", __iconNode$d);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28553,10 +28616,16 @@ const Plus = createLucideIcon("Plus", __iconNode$d);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$c = [
-  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }],
-  ["path", { d: "m21 21-4.3-4.3", key: "1qie3q" }]
+  [
+    "path",
+    {
+      d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z",
+      key: "1qme2f"
+    }
+  ],
+  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
 ];
-const Search = createLucideIcon("Search", __iconNode$c);
+const Settings = createLucideIcon("Settings", __iconNode$c);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28567,13 +28636,16 @@ const __iconNode$b = [
   [
     "path",
     {
-      d: "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z",
-      key: "1ffxy3"
+      d: "M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z",
+      key: "4pj2yx"
     }
   ],
-  ["path", { d: "m21.854 2.147-10.94 10.939", key: "12cjpa" }]
+  ["path", { d: "M20 3v4", key: "1olli1" }],
+  ["path", { d: "M22 5h-4", key: "1gvqau" }],
+  ["path", { d: "M4 17v2", key: "vumght" }],
+  ["path", { d: "M5 18H3", key: "zchphs" }]
 ];
-const Send = createLucideIcon("Send", __iconNode$b);
+const Sparkles = createLucideIcon("Sparkles", __iconNode$b);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28581,16 +28653,10 @@ const Send = createLucideIcon("Send", __iconNode$b);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$a = [
-  [
-    "path",
-    {
-      d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z",
-      key: "1qme2f"
-    }
-  ],
-  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+  ["path", { d: "M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5", key: "1uzm8b" }],
+  ["path", { d: "m9 11 3 3L22 4", key: "1pflzl" }]
 ];
-const Settings = createLucideIcon("Settings", __iconNode$a);
+const SquareCheckBig = createLucideIcon("SquareCheckBig", __iconNode$a);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28720,7 +28786,7 @@ const __iconNode = [
   ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
 ];
 const X = createLucideIcon("X", __iconNode);
-const deskLinkLogoUrl = "data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='utf-8'?%3e%3c!DOCTYPE%20svg%20PUBLIC%20'-//W3C//DTD%20SVG%201.0//EN'%20'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'%3e%3csvg%20version='1.0'%20xmlns='http://www.w3.org/2000/svg'%20width='1024px'%20height='1024px'%20viewBox='0%200%201024%201024'%20preserveAspectRatio='xMidYMid%20meet'%3e%3cg%20fill='%23000000'%3e%3cpath%20d='M266%20606%20l0%20-265%2021.5%200%2021.5%200%200%20243%200%20243%20224.5%200%20224.5%200%200%2022%200%2022%20-246%200%20-246%200%200%20-265z'/%3e%3cpath%20d='M451.2%20744.5%20c-8.8%20-4.1%20-19.3%20-11.4%20-26.9%20-18.8%20-6.2%20-5.9%20-7.3%20-7.6%20-7.3%20-10.3%200%20-3.9%20-1.8%20-3.3%2019.4%20-6.4%20139%20-20.1%20245.7%20-142.3%20245.6%20-281%20-0.1%20-65%20-21.9%20-127.1%20-62.9%20-179%20-16.3%20-20.6%20-41.5%20-43.8%20-64.6%20-59.3%20-36.8%20-24.9%20-82.5%20-42.2%20-123%20-46.7%20-15%20-1.7%20-14.5%20-1.5%20-14.5%20-5.4%200%20-2.9%201.1%20-4.3%207.3%20-10.2%2012.1%20-11.6%2029%20-21.4%2036.7%20-21.4%202.2%200%2010.3%201.6%2017.9%203.5%2049.3%2012.4%2097.1%2037.8%20135.2%2071.8%2058.9%2052.6%2095.6%20122.2%20106.4%20201.7%202.5%2018.5%203.1%2061.3%201.1%2080%20-4.6%2042.7%20-17.9%2085%20-38.3%20122.4%20-7.7%2013.9%20-24.6%2038.6%20-35.6%2051.6%20-43.2%2051.6%20-103.4%2089.8%20-167.3%20106.1%20-18%204.6%20-22%204.8%20-29.2%201.4z'/%3e%3c/g%3e%3cg%20fill='%23ffffff'%3e%3cpath%20d='M0%20512%20l0%20-512%20512%200%20512%200%200%20512%200%20512%20-512%200%20-512%200%200%20-512z%20m755%20337%20l0%20-19%20-224.5%200%20-224.5%200%200%20-243%200%20-243%20-18.5%200%20-18.5%200%200%20262%200%20262%20243%200%20243%200%200%20-19z%20m-277.6%20-108.9%20c63.9%20-16.3%20124.1%20-54.5%20167.3%20-106.1%2011%20-13%2027.9%20-37.7%2035.6%20-51.6%2020.3%20-37.2%2033.6%20-79.4%2038.3%20-121.9%201.9%20-17.9%201.4%20-56%20-1.1%20-74.5%20-10.7%20-79.3%20-47.5%20-149.1%20-106.4%20-201.7%20-38.5%20-34.4%20-87.5%20-60.2%20-137.1%20-72.3%20l-13.5%20-3.3%20-7.4%203.7%20c-4.1%202%20-9.9%205.4%20-13%207.4%20-6.1%204.1%20-20.4%2017.2%20-19.6%2018%200.3%200.3%205.7%201.1%2012%201.8%2042.7%204.9%2087.6%2021.8%20125%2047.1%2023.1%2015.5%2048.3%2038.7%2064.6%2059.3%2020.5%2026%2037.3%2056.7%2048.1%2088%2014.8%2043%2018.9%2094.7%2011.2%20141%20-20.3%20121.9%20-119.7%20219.3%20-242%20237%20-8.2%201.2%20-16%202.4%20-17.3%202.7%20-2.3%200.4%20-2%200.8%204%206.9%209%209.2%2029.4%2022.3%2034.6%2022.4%200.7%200%208.2%20-1.8%2016.7%20-3.9z'/%3e%3c/g%3e%3c/svg%3e";
+const deskLinkLogoUrl = "data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='utf-8'?%3e%3c!DOCTYPE%20svg%20PUBLIC%20'-//W3C//DTD%20SVG%201.0//EN'%20'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'%3e%3csvg%20version='1.0'%20xmlns='http://www.w3.org/2000/svg'%20width='1024px'%20height='1024px'%20viewBox='0%200%201024%201024'%20preserveAspectRatio='xMidYMid%20meet'%3e%3cg%20fill='%23000000'%3e%3cpath%20d='M266%20606%20l0%20-265%2021.5%200%2021.5%200%200%20243%200%20243%20224.5%200%20224.5%200%200%2022%200%2022%20-246%200%20-246%200%200%20-265z'/%3e%3cpath%20d='M451.2%20744.5%20c-8.8%20-4.1%20-19.3%20-11.4%20-26.9%20-18.8%20-6.2%20-5.9%20-7.3%20-7.6%20-7.3%20-10.3%200%20-3.9%20-1.8%20-3.3%2019.4%20-6.4%20139%20-20.1%20245.7%20-142.3%20245.6%20-281%20-0.1%20-65%20-21.9%20-127.1%20-62.9%20-179%20-16.3%20-20.6%20-41.5%20-43.8%20-64.6%20-59.3%20-36.8%20-24.9%20-82.5%20-42.2%20-123%20-46.7%20-15%20-1.7%20-14.5%20-1.5%20-14.5%20-5.4%200%20-2.9%201.1%20-4.3%207.3%20-10.2%2012.1%20-11.6%2029%20-21.4%2036.7%20-21.4%202.2%200%2010.3%201.6%2017.9%203.5%2049.3%2012.4%2097.1%2037.8%20135.2%2071.8%2058.9%2052.6%2095.6%20122.2%20106.4%20201.7%202.5%2018.5%203.1%2061.3%201.1%2080%20-4.6%2042.7%20-17.9%2085%20-38.3%20122.4%20-7.7%2013.9%20-24.6%2038.6%20-35.6%2051.6%20-43.2%2051.6%20-103.4%2089.8%20-167.3%20106.1%20-18%204.6%20-22%204.8%20-29.2%201.4z'/%3e%3c/g%3e%3c/svg%3e";
 const APP_ICONS = {
   home: House,
   inbox: Inbox,
@@ -28785,7 +28851,7 @@ function Titlebar({ showTabs = false }) {
     const activeEl = scrollRef.current.querySelector('[data-active="true"]');
     activeEl?.scrollIntoView({ block: "nearest", inline: "nearest" });
   }, [activePageId, showTabs]);
-  const brand = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+  const brand = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       "img",
       {
@@ -28793,7 +28859,7 @@ function Titlebar({ showTabs = false }) {
         alt: "",
         width: 20,
         height: 20,
-        className: "h-5 w-5 shrink-0 object-contain",
+        className: "h-5 w-5 shrink-0 object-contain opacity-90 dark:opacity-100",
         "aria-hidden": true
       }
     ),
@@ -28876,40 +28942,19 @@ function Titlebar({ showTabs = false }) {
     ] })
   ] });
 }
-async function listProjects(workspaceId) {
-  const res = await apiClient.get(
-    `/workspaces/${workspaceId}/projects`
-  );
-  return res.data;
-}
-async function getProject(id) {
-  return apiClient.get(`/projects/${id}`);
-}
-async function createProject(workspaceId, data) {
-  return apiClient.post(`/workspaces/${workspaceId}/projects`, data);
-}
-async function deleteProject(id) {
-  return apiClient.delete(`/projects/${id}`);
-}
 function Sidebar() {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
   const { setActiveWorkspaceId, openOrFocusApp, requestNewDocument } = useUIStore();
-  const [plannerOpen, setPlannerOpen] = reactExports.useState(true);
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = reactExports.useState(false);
   const { data: workspaces = [] } = useQuery({
     queryKey: ["workspaces"],
     queryFn: listWorkspaces
   });
-  const { data: projects = [] } = useQuery({
-    queryKey: ["projects", workspaceId],
-    queryFn: () => listProjects(workspaceId),
-    enabled: !!workspaceId
-  });
   const currentWorkspace = workspaces.find((w) => w.id === workspaceId);
   const handleWorkspaceSwitch = (ws) => {
     setActiveWorkspaceId(ws.id);
-    navigate(`/w/${ws.id}/projects`);
+    navigate(`/w/${ws.id}`);
     setWorkspaceMenuOpen(false);
   };
   const handleNewPage = () => {
@@ -28975,7 +29020,7 @@ function Sidebar() {
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         NavLink,
         {
-          to: `/w/${workspaceId}/projects`,
+          to: `/w/${workspaceId}`,
           end: true,
           className: ({ isActive }) => cn(
             "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
@@ -28987,35 +29032,20 @@ function Sidebar() {
           ]
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 border-t border-notion-border/80 pt-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: () => setPlannerOpen(!plannerOpen),
-            className: "mb-2 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary hover:bg-notion-sidebar-hover",
-            children: [
-              plannerOpen ? /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3.5 w-3.5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "h-3.5 w-3.5" }),
-              "Projects"
-            ]
-          }
-        ),
-        plannerOpen && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "ml-1 space-y-1 border-l border-notion-border/80 pl-4", children: projects.map((project) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          NavLink,
-          {
-            to: `/w/${workspaceId}/projects/${project.id}`,
-            className: ({ isActive }) => cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-              isActive ? "bg-notion-sidebar-hover font-medium text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"
-            ),
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(LayoutDashboard, { className: "h-4 w-4 shrink-0 opacity-80" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: project.name })
-            ]
-          },
-          project.id
-        )) })
-      ] })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        NavLink,
+        {
+          to: `/w/${workspaceId}/projects`,
+          className: ({ isActive }) => cn(
+            "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+            isActive ? "bg-notion-sidebar-hover font-medium text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"
+          ),
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(LayoutDashboard, { className: "h-4 w-4 shrink-0 opacity-80" }),
+            "Planner"
+          ]
+        }
+      )
     ] })
   ] });
 }
@@ -29037,7 +29067,7 @@ function AppSwitcherRail() {
     if (!workspaceId) return;
     switch (appId) {
       case "home":
-        navigate(`/w/${workspaceId}/projects`);
+        navigate(`/w/${workspaceId}`);
         break;
       case "settings":
         navigate(`/w/${workspaceId}/settings`);
@@ -29057,7 +29087,7 @@ function AppSwitcherRail() {
     "div",
     {
       className: cn(
-        "flex w-[56px] shrink-0 flex-col items-center gap-2 border-r border-notion-border bg-notion-sidebar px-2 py-3",
+        "flex w-[56px] shrink-0 flex-col items-center gap-2.5 border-r border-notion-border bg-notion-sidebar px-2 py-3.5",
         "relative z-10"
       ),
       children: APPS.map((app) => {
@@ -29214,16 +29244,16 @@ function InboxApp() {
           }
         )
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex border-b border-notion-border px-3 pt-2", children: ["all", "unread", "mentions"].map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-1 border-b border-notion-border px-3 pb-0 pt-2", children: ["all", "unread", "mentions"].map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
           type: "button",
           onClick: () => setFilter(tab),
           className: cn(
-            "px-3 py-2 text-xs font-medium capitalize transition-colors",
-            filter2 === tab ? "border-b-2 border-notion-accent text-notion-accent" : "text-notion-text-secondary hover:text-notion-text"
+            "min-w-[4.5rem] shrink-0 rounded-t px-3 py-2.5 text-xs font-medium capitalize transition-colors",
+            filter2 === tab ? "border-b-2 border-notion-accent text-notion-accent" : "mb-[2px] text-notion-text-secondary hover:text-notion-text"
           ),
-          children: tab
+          children: tab === "all" ? "All" : tab === "unread" ? "Unread" : "Mentions"
         },
         tab
       )) }),
@@ -29256,16 +29286,16 @@ function InboxApp() {
                   children: msg.senderInitials
                 }
               ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex-1", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex-1 space-y-1.5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: cn("truncate text-sm font-medium leading-snug", msg.unread ? "text-notion-text" : "text-notion-text-secondary"), children: msg.sender }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-[11px] text-notion-text-tertiary", children: msg.timestamp })
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-1 flex items-center gap-1.5", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(TypeIcon, { className: "h-3 w-3 shrink-0 text-notion-text-tertiary" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(TypeIcon, { className: "mt-0.5 h-3.5 w-3.5 shrink-0 text-notion-text-tertiary" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: cn("line-clamp-2 text-xs leading-snug", msg.unread ? "text-notion-text" : "text-notion-text-tertiary"), children: msg.subject })
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 line-clamp-2 text-xs leading-relaxed text-notion-text-tertiary", children: msg.preview })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "line-clamp-2 pl-0.5 text-xs leading-relaxed text-notion-text-tertiary", children: msg.preview })
               ] }),
               msg.unread && /* @__PURE__ */ jsxRuntimeExports.jsx(Circle, { className: "mt-1.5 h-2 w-2 shrink-0 fill-notion-accent text-notion-accent" })
             ] })
@@ -29275,7 +29305,7 @@ function InboxApp() {
       }) })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 flex-col overflow-hidden bg-notion-bg", children: selected ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-b border-notion-border px-10 py-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-b border-notion-border px-10 py-7", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
@@ -29292,7 +29322,7 @@ function InboxApp() {
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-0.5 text-sm text-notion-text-secondary", children: selected.subject })
         ] })
       ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto px-10 py-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-2xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "whitespace-pre-line text-sm leading-relaxed text-notion-text", children: selected.body }) }) })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto px-10 py-10", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-2xl border-l-2 border-notion-accent/20 py-1 pl-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "whitespace-pre-line text-sm leading-[1.65] text-notion-text", children: selected.body }) }) })
     ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 flex-col items-center justify-center gap-3 text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(CheckCheck, { className: "h-10 w-10 text-notion-text-tertiary" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -29316,7 +29346,7 @@ const Button = reactExports.forwardRef(
           "disabled:pointer-events-none disabled:opacity-50",
           {
             "bg-notion-accent text-white hover:bg-notion-accent-hover": variant === "primary",
-            "border border-notion-border bg-white text-notion-text hover:bg-notion-sidebar": variant === "secondary",
+            "border border-notion-border bg-notion-bg text-notion-text hover:bg-notion-sidebar": variant === "secondary",
             "text-notion-text hover:bg-notion-sidebar-hover": variant === "ghost",
             "bg-notion-red text-white hover:bg-red-600": variant === "danger"
           },
@@ -29402,23 +29432,23 @@ function WhiteboardApp() {
         label
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex shrink-0 border-b border-notion-border px-10", children: ["whiteboards", "mockups"].map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex shrink-0 gap-1 border-b border-notion-border px-10", children: ["whiteboards", "mockups"].map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "button",
       {
         type: "button",
         onClick: () => setActiveTab(tab),
         className: cn(
-          "flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium capitalize transition-colors",
-          activeTab === tab ? "border-b-2 border-notion-accent text-notion-accent" : "text-notion-text-secondary hover:text-notion-text"
+          "flex items-center gap-2.5 px-4 py-3 text-sm font-medium capitalize transition-colors",
+          activeTab === tab ? "border-b-2 border-notion-accent text-notion-accent" : "mb-[2px] text-notion-text-secondary hover:text-notion-text"
         ),
         children: [
-          tab === "whiteboards" ? /* @__PURE__ */ jsxRuntimeExports.jsx(PenTool, { className: "h-3.5 w-3.5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { className: "h-3.5 w-3.5" }),
-          tab.charAt(0).toUpperCase() + tab.slice(1)
+          tab === "whiteboards" ? /* @__PURE__ */ jsxRuntimeExports.jsx(PenTool, { className: "h-4 w-4 shrink-0" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { className: "h-4 w-4 shrink-0" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "pt-px", children: tab.charAt(0).toUpperCase() + tab.slice(1) })
         ]
       },
       tab
     )) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto px-10 py-8", children: items.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-4 py-28 text-center", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto px-10 py-10", children: items.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-4 py-28 text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: "h-12 w-12 text-notion-text-tertiary" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm font-medium text-notion-text-secondary", children: [
@@ -29654,8 +29684,8 @@ function FilesApp() {
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 flex-col overflow-hidden bg-notion-bg", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-3 border-b border-notion-border px-5 py-3", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 text-xs text-notion-text-secondary", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-4 border-b border-notion-border px-5 py-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-w-0 shrink-0 items-center gap-2 text-xs text-notion-text-secondary", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "span",
             {
@@ -29669,9 +29699,9 @@ function FilesApp() {
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-notion-text", children: selectedNode.name })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-auto flex flex-wrap items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-notion-text-tertiary" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-auto flex min-w-0 flex-wrap items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative min-w-[12rem] flex-1 sm:max-w-md sm:flex-initial", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-notion-text-tertiary" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "input",
               {
@@ -29679,7 +29709,7 @@ function FilesApp() {
                 placeholder: "Search files…",
                 value: searchQuery,
                 onChange: (e) => setSearchQuery(e.target.value),
-                className: "h-9 min-w-[10rem] rounded-md border border-notion-border bg-notion-sidebar pl-9 pr-3 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:border-notion-accent focus:outline-none"
+                className: "h-9 w-full rounded-md border border-notion-border bg-notion-sidebar py-2 pl-10 pr-3 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:border-notion-accent focus:outline-none"
               }
             )
           ] }),
@@ -30027,10 +30057,40 @@ function DocumentApp() {
     ] }) })
   ] });
 }
+function recentVisitForPath(pathname, workspaceId) {
+  const base = `/w/${workspaceId}`;
+  const href = pathname;
+  if (pathname === base) {
+    return { title: "Dashboard", appId: "home", href };
+  }
+  if (pathname === `${base}/projects`) {
+    return { title: "Planner", appId: "home", href };
+  }
+  if (pathname.startsWith(`${base}/projects/`)) {
+    return { title: "Project", appId: "home", href };
+  }
+  if (pathname.includes("/inbox")) {
+    return { title: "Inbox", appId: "inbox", href };
+  }
+  if (pathname.includes("/whiteboard")) {
+    return { title: "Whiteboard", appId: "whiteboard", href };
+  }
+  if (pathname.includes("/files")) {
+    return { title: "Files", appId: "files", href };
+  }
+  if (pathname.includes("/settings")) {
+    return { title: "Settings", appId: "settings", href };
+  }
+  if (pathname.includes("/members")) {
+    return { title: "Members", appId: "home", href };
+  }
+  return null;
+}
 function AppShell() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { activeWorkspaceId, setActiveWorkspaceId, activeApp, setActiveApp, sidebarOpen } = useUIStore();
+  const { workspaceId } = useParams();
+  const { activeWorkspaceId, setActiveWorkspaceId, activeApp, setActiveApp, sidebarOpen, pushRecentVisit } = useUIStore();
   const { setUser, accessToken } = useAuthStore();
   useQuery({
     queryKey: ["me"],
@@ -30062,10 +30122,15 @@ function AppShell() {
       setActiveApp("whiteboard");
     } else if (path.includes("/files")) {
       setActiveApp("files");
-    } else if (path.includes("/projects") || path.includes("/members")) {
+    } else if (path.includes("/projects") || path.includes("/members") || workspaceId && path === `/w/${workspaceId}`) {
       setActiveApp("home");
     }
-  }, [location.pathname, setActiveApp]);
+  }, [location.pathname, setActiveApp, workspaceId]);
+  reactExports.useEffect(() => {
+    if (!workspaceId) return;
+    const meta = recentVisitForPath(location.pathname, workspaceId);
+    if (meta) pushRecentVisit(meta);
+  }, [location.pathname, workspaceId, pushRecentVisit]);
   return (
     // Root shell: full viewport, column layout, no overflow
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-screen flex-col overflow-hidden", children: [
@@ -30104,7 +30169,7 @@ const Input = reactExports.forwardRef(
           ref,
           id,
           className: cn(
-            "min-h-9 w-full rounded-md border bg-white px-3 py-2 text-sm leading-snug text-notion-text",
+            "min-h-9 w-full rounded-md border bg-notion-bg px-3 py-2 text-sm leading-snug text-notion-text",
             "placeholder:text-notion-text-tertiary",
             "focus:outline-none focus:ring-2 focus:ring-notion-accent focus:border-transparent",
             "transition-colors",
@@ -30277,6 +30342,21 @@ function EmptyState({ icon: Icon2, title, description, actionLabel, onAction }) 
     actionLabel && onAction && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { size: "sm", onClick: onAction, children: actionLabel })
   ] });
 }
+async function listProjects(workspaceId) {
+  const res = await apiClient.get(
+    `/workspaces/${workspaceId}/projects`
+  );
+  return res.data;
+}
+async function getProject(id) {
+  return apiClient.get(`/projects/${id}`);
+}
+async function createProject(workspaceId, data) {
+  return apiClient.post(`/workspaces/${workspaceId}/projects`, data);
+}
+async function deleteProject(id) {
+  return apiClient.delete(`/projects/${id}`);
+}
 function ProjectsPage() {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
@@ -30316,7 +30396,7 @@ function ProjectsPage() {
         "New project"
       ] })
     ] }),
-    showCreate && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-8 rounded-lg border border-notion-border bg-white p-5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4", children: [
+    showCreate && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-8 rounded-lg border border-notion-border bg-notion-bg p-5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         Input,
         {
@@ -34878,9 +34958,9 @@ function TaskDetailPanel({ taskId, projectId, onClose }) {
     }
   });
   if (!task) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-y-0 right-0 z-50 flex w-96 items-center justify-center border-l border-notion-border bg-white shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-6 w-6 animate-spin rounded-full border-2 border-notion-accent border-t-transparent" }) });
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-y-0 right-0 z-50 flex w-96 items-center justify-center border-l border-notion-border bg-notion-bg shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-6 w-6 animate-spin rounded-full border-2 border-notion-accent border-t-transparent" }) });
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-y-0 right-0 z-50 flex w-96 flex-col border-l border-notion-border bg-white shadow-lg", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-y-0 right-0 z-50 flex w-96 flex-col border-l border-notion-border bg-notion-bg shadow-lg", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border px-5 py-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-medium text-notion-text-secondary", children: "Task details" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1", children: [
@@ -35615,30 +35695,231 @@ function ProjectDetailPage() {
     ] })
   ] });
 }
-function WorkspaceSettingsPage() {
-  const { workspaceId } = useParams();
-  const navigate = useNavigate();
-  const queryClient2 = useQueryClient();
-  const { user, logout } = useAuthStore();
-  const [name, setName] = reactExports.useState("");
-  const [description, setDescription] = reactExports.useState("");
-  const { data: workspace } = useQuery({
-    queryKey: ["workspace", workspaceId],
-    queryFn: () => getWorkspace(workspaceId),
-    enabled: !!workspaceId
-  });
-  reactExports.useEffect(() => {
-    if (!workspace) return;
-    setName(workspace.name);
-    setDescription(workspace.description || "");
-  }, [workspace]);
-  const updateMutation = useMutation({
-    mutationFn: () => updateWorkspace(workspaceId, { name, description }),
-    onSuccess: () => {
-      queryClient2.invalidateQueries({ queryKey: ["workspaces"] });
-      queryClient2.invalidateQueries({ queryKey: ["workspace", workspaceId] });
+function createJSONStorage(getStorage, options) {
+  let storage;
+  try {
+    storage = getStorage();
+  } catch (e) {
+    return;
+  }
+  const persistStorage = {
+    getItem: (name) => {
+      var _a;
+      const parse = (str2) => {
+        if (str2 === null) {
+          return null;
+        }
+        return JSON.parse(str2, void 0);
+      };
+      const str = (_a = storage.getItem(name)) != null ? _a : null;
+      if (str instanceof Promise) {
+        return str.then(parse);
+      }
+      return parse(str);
+    },
+    setItem: (name, newValue) => storage.setItem(name, JSON.stringify(newValue, void 0)),
+    removeItem: (name) => storage.removeItem(name)
+  };
+  return persistStorage;
+}
+const toThenable = (fn) => (input) => {
+  try {
+    const result = fn(input);
+    if (result instanceof Promise) {
+      return result;
     }
-  });
+    return {
+      then(onFulfilled) {
+        return toThenable(onFulfilled)(result);
+      },
+      catch(_onRejected) {
+        return this;
+      }
+    };
+  } catch (e) {
+    return {
+      then(_onFulfilled) {
+        return this;
+      },
+      catch(onRejected) {
+        return toThenable(onRejected)(e);
+      }
+    };
+  }
+};
+const persistImpl = (config, baseOptions) => (set, get, api) => {
+  let options = {
+    storage: createJSONStorage(() => window.localStorage),
+    partialize: (state) => state,
+    version: 0,
+    merge: (persistedState, currentState) => ({
+      ...currentState,
+      ...persistedState
+    }),
+    ...baseOptions
+  };
+  let hasHydrated = false;
+  let hydrationVersion = 0;
+  const hydrationListeners = /* @__PURE__ */ new Set();
+  const finishHydrationListeners = /* @__PURE__ */ new Set();
+  let storage = options.storage;
+  if (!storage) {
+    return config(
+      (...args) => {
+        console.warn(
+          `[zustand persist middleware] Unable to update item '${options.name}', the given storage is currently unavailable.`
+        );
+        set(...args);
+      },
+      get,
+      api
+    );
+  }
+  const setItem = () => {
+    const state = options.partialize({ ...get() });
+    return storage.setItem(options.name, {
+      state,
+      version: options.version
+    });
+  };
+  const savedSetState = api.setState;
+  api.setState = (state, replace) => {
+    savedSetState(state, replace);
+    return setItem();
+  };
+  const configResult = config(
+    (...args) => {
+      set(...args);
+      return setItem();
+    },
+    get,
+    api
+  );
+  api.getInitialState = () => configResult;
+  let stateFromStorage;
+  const hydrate = () => {
+    var _a, _b;
+    if (!storage) return;
+    const currentVersion = ++hydrationVersion;
+    hasHydrated = false;
+    hydrationListeners.forEach((cb) => {
+      var _a2;
+      return cb((_a2 = get()) != null ? _a2 : configResult);
+    });
+    const postRehydrationCallback = ((_b = options.onRehydrateStorage) == null ? void 0 : _b.call(options, (_a = get()) != null ? _a : configResult)) || void 0;
+    return toThenable(storage.getItem.bind(storage))(options.name).then((deserializedStorageValue) => {
+      if (deserializedStorageValue) {
+        if (typeof deserializedStorageValue.version === "number" && deserializedStorageValue.version !== options.version) {
+          if (options.migrate) {
+            const migration = options.migrate(
+              deserializedStorageValue.state,
+              deserializedStorageValue.version
+            );
+            if (migration instanceof Promise) {
+              return migration.then((result) => [true, result]);
+            }
+            return [true, migration];
+          }
+          console.error(
+            `State loaded from storage couldn't be migrated since no migrate function was provided`
+          );
+        } else {
+          return [false, deserializedStorageValue.state];
+        }
+      }
+      return [false, void 0];
+    }).then((migrationResult) => {
+      var _a2;
+      if (currentVersion !== hydrationVersion) {
+        return;
+      }
+      const [migrated, migratedState] = migrationResult;
+      stateFromStorage = options.merge(
+        migratedState,
+        (_a2 = get()) != null ? _a2 : configResult
+      );
+      set(stateFromStorage, true);
+      if (migrated) {
+        return setItem();
+      }
+    }).then(() => {
+      if (currentVersion !== hydrationVersion) {
+        return;
+      }
+      postRehydrationCallback == null ? void 0 : postRehydrationCallback(get(), void 0);
+      stateFromStorage = get();
+      hasHydrated = true;
+      finishHydrationListeners.forEach((cb) => cb(stateFromStorage));
+    }).catch((e) => {
+      if (currentVersion !== hydrationVersion) {
+        return;
+      }
+      postRehydrationCallback == null ? void 0 : postRehydrationCallback(void 0, e);
+    });
+  };
+  api.persist = {
+    setOptions: (newOptions) => {
+      options = {
+        ...options,
+        ...newOptions
+      };
+      if (newOptions.storage) {
+        storage = newOptions.storage;
+      }
+    },
+    clearStorage: () => {
+      storage == null ? void 0 : storage.removeItem(options.name);
+    },
+    getOptions: () => options,
+    rehydrate: () => hydrate(),
+    hasHydrated: () => hasHydrated,
+    onHydrate: (cb) => {
+      hydrationListeners.add(cb);
+      return () => {
+        hydrationListeners.delete(cb);
+      };
+    },
+    onFinishHydration: (cb) => {
+      finishHydrationListeners.add(cb);
+      return () => {
+        finishHydrationListeners.delete(cb);
+      };
+    }
+  };
+  if (!options.skipHydration) {
+    hydrate();
+  }
+  return stateFromStorage || configResult;
+};
+const persist = persistImpl;
+const THEME_STORAGE_KEY = "desklink-theme";
+const useThemeStore = create()(
+  persist(
+    (set) => ({
+      themePreference: "system",
+      setThemePreference: (themePreference) => set({ themePreference })
+    }),
+    {
+      name: THEME_STORAGE_KEY,
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ themePreference: state.themePreference })
+    }
+  )
+);
+const THEME_OPTIONS = [
+  { value: "light", label: "Light", description: "Always use light appearance." },
+  { value: "dark", label: "Dark", description: "Always use dark appearance." },
+  {
+    value: "system",
+    label: "Match system",
+    description: "Follow your operating system setting."
+  }
+];
+function WorkspaceSettingsPage() {
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
+  const themePreference = useThemeStore((s) => s.themePreference);
+  const setThemePreference = useThemeStore((s) => s.setThemePreference);
   const handleSignOut = () => {
     logout();
     navigate("/login");
@@ -35647,44 +35928,33 @@ function WorkspaceSettingsPage() {
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-10 flex items-center gap-5", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-11 w-11 items-center justify-center rounded-xl bg-notion-sidebar", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Settings, { className: "h-5 w-5 text-notion-text-secondary" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-semibold tracking-tight text-notion-text", children: "Workspace settings" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-notion-text-secondary", children: "Manage this workspace and your account." })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-semibold tracking-tight text-notion-text", children: "Settings" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-notion-text-secondary", children: "Appearance and your account." })
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-10", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "flex flex-col gap-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-sm font-semibold text-notion-text", children: "Workspace" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Input,
-          {
-            id: "ws-name",
-            label: "Workspace name",
-            value: name,
-            onChange: (e) => setName(e.target.value)
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "ws-desc", className: "text-xs font-medium text-notion-text-secondary", children: "Description" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "textarea",
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "flex flex-col gap-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-sm font-semibold text-notion-text", children: "Appearance" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-notion-text-secondary", children: "Choose how DeskLink looks. You can match your device or pick light or dark mode." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-2", children: THEME_OPTIONS.map(({ value, label, description }) => {
+          const selected = themePreference === value;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
             {
-              id: "ws-desc",
-              value: description,
-              onChange: (e) => setDescription(e.target.value),
-              rows: 4,
-              className: "w-full rounded-lg border border-notion-border bg-white px-4 py-3 text-sm leading-relaxed text-notion-text placeholder:text-notion-text-tertiary focus:border-transparent focus:outline-none focus:ring-2 focus:ring-notion-accent",
-              placeholder: "What is this workspace for?"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Button,
-          {
-            onClick: () => updateMutation.mutate(),
-            disabled: updateMutation.isPending,
-            children: updateMutation.isPending ? "Saving..." : "Save changes"
-          }
-        ) })
+              type: "button",
+              onClick: () => setThemePreference(value),
+              className: cn(
+                "flex w-full flex-col items-start gap-0.5 rounded-lg border px-4 py-3 text-left transition-colors",
+                selected ? "border-notion-accent bg-notion-sidebar ring-1 ring-notion-accent" : "border-notion-border bg-notion-bg hover:bg-notion-sidebar"
+              ),
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-notion-text", children: label }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-notion-text-secondary", children: description })
+              ]
+            },
+            value
+          );
+        }) })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-t border-notion-border pt-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "flex flex-col gap-5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-sm font-semibold text-notion-text", children: "Account" }),
@@ -35801,6 +36071,203 @@ function MembersPage() {
     ] }, member.id)) })
   ] });
 }
+const TAGLINES = [
+  "Clear a little space on your desk today.",
+  "Small steps finish big projects.",
+  "Your workspace, one glance away."
+];
+const TODOS_STORAGE = "desklink-home-todos";
+function loadTodos() {
+  try {
+    const raw = localStorage.getItem(TODOS_STORAGE);
+    if (!raw) return [];
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+function saveTodos(todos) {
+  localStorage.setItem(TODOS_STORAGE, JSON.stringify(todos));
+}
+const MOCK_SCHEDULE = [
+  { id: "1", time: "9:00 AM", title: "Team standup", place: "Office" },
+  { id: "2", time: "2:00 PM", title: "Design review", place: "Zoom" },
+  { id: "3", time: "4:30 PM", title: "Sprint planning", place: "Conf room B" }
+];
+function greetingForHour(h) {
+  if (h < 12) return "Good morning";
+  if (h < 17) return "Good afternoon";
+  return "Good evening";
+}
+function HomeDashboardPage() {
+  const { workspaceId } = useParams();
+  const user = useAuthStore((s) => s.user);
+  const recentVisits = useUIStore((s) => s.recentVisits);
+  const [todos, setTodos] = reactExports.useState(loadTodos);
+  const [newTodo, setNewTodo] = reactExports.useState("");
+  const [tagline] = reactExports.useState(() => TAGLINES[Math.floor(Math.random() * TAGLINES.length)]);
+  const hour = (/* @__PURE__ */ new Date()).getHours();
+  const greeting = greetingForHour(hour);
+  const name = user?.displayName?.split(/\s+/)[0];
+  const base = `/w/${workspaceId ?? ""}`;
+  reactExports.useEffect(() => {
+    saveTodos(todos);
+  }, [todos]);
+  const quickLinks = reactExports.useMemo(
+    () => [
+      { title: "Inbox", href: `${base}/inbox`, desc: "Mentions and updates" },
+      { title: "Files", href: `${base}/files`, desc: "Browse and upload" },
+      { title: "Planner", href: `${base}/projects`, desc: "Boards and tasks" },
+      { title: "Whiteboard", href: `${base}/whiteboard`, desc: "Sketch and plan" }
+    ],
+    [base]
+  );
+  const addTodo = () => {
+    const t = newTodo.trim();
+    if (!t) return;
+    setTodos((prev) => [...prev, { id: crypto.randomUUID(), text: t, done: false }]);
+    setNewTodo("");
+  };
+  const toggleTodo = (id) => {
+    setTodos((prev) => prev.map((x) => x.id === id ? { ...x, done: !x.done } : x));
+  };
+  const removeTodo = (id) => {
+    setTodos((prev) => prev.filter((x) => x.id !== id));
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-4xl px-8 py-10 md:px-12 md:py-12", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("header", { className: "mb-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-notion-sidebar", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "h-5 w-5 text-notion-accent" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "text-2xl font-semibold tracking-tight text-notion-text md:text-3xl", children: [
+          greeting,
+          name ? `, ${name}` : ""
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-2 max-w-xl text-sm leading-relaxed text-notion-text-secondary", children: tagline })
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-10", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "h-3.5 w-3.5" }),
+          "Pick up where you left off"
+        ] }),
+        recentVisits.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-xl border border-dashed border-notion-border bg-notion-sidebar/40 px-5 py-8 text-center text-sm text-notion-text-secondary", children: "As you open Inbox, Files, and Planner, shortcuts will appear here." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-4 overflow-x-auto pb-2 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden", children: recentVisits.map((v) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          Link,
+          {
+            to: v.href,
+            className: "group flex min-w-[10.5rem] max-w-[12rem] flex-col rounded-xl border border-notion-border bg-notion-bg p-4 shadow-sm transition-all hover:border-notion-text-tertiary/40 hover:shadow-md",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "line-clamp-2 text-sm font-medium leading-snug text-notion-text group-hover:text-notion-accent", children: v.title }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mt-2 text-xs text-notion-text-tertiary", children: new Date(v.visitedAt).toLocaleDateString(void 0, {
+                month: "short",
+                day: "numeric"
+              }) })
+            ]
+          },
+          v.id
+        )) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-8 md:grid-cols-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "rounded-xl border border-notion-border bg-notion-bg p-6 shadow-sm", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(SquareCheckBig, { className: "h-3.5 w-3.5" }),
+            "On your desk today"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
+            todos.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-notion-text-secondary", children: "No tasks yet — add one below." }),
+            todos.map((t) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "div",
+              {
+                className: "flex items-start gap-3 rounded-lg border border-transparent px-2 py-2 transition-colors hover:bg-notion-sidebar/60",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => toggleTodo(t.id),
+                      className: cn(
+                        "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border",
+                        t.done ? "border-notion-accent bg-notion-accent text-white" : "border-notion-border bg-notion-bg"
+                      ),
+                      "aria-label": t.done ? "Mark incomplete" : "Mark done",
+                      children: t.done && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] leading-none", children: "✓" })
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "span",
+                    {
+                      className: cn(
+                        "min-w-0 flex-1 text-sm leading-relaxed",
+                        t.done ? "text-notion-text-tertiary line-through" : "text-notion-text"
+                      ),
+                      children: t.text
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => removeTodo(t.id),
+                      className: "shrink-0 text-xs text-notion-text-tertiary hover:text-notion-red",
+                      children: "Remove"
+                    }
+                  )
+                ]
+              },
+              t.id
+            ))
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "text",
+                value: newTodo,
+                onChange: (e) => setNewTodo(e.target.value),
+                onKeyDown: (e) => e.key === "Enter" && addTodo(),
+                placeholder: "Add a task…",
+                className: "min-w-0 flex-1 rounded-lg border border-notion-border bg-notion-sidebar px-3 py-2 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:border-notion-accent focus:outline-none"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", size: "sm", onClick: addTodo, children: "Add" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "rounded-xl border border-notion-border bg-notion-bg p-6 shadow-sm", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { className: "h-3.5 w-3.5" }),
+            "Today on the calendar"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-4", children: MOCK_SCHEDULE.map((ev) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex gap-4 border-b border-notion-border/80 pb-4 last:border-0 last:pb-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-16 shrink-0 text-xs font-medium tabular-nums text-notion-accent", children: ev.time }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-notion-text", children: ev.title }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-0.5 text-xs text-notion-text-tertiary", children: ev.place })
+            ] })
+          ] }, ev.id)) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-xs text-notion-text-tertiary", children: "Connect your planner calendar later for live events." })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mb-4 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: "Jump in" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid gap-3 sm:grid-cols-2", children: quickLinks.map((q) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          Link,
+          {
+            to: q.href,
+            className: "flex items-center justify-between gap-3 rounded-xl border border-notion-border bg-notion-sidebar/50 px-4 py-4 transition-colors hover:bg-notion-sidebar-hover",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-notion-text", children: q.title }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-0.5 text-xs text-notion-text-tertiary", children: q.desc })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "h-4 w-4 shrink-0 text-notion-text-tertiary" })
+            ]
+          },
+          q.href
+        )) })
+      ] })
+    ] })
+  ] });
+}
 const router = createHashRouter([
   {
     path: "/login",
@@ -35825,7 +36292,7 @@ const router = createHashRouter([
             children: [
               {
                 index: true,
-                element: /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "projects", replace: true })
+                element: /* @__PURE__ */ jsxRuntimeExports.jsx(HomeDashboardPage, {})
               },
               {
                 path: "settings",
@@ -35866,6 +36333,46 @@ const router = createHashRouter([
     ]
   }
 ]);
+const PREFERS_DARK = "(prefers-color-scheme: dark)";
+function systemPrefersDark() {
+  return window.matchMedia(PREFERS_DARK).matches;
+}
+function effectiveDark(preference) {
+  if (preference === "dark") return true;
+  if (preference === "light") return false;
+  return systemPrefersDark();
+}
+function applyDarkClass(preference) {
+  document.documentElement.classList.toggle("dark", effectiveDark(preference));
+}
+function ThemeSync({ children }) {
+  const themePreference = useThemeStore((s) => s.themePreference);
+  reactExports.useLayoutEffect(() => {
+    if (!useThemeStore.persist.hasHydrated()) return;
+    applyDarkClass(themePreference);
+  }, [themePreference]);
+  reactExports.useEffect(() => {
+    const unsub = useThemeStore.persist.onFinishHydration((state) => {
+      applyDarkClass(state.themePreference);
+    });
+    if (useThemeStore.persist.hasHydrated()) {
+      applyDarkClass(useThemeStore.getState().themePreference);
+    }
+    return unsub;
+  }, []);
+  reactExports.useEffect(() => {
+    if (themePreference !== "system") return;
+    const mq = window.matchMedia(PREFERS_DARK);
+    const onChange = () => {
+      if (useThemeStore.getState().themePreference === "system") {
+        document.documentElement.classList.toggle("dark", systemPrefersDark());
+      }
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [themePreference]);
+  return children;
+}
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -35876,5 +36383,5 @@ const queryClient = new QueryClient({
   }
 });
 ReactDOM.createRoot(document.getElementById("root")).render(
-  /* @__PURE__ */ jsxRuntimeExports.jsx(React.StrictMode, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(RouterProvider2, { router }) }) })
+  /* @__PURE__ */ jsxRuntimeExports.jsx(React.StrictMode, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(ThemeSync, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(RouterProvider2, { router }) }) }) })
 );
