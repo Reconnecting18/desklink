@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Titlebar } from '@/components/layout/Titlebar'
@@ -29,6 +29,10 @@ export function LoginPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/" replace />
   }
 
   return (

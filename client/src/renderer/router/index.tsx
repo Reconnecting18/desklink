@@ -1,5 +1,6 @@
 import { createHashRouter, Navigate } from 'react-router-dom'
 import { ProtectedRoute } from './ProtectedRoute'
+import { WorkspaceRoot } from './WorkspaceRoot'
 import { AppShell } from '@/components/layout/AppShell'
 import { LoginPage } from '@/pages/auth/LoginPage'
 import { RegisterPage } from '@/pages/auth/RegisterPage'
@@ -28,7 +29,7 @@ export const router = createHashRouter([
         children: [
           {
             path: '/',
-            element: <Navigate to="/login" replace />
+            element: <WorkspaceRoot />
           },
           {
             path: '/w/:workspaceId',
