@@ -1,5 +1,6 @@
 import axios, { isAxiosError } from 'axios'
 import { useAuthStore } from '@/stores/authStore'
+import { getStoredToken, storeToken } from '@/lib/tokenStorage'
 
 const DEFAULT_API_BASE = 'http://127.0.0.1:3000/api'
 
@@ -110,7 +111,7 @@ apiClient.interceptors.response.use(
       isRefreshing = true
 
       try {
-        const refreshToken = await window.api.getToken('refreshToken')
+        const refreshToken = await getStoredToken('refreshToken')
         if (!refreshToken) {
           throw new Error('No refresh token')
         }
@@ -123,7 +124,7 @@ apiClient.interceptors.response.use(
         const { accessToken: newToken, refreshToken: newRefresh } = body.data
 
         useAuthStore.getState().setToken(newToken)
-        await window.api.storeToken('refreshToken', newRefresh)
+        await storeToken('refreshToken', newRefresh)
 
         processQueue(null, newToken)
         originalRequest.headers.Authorization = `Bearer ${newToken}`

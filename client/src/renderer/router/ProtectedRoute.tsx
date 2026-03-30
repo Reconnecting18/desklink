@@ -8,7 +8,11 @@ export function ProtectedRoute() {
 
   useEffect(() => {
     async function init() {
-      await restoreSession()
+      try {
+        await restoreSession()
+      } catch {
+        useAuthStore.getState().setLoading(false)
+      }
     }
 
     if (isLoading) {

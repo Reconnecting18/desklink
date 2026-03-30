@@ -75,7 +75,7 @@ export function WhiteboardApp() {
   return (
     <div className="flex h-full flex-col overflow-hidden bg-notion-bg">
       {/* Header */}
-      <div className="flex shrink-0 items-center justify-between border-b border-notion-border px-12 py-5">
+      <div className="flex shrink-0 items-center justify-between border-b border-notion-border pl-6 pr-10 py-5 md:pl-8 md:pr-12">
         <div className="flex items-center gap-3">
           <Icon className="h-6 w-6 text-notion-text-secondary" />
           <h1 className="text-xl font-semibold tracking-tight text-notion-text">
@@ -89,7 +89,7 @@ export function WhiteboardApp() {
       </div>
 
       {/* Tab bar */}
-      <div className="flex shrink-0 gap-2 border-b border-notion-border px-12">
+      <div className="flex shrink-0 gap-2 border-b border-notion-border pl-6 pr-10 md:pl-8 md:pr-12">
         {(['whiteboards', 'mockups'] as WhiteboardTab[]).map((tab) => (
           <button
             key={tab}
@@ -113,7 +113,7 @@ export function WhiteboardApp() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-12 py-10">
+      <div className="flex-1 overflow-y-auto pl-6 pr-10 py-10 md:pl-8 md:pr-12">
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-4 py-28 text-center">
             <Icon className="h-12 w-12 text-notion-text-tertiary" />

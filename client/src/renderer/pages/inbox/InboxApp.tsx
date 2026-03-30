@@ -238,7 +238,7 @@ export function InboxApp() {
       </div>
 
       {/* Right panel — message detail */}
-      <div className="flex flex-1 flex-col overflow-hidden bg-notion-bg">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-notion-bg pt-2 md:pt-3">
         {selected ? (
           <>
             {/* Detail header */}

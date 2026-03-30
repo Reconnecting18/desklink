@@ -181,7 +181,7 @@ export function DocumentApp() {
       </div>
 
       {/* Right panel — editor */}
-      <div className="flex flex-1 flex-col overflow-hidden bg-notion-bg">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-notion-bg">
         {selectedDoc && (
           <>
             {/* Formatting toolbar */}

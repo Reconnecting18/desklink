@@ -272,7 +272,7 @@ export function FilesApp() {
       </div>
 
       {/* Right panel — file listing */}
-      <div className="flex flex-1 flex-col overflow-hidden bg-notion-bg">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-notion-bg">
         {/* Toolbar */}
         <div className="flex flex-wrap items-center gap-4 border-b border-notion-border/50 px-5 py-3.5">
           {/* Breadcrumb */}

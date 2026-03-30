@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/Input'
 import { Titlebar } from '@/components/layout/Titlebar'
 import { useAuthStore } from '@/stores/authStore'
 import { login } from '@/api/auth'
+import { storeToken } from '@/lib/tokenStorage'
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -21,7 +22,7 @@ export function LoginPage() {
 
     try {
       const result = await login(email, password)
-      await window.api.storeToken('refreshToken', result.refreshToken)
+      await storeToken('refreshToken', result.refreshToken)
       setAuth(result.user, result.accessToken)
       navigate('/')
     } catch (err: any) {

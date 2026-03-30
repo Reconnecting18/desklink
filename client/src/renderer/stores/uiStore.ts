@@ -3,6 +3,23 @@ import { create } from 'zustand'
 export type AppId = 'home' | 'inbox' | 'documents' | 'whiteboard' | 'files' | 'settings'
 
 const RECENT_VISITS_KEY = 'desklink-recent-visits'
+const RAIL_HIDDEN_KEY = 'desklink-rail-hidden'
+
+function loadRailHidden(): boolean {
+  try {
+    return localStorage.getItem(RAIL_HIDDEN_KEY) === 'true'
+  } catch {
+    return false
+  }
+}
+
+function persistRailHidden(hidden: boolean) {
+  try {
+    localStorage.setItem(RAIL_HIDDEN_KEY, String(hidden))
+  } catch {
+    /* ignore */
+  }
+}
 
 export interface RecentVisit {
   id: string
@@ -36,12 +53,14 @@ export interface PageTab {
 }
 
 interface UIState {
-  // Sidebar
-  sidebarOpen: boolean
-  sidebarWidth: number
-  toggleSidebar: () => void
-  setSidebarOpen: (open: boolean) => void
-  setSidebarWidth: (width: number) => void
+  /**
+   * When true, the app switcher rail is fully hidden (no column, no strip).
+   * When false, the narrow (36px) icon-only app rail is shown in layout.
+   * When true, the rail is hidden from layout; hover the left edge to show a floating inset rail (icons only).
+   */
+  railHidden: boolean
+  toggleRail: () => void
+  setRailHidden: (hidden: boolean) => void
 
   // Workspace
   activeWorkspaceId: string | null
@@ -84,12 +103,18 @@ const defaultPage: PageTab = {
 }
 
 export const useUIStore = create<UIState>((set, get) => ({
-  // Sidebar
-  sidebarOpen: true,
-  sidebarWidth: 240,
-  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
-  setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
-  setSidebarWidth: (sidebarWidth) => set({ sidebarWidth }),
+  // App rail: hidden vs 36px icon-only column
+  railHidden: loadRailHidden(),
+  toggleRail: () =>
+    set((state) => {
+      const railHidden = !state.railHidden
+      persistRailHidden(railHidden)
+      return { railHidden }
+    }),
+  setRailHidden: (railHidden) => {
+    persistRailHidden(railHidden)
+    set({ railHidden })
+  },
 
   // Workspace
   activeWorkspaceId: null,

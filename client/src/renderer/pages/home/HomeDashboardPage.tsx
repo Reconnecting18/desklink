@@ -79,9 +79,9 @@ export function HomeDashboardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="mx-auto max-w-4xl px-5 py-6 sm:px-6 sm:py-8 md:px-8">
       {/* Greeting */}
-      <header className="mb-10">
+      <header className="mb-10 mt-1">
         <div className="flex items-start gap-3">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-notion-sidebar">
             <Sparkles className="h-5 w-5 text-notion-accent" />
@@ -134,9 +134,9 @@ export function HomeDashboardPage() {
           )}
         </section>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-7 md:grid-cols-2 md:gap-8">
           {/* Todos */}
-          <section className="rounded-xl bg-notion-sidebar/50 p-4">
+          <section className="rounded-xl bg-notion-sidebar/50 p-5 md:p-6">
             <h2 className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary">
               <CheckSquare className="h-3.5 w-3.5" />
               On your desk today
@@ -197,14 +197,14 @@ export function HomeDashboardPage() {
           </section>
 
           {/* Schedule */}
-          <section className="rounded-xl bg-notion-sidebar/50 p-4">
+          <section className="rounded-xl bg-notion-sidebar/50 p-5 md:p-6">
             <h2 className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary">
               <Calendar className="h-3.5 w-3.5" />
               Today on the calendar
             </h2>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               {MOCK_SCHEDULE.map((ev) => (
-                <li key={ev.id} className="flex gap-2 border-b border-notion-border/40 pb-2 last:border-0 last:pb-0">
+                <li key={ev.id} className="flex gap-3 border-b border-notion-border/40 pb-3 last:border-0 last:pb-0">
                   <span className="w-16 shrink-0 text-xs font-medium tabular-nums text-notion-accent">
                     {ev.time}
                   </span>

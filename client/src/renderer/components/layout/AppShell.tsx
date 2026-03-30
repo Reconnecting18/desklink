@@ -3,7 +3,6 @@ import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { useQuery } from '@tanstack/react-query'
 import { Titlebar } from './Titlebar'
-import { Sidebar } from './Sidebar'
 import { AppSwitcherRail } from './AppSwitcherRail'
 import { useUIStore, type AppId } from '@/stores/uiStore'
 import { useAuthStore } from '@/stores/authStore'
@@ -48,8 +47,7 @@ export function AppShell() {
   const navigate = useNavigate()
   const location = useLocation()
   const { workspaceId } = useParams<{ workspaceId: string }>()
-  const { activeWorkspaceId, setActiveWorkspaceId, activeApp, setActiveApp, sidebarOpen, pushRecentVisit } =
-    useUIStore()
+  const { activeWorkspaceId, setActiveWorkspaceId, activeApp, setActiveApp, pushRecentVisit } = useUIStore()
   const { setUser, accessToken } = useAuthStore()
 
   // Load user profile
@@ -110,30 +108,21 @@ export function AppShell() {
       {/* Window chrome: brand + tabs + new tab + window controls (single row) */}
       <Titlebar showTabs />
 
-      {/* Body row: app switcher rail + sidebar + main content */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Narrow app-switcher icon rail */}
-        <AppSwitcherRail />
-
-        {/* Home sidebar — animates to width 0 when collapsed */}
-        {activeApp === 'home' && (
-          <div
-            className={cn(
-              'shrink-0 overflow-hidden transition-[width] duration-200 ease-in-out',
-              sidebarOpen ? 'w-[248px]' : 'w-0'
-            )}
-            aria-hidden={!sidebarOpen}
-          >
-            <div className="flex h-full w-[248px] shrink-0 flex-col border-r border-notion-border/60 bg-notion-sidebar">
-              <Sidebar />
-            </div>
-          </div>
+      {/* Body row: rail + home sidebar flush; gap before main only on home/settings (full-bleed apps handle their own gutters) */}
+      <div
+        className={cn(
+          'flex min-h-0 flex-1 overflow-hidden',
+          activeApp === 'home' || activeApp === 'settings' ? 'gap-5 md:gap-6' : 'gap-0'
         )}
+      >
+        <div className="flex h-full min-h-0 shrink-0">
+          <AppSwitcherRail />
+        </div>
 
         {/* Main content area — strictly contained, no overflow bleed */}
-        <main className="relative flex flex-1 flex-col overflow-hidden">
+        <main className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
           {(activeApp === 'home' || activeApp === 'settings') && (
-            <div className="flex-1 overflow-y-auto overflow-x-hidden">
+            <div className="min-w-0 flex-1 overflow-y-auto overflow-x-hidden pl-3 pr-5 pt-3 md:pl-5 md:pr-8 md:pt-4">
               <Outlet />
             </div>
           )}

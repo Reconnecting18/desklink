@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { storeToken, clearStoredTokens } from '@/lib/tokenStorage'
 
 export interface User {
   id: string
@@ -29,19 +30,19 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   setAuth: (user, accessToken) => {
     set({ user, accessToken, isAuthenticated: true, isLoading: false })
-    window.api.storeToken('accessToken', accessToken)
+    void storeToken('accessToken', accessToken)
   },
 
   setUser: (user) => set({ user }),
 
   setToken: (accessToken) => {
     set({ accessToken })
-    window.api.storeToken('accessToken', accessToken)
+    void storeToken('accessToken', accessToken)
   },
 
   logout: () => {
     set({ user: null, accessToken: null, isAuthenticated: false })
-    window.api.clearTokens()
+    void clearStoredTokens()
   },
 
   setLoading: (isLoading) => set({ isLoading })

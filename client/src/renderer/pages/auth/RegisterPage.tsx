@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/Input'
 import { Titlebar } from '@/components/layout/Titlebar'
 import { useAuthStore } from '@/stores/authStore'
 import { register } from '@/api/auth'
+import { storeToken } from '@/lib/tokenStorage'
 
 export function RegisterPage() {
   const navigate = useNavigate()
@@ -22,7 +23,7 @@ export function RegisterPage() {
 
     try {
       const result = await register(name, email, password)
-      await window.api.storeToken('refreshToken', result.refreshToken)
+      await storeToken('refreshToken', result.refreshToken)
       setAuth(result.user, result.accessToken)
       navigate('/')
     } catch (err: any) {
