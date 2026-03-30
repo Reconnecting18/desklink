@@ -52,31 +52,37 @@ export function AppSwitcherRail() {
   return (
     <div
       className={cn(
-        'flex w-[56px] shrink-0 flex-col items-center gap-3 border-r border-notion-border/50 bg-notion-sidebar px-2 py-4',
-        'relative z-10'
+        'relative z-10 flex w-[52px] shrink-0 flex-col items-center gap-2 border-r border-notion-border/50 bg-notion-sidebar px-2 py-2'
       )}
     >
       {APPS.map((app) => {
         const isActive = activeApp === app.id
         return (
-          <button
+          <div
             key={app.id}
-            type="button"
-            title={app.label}
-            aria-label={app.label}
-            onClick={() => handleAppClick(app.id)}
-            className={cn(
-              'group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-all',
-              isActive
-                ? 'bg-notion-sidebar-hover text-notion-text'
-                : 'text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary'
-            )}
+            className="relative flex w-full items-center justify-center"
           >
             {isActive && (
-              <span className="absolute -left-2 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-notion-accent" />
+              <span
+                className="pointer-events-none absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-[4px] bg-notion-accent"
+                aria-hidden
+              />
             )}
-            <app.icon className="h-[19px] w-[19px] shrink-0" strokeWidth={1.75} />
-          </button>
+            <button
+              type="button"
+              title={app.label}
+              aria-label={app.label}
+              onClick={() => handleAppClick(app.id)}
+              className={cn(
+                'group flex size-9 shrink-0 items-center justify-center rounded-[6px] transition-all',
+                isActive
+                  ? 'bg-notion-sidebar-hover text-notion-text'
+                  : 'text-notion-text-tertiary hover:bg-notion-sidebar-hover hover:text-notion-text-secondary'
+              )}
+            >
+              <app.icon className="h-[19px] w-[19px] shrink-0" strokeWidth={1.75} />
+            </button>
+          </div>
         )
       })}
     </div>

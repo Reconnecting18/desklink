@@ -79,7 +79,7 @@ export function HomeDashboardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-10 py-12 md:px-16 md:py-14">
+    <div className="mx-auto max-w-4xl p-6">
       {/* Greeting */}
       <header className="mb-10">
         <div className="flex items-start gap-3">
@@ -96,7 +96,7 @@ export function HomeDashboardPage() {
         </div>
       </header>
 
-      <div className="space-y-10">
+      <div className="flex flex-col gap-6">
         {/* Recently visited */}
         <section>
           <h2 className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary">
@@ -108,7 +108,7 @@ export function HomeDashboardPage() {
               As you open Inbox, Files, and Planner, shortcuts will appear here.
             </div>
           ) : (
-            <div className="flex gap-3 overflow-x-auto pb-2 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex gap-4 overflow-x-auto pb-2 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {recentVisits.map((v) => (
                 <button
                   key={v.id}
@@ -117,12 +117,12 @@ export function HomeDashboardPage() {
                     openOrFocusApp(v.appId)
                     navigate(v.href)
                   }}
-                  className="group flex min-h-[5rem] min-w-[9rem] max-w-[10rem] flex-col justify-between rounded-xl bg-notion-sidebar/60 p-4 text-left transition-all hover:bg-notion-sidebar-hover"
+                  className="group flex min-h-[5rem] min-w-[9rem] max-w-[10rem] flex-col gap-2 rounded-xl bg-notion-sidebar/60 p-4 text-left transition-all hover:bg-notion-sidebar-hover"
                 >
-                  <span className="truncate text-sm font-medium text-notion-text group-hover:text-notion-accent">
+                  <span className="line-clamp-2 min-h-0 text-sm font-medium leading-snug text-notion-text group-hover:text-notion-accent">
                     {v.title}
                   </span>
-                  <span className="mt-3 text-[11px] text-notion-text-tertiary">
+                  <span className="mt-auto shrink-0 text-[11px] text-notion-text-tertiary">
                     {new Date(v.visitedAt).toLocaleDateString(undefined, {
                       month: 'short',
                       day: 'numeric'
@@ -134,9 +134,9 @@ export function HomeDashboardPage() {
           )}
         </section>
 
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2">
           {/* Todos */}
-          <section className="rounded-xl bg-notion-sidebar/50 p-6">
+          <section className="rounded-xl bg-notion-sidebar/50 p-4">
             <h2 className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary">
               <CheckSquare className="h-3.5 w-3.5" />
               On your desk today
@@ -148,7 +148,7 @@ export function HomeDashboardPage() {
               {todos.map((t) => (
                 <div
                   key={t.id}
-                  className="flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-notion-sidebar-hover/60"
+                  className="flex items-start gap-3 rounded-md px-3 py-2.5 transition-colors hover:bg-notion-sidebar-hover/60"
                 >
                   <button
                     type="button"
@@ -181,14 +181,14 @@ export function HomeDashboardPage() {
                 </div>
               ))}
             </div>
-            <div className="mt-4 flex items-center gap-2 border-t border-notion-border/40 pt-4">
+            <div className="mt-4 flex items-center gap-2 border-t border-notion-border/40 px-3 py-2">
               <input
                 type="text"
                 value={newTodo}
                 onChange={(e) => setNewTodo(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addTodo()}
                 placeholder="Add a task…"
-                className="min-w-0 flex-1 bg-transparent px-1 py-1.5 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:outline-none"
+                className="min-w-0 flex-1 bg-transparent py-0.5 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:outline-none"
               />
               <Button type="button" size="sm" variant="ghost" onClick={addTodo} className="shrink-0 text-xs">
                 Add
@@ -197,20 +197,20 @@ export function HomeDashboardPage() {
           </section>
 
           {/* Schedule */}
-          <section className="rounded-xl bg-notion-sidebar/50 p-6">
+          <section className="rounded-xl bg-notion-sidebar/50 p-4">
             <h2 className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary">
               <Calendar className="h-3.5 w-3.5" />
               Today on the calendar
             </h2>
-            <ul className="space-y-5">
+            <ul className="space-y-2">
               {MOCK_SCHEDULE.map((ev) => (
-                <li key={ev.id} className="flex gap-4 border-b border-notion-border/40 pb-5 last:border-0 last:pb-0">
+                <li key={ev.id} className="flex gap-2 border-b border-notion-border/40 pb-2 last:border-0 last:pb-0">
                   <span className="w-16 shrink-0 text-xs font-medium tabular-nums text-notion-accent">
                     {ev.time}
                   </span>
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1 space-y-0.5">
                     <p className="text-sm font-medium text-notion-text">{ev.title}</p>
-                    <p className="mt-1 text-xs text-notion-text-tertiary">{ev.place}</p>
+                    <p className="text-xs text-notion-text-tertiary">{ev.place}</p>
                   </div>
                 </li>
               ))}

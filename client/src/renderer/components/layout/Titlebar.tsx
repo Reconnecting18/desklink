@@ -55,14 +55,14 @@ function Tab({ page, isActive }: { page: PageTab; isActive: boolean }) {
       type="button"
       onClick={handleTabClick}
       className={cn(
-        'group relative flex h-full max-w-[220px] min-w-[120px] items-center gap-2 border-r border-notion-border/50 px-5 py-2.5 text-xs transition-colors select-none',
+        'group relative flex h-full max-w-[220px] min-w-[100px] items-center gap-1.5 overflow-hidden border-r border-notion-border/50 px-3 py-1 text-xs transition-colors select-none',
         isActive
           ? 'bg-notion-bg text-notion-text'
           : 'bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text'
       )}
     >
       {isActive && (
-        <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-notion-accent" />
+        <span className="absolute inset-x-3 bottom-1.5 h-0.5 rounded-sm bg-notion-accent" aria-hidden />
       )}
 
       <Icon className="h-3.5 w-3.5 shrink-0 opacity-70" />
@@ -84,7 +84,7 @@ function Tab({ page, isActive }: { page: PageTab; isActive: boolean }) {
             }
           }}
           className={cn(
-            'flex h-5 w-5 shrink-0 items-center justify-center rounded transition-colors',
+            'ml-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-md transition-colors',
             isActive
               ? 'opacity-60 hover:bg-notion-sidebar-hover hover:opacity-100'
               : 'opacity-0 group-hover:opacity-60 hover:!opacity-100 hover:bg-notion-sidebar-hover'
@@ -169,7 +169,7 @@ export function Titlebar({ showTabs = false }: TitlebarProps) {
               onClick={() => addPage()}
               title="New page"
               aria-label="New page"
-              className="no-drag flex h-full w-10 shrink-0 items-center justify-center text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
+              className="no-drag flex h-full min-w-10 shrink-0 items-center justify-center px-3 py-1 text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
             >
               <Plus className="h-4 w-4" />
             </button>

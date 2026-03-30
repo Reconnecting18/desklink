@@ -121,7 +121,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
               setTitle(task.title)
               setEditingTitle(true)
             }}
-            className="cursor-text text-base font-semibold text-notion-text hover:bg-notion-sidebar-hover rounded px-1 -mx-1"
+            className="cursor-text rounded-md px-2 py-0.5 text-base font-semibold text-notion-text hover:bg-notion-sidebar-hover"
           >
             {task.title}
           </h2>

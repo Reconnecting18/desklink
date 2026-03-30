@@ -55,6 +55,7 @@ html.dark {
   --color-priority-low: #4cd4a0;
 }
 
+/* Universal reset — Tailwind utility classes (higher specificity than *) override padding/margin on elements that set them. */
 *,
 *::before,
 *::after {

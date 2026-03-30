@@ -143,12 +143,12 @@ function TreeNode({ node, depth, selectedId, expandedIds, onSelect, onToggle }: 
           if (node.type === 'folder') onToggle(node.id)
         }}
         className={cn(
-          'flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-sm transition-colors',
+          'flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors',
           isSelected
             ? 'bg-notion-sidebar-hover text-notion-text'
             : 'text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text'
         )}
-        style={{ paddingLeft: `${16 + depth * 16}px` }}
+        style={{ paddingLeft: `${20 + depth * 16}px` }}
       >
         {node.type === 'folder' ? (
           <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center">
@@ -227,7 +227,7 @@ export function FilesApp() {
       {/* Left panel — directory tree */}
       <div className="flex w-64 min-w-[16rem] shrink-0 flex-col overflow-hidden border-r border-notion-border/50 bg-notion-sidebar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-notion-border/50 px-5 py-4">
+        <div className="flex items-center justify-between border-b border-notion-border/50 px-3 py-2">
           <span className="text-sm font-semibold text-notion-text">Files</span>
           <button
             type="button"
@@ -308,7 +308,7 @@ export function FilesApp() {
             <button
               type="button"
               title="Upload files"
-              className="flex h-9 items-center gap-2 rounded-md border border-notion-border bg-notion-sidebar px-3 text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
+              className="flex h-9 items-center gap-2 rounded-md border border-notion-border bg-notion-sidebar px-4 text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
             >
               <Upload className="h-3 w-3" />
               Upload

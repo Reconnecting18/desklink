@@ -156,7 +156,7 @@ export function InboxApp() {
         </div>
 
         {/* Filter tabs */}
-        <div className="flex gap-1 border-b border-notion-border/50 px-4 pb-0 pt-2">
+        <div className="flex gap-2 border-b border-notion-border/50 px-4 pb-0 pt-2">
           {(['all', 'unread', 'mentions'] as FilterTab[]).map((tab) => (
             <button
               key={tab}
@@ -192,13 +192,13 @@ export function InboxApp() {
                   type="button"
                   onClick={() => handleSelect(msg)}
                   className={cn(
-                    'w-full border-b border-notion-border/40 px-5 py-4 text-left transition-colors',
+                    'w-full border-b border-notion-border/40 px-4 py-3 text-left transition-colors',
                     isSelected
                       ? 'bg-notion-sidebar-hover'
                       : 'hover:bg-notion-sidebar-hover/60'
                   )}
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-3 pr-1">
                     {/* Avatar */}
                     <div
                       className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white"
@@ -208,7 +208,7 @@ export function InboxApp() {
                     </div>
 
                     <div className="min-w-0 flex-1 space-y-2">
-                      <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center justify-between gap-3 pr-2">
                         <span className={cn('truncate text-sm font-medium leading-snug', msg.unread ? 'text-notion-text' : 'text-notion-text-secondary')}>
                           {msg.sender}
                         </span>
@@ -242,7 +242,7 @@ export function InboxApp() {
         {selected ? (
           <>
             {/* Detail header */}
-            <div className="border-b border-notion-border px-12 py-8">
+            <div className="border-b border-notion-border p-6">
               <div className="flex items-start gap-4">
                 <div
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
@@ -261,9 +261,15 @@ export function InboxApp() {
             </div>
 
             {/* Detail body */}
-            <div className="flex-1 overflow-y-auto px-12 py-12">
-              <div className="max-w-2xl border-l-2 border-notion-accent/20 py-1 pl-6">
-                <p className="whitespace-pre-line text-sm leading-[1.65] text-notion-text">{selected.body}</p>
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="max-w-2xl border-l-2 border-notion-accent/20 py-1 pl-4">
+                <div className="space-y-1 text-sm leading-[1.65] text-notion-text">
+                  {selected.body.split('\n').map((line, i) => (
+                    <p key={i} className={line.startsWith('- ') ? 'pl-4' : undefined}>
+                      {line || '\u00A0'}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
           </>
