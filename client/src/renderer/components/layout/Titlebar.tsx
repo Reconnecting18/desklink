@@ -55,7 +55,7 @@ function Tab({ page, isActive }: { page: PageTab; isActive: boolean }) {
       type="button"
       onClick={handleTabClick}
       className={cn(
-        'group relative flex h-full max-w-[220px] min-w-[100px] items-center gap-1.5 overflow-hidden border-r border-notion-border/50 px-4 py-2 text-xs transition-colors select-none',
+        'group relative flex h-full max-w-[220px] min-w-[100px] items-center gap-1.5 overflow-hidden border-r border-notion-border/50 px-[5px] py-2 text-xs transition-colors select-none',
         isActive
           ? 'bg-notion-bg text-notion-text'
           : 'bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text'
@@ -129,7 +129,7 @@ export function Titlebar({ showTabs = false }: TitlebarProps) {
         alt=""
         width={20}
         height={20}
-        className="h-5 w-5 shrink-0 object-contain opacity-90 dark:opacity-100"
+        className="h-5 w-[35px] shrink-0 object-contain opacity-90 dark:opacity-100 flex justify-start items-start flex-wrap text-left"
         aria-hidden
       />
       {showTabs && (

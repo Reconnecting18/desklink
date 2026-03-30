@@ -55,7 +55,8 @@ export function WorkspaceSettingsPage() {
                   type="button"
                   onClick={() => setThemePreference(value)}
                   className={cn(
-                    'flex w-full flex-col items-start gap-1.5 rounded-lg border px-5 py-4 text-left transition-colors',
+                    // Match preview styling: compact padding + layered box-shadow.
+                    'flex w-full flex-col items-start gap-1.5 rounded-lg border px-[5px] py-[5px] text-left transition-colors shadow-[0px_0px_0px_0px_rgba(0,0,0,0),_0px_0px_0px_0px_rgba(0,0,0,0),_0px_0px_0px_1px_rgba(82,156,202,1),_0px_0px_0px_0px_rgba(0,0,0,0),_0px_4px_0px_0px_rgba(0,0,0,0.15)]',
                     selected
                       ? 'border-notion-accent bg-notion-sidebar ring-1 ring-notion-accent'
                       : 'border-notion-border bg-notion-bg hover:bg-notion-sidebar'

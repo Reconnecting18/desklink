@@ -82,7 +82,7 @@ export function HomeDashboardPage() {
     <div className="mx-auto max-w-4xl px-5 py-6 sm:px-6 sm:py-8 md:px-8">
       {/* Greeting */}
       <header className="mb-10 mt-1">
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-3 justify-center text-center">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-notion-sidebar">
             <Sparkles className="h-5 w-5 text-notion-accent" />
           </div>
@@ -96,7 +96,7 @@ export function HomeDashboardPage() {
         </div>
       </header>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 items-center h-[300px] w-[1100px]">
         {/* Recently visited */}
         <section>
           <h2 className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary">
@@ -117,7 +117,7 @@ export function HomeDashboardPage() {
                     openOrFocusApp(v.appId)
                     navigate(v.href)
                   }}
-                  className="group flex min-h-[5rem] min-w-[9rem] max-w-[10rem] flex-col gap-2 rounded-xl bg-notion-sidebar/60 p-4 text-left transition-all hover:bg-notion-sidebar-hover"
+                  className="group flex min-h-[5rem] min-w-[9rem] max-w-[10rem] flex-col gap-2 rounded-xl bg-notion-sidebar/60 p-[5px] text-left transition-all hover:bg-notion-sidebar-hover justify-start items-start"
                 >
                   <span className="line-clamp-2 min-h-0 text-sm font-medium leading-snug text-notion-text group-hover:text-notion-accent">
                     {v.title}
