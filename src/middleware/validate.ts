@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+﻿import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod/v4';
 import { ValidationError } from '../shared/errors';
 
@@ -11,7 +11,24 @@ export function validate(schema: z.ZodType, source: ValidationSource = 'body') {
       const message = z.prettifyError(result.error);
       throw new ValidationError(message);
     }
-    (req as any)[source] = result.data;
+    const data = result.data;
+    if (source === 'query') {
+      Object.defineProperty(req, 'query', {
+        value: data,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    } else if (source === 'params') {
+      Object.defineProperty(req, 'params', {
+        value: data,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    } else {
+      (req as { body: unknown }).body = data;
+    }
     next();
   };
 }

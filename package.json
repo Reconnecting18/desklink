@@ -7,14 +7,16 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run",
     "test:watch": "vitest",
     "db:migrate": "prisma migrate dev --config prisma/prisma.config.ts",
     "db:generate": "prisma generate --config prisma/prisma.config.ts",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "lint": "eslint src/",
-    "format": "prettier --write src/"
+    "lint": "eslint src tests",
+    "format": "prettier --write src/",
+    "typecheck": "tsc --noEmit -p tsconfig.all.json",
+    "postinstall": "prisma generate --config prisma/prisma.config.ts"
   },
   "keywords": [
     "productivity",
@@ -43,10 +45,11 @@
     "pino-http": "^11.0.0",
     "uuid": "^13.0.0",
     "ws": "^8.20.0",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "@prisma/client": "^7.5.0"
   },
   "devDependencies": {
-    "@prisma/client": "^7.5.0",
+    "@eslint/js": "^9.39.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
@@ -57,10 +60,12 @@
     "@types/supertest": "^7.2.0",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.18.1",
+    "eslint": "^9.39.4",
     "prisma": "^7.5.0",
     "supertest": "^7.2.2",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2",
+    "typescript-eslint": "^8.57.2",
     "vitest": "^4.1.2"
   }
 }

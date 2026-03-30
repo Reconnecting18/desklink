@@ -1,7 +1,13 @@
+﻿import { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import { config } from '../config';
 
 export function createRateLimiter(windowMs?: number, max?: number) {
+  if (config.NODE_ENV === 'test') {
+    return (_req: Request, _res: Response, next: NextFunction) => {
+      next();
+    };
+  }
   return rateLimit({
     windowMs: windowMs ?? config.RATE_LIMIT_WINDOW_MS,
     max: max ?? config.RATE_LIMIT_MAX,
