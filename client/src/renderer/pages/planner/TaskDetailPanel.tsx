@@ -113,7 +113,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
               if (e.key === 'Enter') (e.target as HTMLInputElement).blur()
             }}
             autoFocus
-            className="w-full text-base font-semibold text-notion-text focus:outline-none"
+            className="w-full px-3 py-2 text-base font-semibold text-notion-text focus:outline-none"
           />
         ) : (
           <h2
@@ -141,7 +141,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
                   key={p}
                   onClick={() => updateMutation.mutate({ priority: p })}
                   className={cn(
-                    'rounded px-2 py-0.5 text-xs transition-colors',
+                    'rounded px-3 py-1 text-xs transition-colors',
                     task.priority === p
                       ? 'bg-notion-accent text-white'
                       : 'bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover'
@@ -167,7 +167,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
                   dueDate: e.target.value ? new Date(e.target.value).toISOString() : null
                 })
               }
-              className="rounded border border-notion-border px-2 py-0.5 text-xs text-notion-text focus:outline-none focus:ring-1 focus:ring-notion-accent"
+              className="rounded border border-notion-border px-3 py-2 text-xs text-notion-text focus:outline-none focus:ring-1 focus:ring-notion-accent"
             />
           </div>
 
@@ -204,7 +204,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
               }}
               autoFocus
               rows={4}
-              className="w-full rounded border border-notion-border px-2 py-1.5 text-sm text-notion-text focus:outline-none focus:ring-1 focus:ring-notion-accent resize-none"
+              className="w-full rounded border border-notion-border px-3 py-2 text-sm text-notion-text focus:outline-none focus:ring-1 focus:ring-notion-accent resize-none"
             />
           ) : (
             <div
@@ -212,7 +212,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
                 setDescription(task.description || '')
                 setEditingDesc(true)
               }}
-              className="min-h-[60px] cursor-text rounded px-2 py-1.5 text-sm text-notion-text-secondary hover:bg-notion-sidebar-hover"
+              className="min-h-[60px] cursor-text rounded px-3 py-2 text-sm text-notion-text-secondary hover:bg-notion-sidebar-hover"
             >
               {task.description || 'Add a description...'}
             </div>
@@ -228,7 +228,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
 
           <div className="flex flex-col gap-4">
             {comments.map((comment: Comment) => (
-              <div key={comment.id} className="flex gap-3">
+              <div key={comment.id} className="flex items-start gap-3">
                 <Avatar
                   name={comment.author?.displayName ?? comment.author?.name}
                   src={comment.author?.avatarUrl}
@@ -250,7 +250,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
           </div>
 
           {/* New comment */}
-          <div className="mt-5 flex gap-2">
+          <div className="mt-5 flex items-center gap-2">
             <input
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}

@@ -300,7 +300,7 @@ export function FilesApp() {
                 placeholder="Search files…"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 bg-transparent text-sm text-notion-text placeholder:text-notion-text-tertiary focus:outline-none"
+                className="flex-1 bg-transparent py-2 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:outline-none"
               />
             </div>
 

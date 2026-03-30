@@ -174,7 +174,7 @@ export function HomeDashboardPage() {
                   <button
                     type="button"
                     onClick={() => removeTodo(t.id)}
-                    className="shrink-0 text-xs text-notion-text-tertiary hover:text-notion-red"
+                    className="shrink-0 rounded p-2 text-xs text-notion-text-tertiary hover:text-notion-red"
                   >
                     ✕
                   </button>
@@ -188,7 +188,7 @@ export function HomeDashboardPage() {
                 onChange={(e) => setNewTodo(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addTodo()}
                 placeholder="Add a task…"
-                className="min-w-0 flex-1 bg-transparent py-0.5 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:outline-none"
+                className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:outline-none"
               />
               <Button type="button" size="sm" variant="ghost" onClick={addTodo} className="shrink-0 text-xs">
                 Add

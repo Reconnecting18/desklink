@@ -169,7 +169,7 @@ export function BoardView({ projectId }: BoardViewProps) {
                 if (e.key === 'Enter' && newBoardName.trim()) createBoardMutation.mutate()
                 if (e.key === 'Escape') { setShowNewBoard(false); setNewBoardName('') }
               }}
-              className="h-6 w-28 rounded border border-notion-border px-2 text-xs focus:outline-none focus:ring-1 focus:ring-notion-accent"
+              className="w-28 rounded border border-notion-border px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-notion-accent"
             />
           </div>
         ) : (
@@ -219,7 +219,7 @@ export function BoardView({ projectId }: BoardViewProps) {
                   if (e.key === 'Enter' && newColumnName.trim()) createColumnMutation.mutate()
                   if (e.key === 'Escape') { setShowNewColumn(false); setNewColumnName('') }
                 }}
-                className="mb-2 h-7 w-full rounded border border-notion-border px-2 text-sm focus:outline-none focus:ring-1 focus:ring-notion-accent"
+                className="mb-2 w-full rounded border border-notion-border px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-notion-accent"
               />
               <div className="flex gap-1">
                 <Button size="sm" onClick={() => createColumnMutation.mutate()}>Add</Button>
@@ -229,7 +229,7 @@ export function BoardView({ projectId }: BoardViewProps) {
           ) : (
             <button
               onClick={() => setShowNewColumn(true)}
-              className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-dashed border-notion-border py-8 text-sm text-notion-text-tertiary hover:border-notion-text-tertiary hover:text-notion-text-secondary transition-colors"
+              className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-dashed border-notion-border px-4 py-8 text-sm text-notion-text-tertiary hover:border-notion-text-tertiary hover:text-notion-text-secondary transition-colors"
             >
               <Plus className="h-4 w-4" />
               Add column

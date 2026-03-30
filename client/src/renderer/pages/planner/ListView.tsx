@@ -125,7 +125,7 @@ export function ListView({ projectId }: ListViewProps) {
                       }}
                       placeholder="Task title... (Enter to save, Esc to cancel)"
                       autoFocus
-                      className="w-full text-sm focus:outline-none"
+                      className="w-full px-3 py-2 text-sm focus:outline-none"
                     />
                   </td>
                 </tr>

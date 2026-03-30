@@ -60,11 +60,11 @@ export function AppSwitcherRail() {
         return (
           <div
             key={app.id}
-            className="relative flex w-full items-center justify-center"
+            className="relative flex w-full items-center justify-center pl-0"
           >
             {isActive && (
               <span
-                className="pointer-events-none absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-[4px] bg-notion-accent"
+                className="pointer-events-none absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-[3px] bg-notion-accent"
                 aria-hidden
               />
             )}

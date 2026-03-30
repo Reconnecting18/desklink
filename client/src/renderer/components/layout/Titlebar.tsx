@@ -61,10 +61,6 @@ function Tab({ page, isActive }: { page: PageTab; isActive: boolean }) {
           : 'bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text'
       )}
     >
-      {isActive && (
-        <span className="absolute inset-x-3 bottom-1.5 h-0.5 rounded-sm bg-notion-accent" aria-hidden />
-      )}
-
       <Icon className="h-3.5 w-3.5 shrink-0 opacity-70" />
 
       <span className="min-w-0 flex-1 truncate text-left leading-snug">{page.title}</span>

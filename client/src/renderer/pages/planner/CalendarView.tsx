@@ -142,7 +142,7 @@ export function CalendarView({ projectId }: CalendarViewProps) {
               key={i}
               onClick={() => setShowNewEvent(dateStr)}
               className={cn(
-                'border-b border-r border-notion-border p-1 min-h-[80px] cursor-pointer hover:bg-notion-sidebar-hover/30 transition-colors',
+                'border-b border-r border-notion-border p-2 min-h-[80px] cursor-pointer hover:bg-notion-sidebar-hover/30 transition-colors',
                 !isCurrentMonth && 'bg-notion-sidebar/30'
               )}
             >
@@ -200,7 +200,7 @@ export function CalendarView({ projectId }: CalendarViewProps) {
                     }}
                     placeholder="Event title"
                     autoFocus
-                    className="w-full rounded border border-notion-border px-1 py-0.5 text-[10px] focus:outline-none focus:ring-1 focus:ring-notion-accent"
+                    className="w-full rounded border border-notion-border px-2 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-notion-accent"
                   />
                 </div>
               )}

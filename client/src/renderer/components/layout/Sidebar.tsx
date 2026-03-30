@@ -27,8 +27,8 @@ export function Sidebar() {
 
   return (
     // Panel gutter: 12px horizontal, 8px vertical — active rows inset via same padding
-    <div className="flex h-full w-full flex-col px-3 py-2">
-      <div className="relative flex items-center pb-3 pt-3">
+    <div className="flex h-full w-full flex-col py-2 pl-6 pr-2">
+      <div className="relative flex items-center px-3 pb-3 pt-3">
         <button
           type="button"
           onClick={() => setWorkspaceMenuOpen(!workspaceMenuOpen)}
@@ -44,7 +44,7 @@ export function Sidebar() {
         </button>
 
         {workspaceMenuOpen && (
-          <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-md border border-notion-border/50 bg-notion-bg py-2 shadow-lg shadow-black/10">
+          <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-md border border-notion-border/50 bg-notion-bg px-2 py-2 shadow-lg shadow-black/10">
             {workspaces.map((ws: Workspace) => (
               <button
                 key={ws.id}
@@ -65,48 +65,50 @@ export function Sidebar() {
         )}
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto pb-6 pt-1">
-        <button
-          type="button"
-          disabled
-          className="mx-1 flex w-full items-center gap-2 rounded-[6px] px-2 py-1.5 text-left text-sm text-notion-text-secondary opacity-90"
-          title="Coming soon"
-        >
-          <Search className="h-4 w-4 shrink-0 opacity-80" />
-          <span>Search</span>
-        </button>
+      <div className="flex min-h-0 flex-1 flex-col px-3">
+        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto pb-6 pt-1">
+          <button
+            type="button"
+            disabled
+            className="flex w-full items-center gap-2 rounded-[6px] px-2 py-1.5 text-left text-sm text-notion-text-secondary opacity-90"
+            title="Coming soon"
+          >
+            <Search className="h-4 w-4 shrink-0 opacity-80" />
+            <span>Search</span>
+          </button>
 
-        <NavLink
-          to={`/w/${workspaceId}`}
-          end
-          className={({ isActive }) =>
-            cn(
-              'mx-1 flex w-full items-center gap-2 rounded-[6px] px-2 py-1.5 text-sm transition-colors',
-              isActive
-                ? 'bg-notion-sidebar-hover font-medium text-notion-text'
-                : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
-            )
-          }
-        >
-          <Home className="h-4 w-4 shrink-0" />
-          Home
-        </NavLink>
+          <NavLink
+            to={`/w/${workspaceId}`}
+            end
+            className={({ isActive }) =>
+              cn(
+                'flex w-full items-center gap-2 rounded-[6px] px-2 py-1.5 text-sm transition-colors',
+                isActive
+                  ? 'bg-notion-sidebar-hover font-medium text-notion-text'
+                  : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
+              )
+            }
+          >
+            <Home className="h-4 w-4 shrink-0" />
+            Home
+          </NavLink>
 
-        <NavLink
-          to={`/w/${workspaceId}/projects`}
-          className={({ isActive }) =>
-            cn(
-              'mx-1 flex w-full items-center gap-2 rounded-[6px] px-2 py-1.5 text-sm transition-colors',
-              isActive
-                ? 'bg-notion-sidebar-hover font-medium text-notion-text'
-                : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
-            )
-          }
-        >
-          <LayoutDashboard className="h-4 w-4 shrink-0 opacity-80" />
-          Planner
-        </NavLink>
-      </nav>
+          <NavLink
+            to={`/w/${workspaceId}/projects`}
+            className={({ isActive }) =>
+              cn(
+                'flex w-full items-center gap-2 rounded-[6px] px-2 py-1.5 text-sm transition-colors',
+                isActive
+                  ? 'bg-notion-sidebar-hover font-medium text-notion-text'
+                  : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
+              )
+            }
+          >
+            <LayoutDashboard className="h-4 w-4 shrink-0 opacity-80" />
+            Planner
+          </NavLink>
+        </nav>
+      </div>
     </div>
   )
 }
