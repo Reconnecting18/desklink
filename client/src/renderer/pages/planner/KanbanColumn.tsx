@@ -52,7 +52,7 @@ export function KanbanColumn({
 
   return (
     <div className="flex w-[272px] shrink-0 flex-col">
-      <div className="mb-3 flex items-center justify-between px-1">
+      <div className="mb-4 flex items-center justify-between px-1">
         <div className="flex min-w-0 items-center gap-2.5">
           <span className={cn('h-2 w-2 shrink-0 rounded-full', accent)} aria-hidden />
           <span className="truncate text-sm font-semibold text-notion-text">{column.name}</span>
@@ -72,7 +72,7 @@ export function KanbanColumn({
       <div
         ref={setNodeRef}
         className={cn(
-          'flex min-h-[120px] flex-1 flex-col gap-3 rounded-xl border border-transparent bg-notion-sidebar/40 p-2 transition-colors',
+          'flex min-h-[120px] flex-1 flex-col gap-3 rounded-xl border border-transparent bg-notion-sidebar/40 p-3 transition-colors',
           isOver && 'border-notion-accent/25 bg-notion-accent/5'
         )}
       >
@@ -84,7 +84,7 @@ export function KanbanColumn({
 
         {/* New task inline form */}
         {showNewTask && (
-          <div className="rounded-lg border border-notion-border bg-notion-bg p-3 shadow-sm">
+          <div className="rounded-lg border border-notion-border bg-notion-bg p-4 shadow-sm">
             <input
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}

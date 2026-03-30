@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Minus,
   Square,
@@ -27,17 +28,34 @@ const APP_ICONS: Record<AppId, React.ElementType> = {
   settings: Settings
 }
 
+const APP_ROUTES: Partial<Record<AppId, (wsId: string) => string>> = {
+  home: (wsId) => `/w/${wsId}`,
+  settings: (wsId) => `/w/${wsId}/settings`,
+  inbox: (wsId) => `/w/${wsId}/inbox`,
+  files: (wsId) => `/w/${wsId}/files`,
+  whiteboard: (wsId) => `/w/${wsId}/whiteboard`
+}
+
 function Tab({ page, isActive }: { page: PageTab; isActive: boolean }) {
-  const { setActivePage, closePage, pages } = useUIStore()
+  const { setActivePage, closePage, pages, activeWorkspaceId } = useUIStore()
+  const navigate = useNavigate()
   const Icon = APP_ICONS[page.appId]
   const canClose = pages.length > 1
+
+  const handleTabClick = () => {
+    setActivePage(page.id)
+    if (activeWorkspaceId) {
+      const routeFn = APP_ROUTES[page.appId]
+      if (routeFn) navigate(routeFn(activeWorkspaceId))
+    }
+  }
 
   return (
     <button
       type="button"
-      onClick={() => setActivePage(page.id)}
+      onClick={handleTabClick}
       className={cn(
-        'group relative flex h-full max-w-[220px] min-w-[112px] items-center gap-2 border-r border-notion-border px-4 py-2 text-xs transition-colors select-none',
+        'group relative flex h-full max-w-[220px] min-w-[120px] items-center gap-2 border-r border-notion-border/50 px-5 py-2.5 text-xs transition-colors select-none',
         isActive
           ? 'bg-notion-bg text-notion-text'
           : 'bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text'
@@ -129,10 +147,10 @@ export function Titlebar({ showTabs = false }: TitlebarProps) {
   )
 
   return (
-    <div className="drag-region flex h-10 min-h-10 shrink-0 items-stretch border-b border-notion-border bg-notion-sidebar">
+    <div className="drag-region flex h-11 min-h-11 shrink-0 items-stretch border-b border-notion-border/60 bg-notion-sidebar">
       {showTabs ? (
         <>
-          <div className="flex shrink-0 items-center gap-1 border-r border-notion-border bg-notion-sidebar px-3 py-2">
+          <div className="flex shrink-0 items-center gap-1 border-r border-notion-border/50 bg-notion-sidebar px-3 py-2">
             {brand}
           </div>
 
@@ -146,17 +164,16 @@ export function Titlebar({ showTabs = false }: TitlebarProps) {
                 <Tab page={page} isActive={page.id === activePageId} />
               </div>
             ))}
+            <button
+              type="button"
+              onClick={() => addPage()}
+              title="New page"
+              aria-label="New page"
+              className="no-drag flex h-full w-10 shrink-0 items-center justify-center text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
           </div>
-
-          <button
-            type="button"
-            onClick={() => addPage()}
-            title="New page"
-            aria-label="New page"
-            className="no-drag flex h-full min-w-[2.75rem] shrink-0 items-center justify-center border-l border-notion-border px-3 text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary"
-          >
-            <Plus className="h-4 w-4" />
-          </button>
         </>
       ) : (
         <>
@@ -165,7 +182,7 @@ export function Titlebar({ showTabs = false }: TitlebarProps) {
         </>
       )}
 
-      <div className="no-drag flex h-full shrink-0 border-l border-notion-border">
+      <div className="no-drag flex h-full shrink-0 border-l border-notion-border/50">
         <button
           type="button"
           onClick={() => window.api.minimize()}

@@ -24475,7 +24475,20 @@ const {
   getAdapter,
   mergeConfig
 } = axios;
-const API_BASE = "http://localhost:3000/api";
+const DEFAULT_API_BASE = "http://127.0.0.1:3000/api";
+function normalizeApiBase(raw) {
+  const trimmed = "".trim().replace(/\/+$/, "");
+  return trimmed || DEFAULT_API_BASE;
+}
+const API_BASE = normalizeApiBase();
+function transportErrorMessage(error, base) {
+  if (!isAxiosError(error)) return null;
+  if (error.response) return null;
+  const code = error.code;
+  const isTransportFailure = code === "ERR_NETWORK" || code === "ECONNREFUSED" || code === "ECONNRESET" || code === "ETIMEDOUT" || error.message === "Network Error";
+  if (!isTransportFailure) return null;
+  return `Cannot reach the DeskLink API at ${base}. Start the API from the repo root with npm run dev, or set VITE_API_BASE_URL if it uses a different port.`;
+}
 const apiClient = axios.create({
   baseURL: API_BASE,
   headers: {
@@ -24500,6 +24513,22 @@ function processQueue(error, token = null) {
     }
   });
   failedQueue = [];
+}
+function rejectWithNormalizedError(error) {
+  const transportMsg = transportErrorMessage(error, API_BASE);
+  if (transportMsg) {
+    return Promise.reject(new Error(transportMsg));
+  }
+  if (isAxiosError(error)) {
+    const message = error.response?.data?.error?.message || error.response?.data?.message || error.message || "An unexpected error occurred";
+    const apiError = new Error(message);
+    apiError.statusCode = error.response?.status;
+    return Promise.reject(apiError);
+  }
+  if (error instanceof Error) {
+    return Promise.reject(error);
+  }
+  return Promise.reject(new Error(String(error)));
 }
 apiClient.interceptors.response.use(
   (response) => {
@@ -24544,17 +24573,16 @@ apiClient.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
-        processQueue(refreshError, null);
+        const transportMsg = transportErrorMessage(refreshError, API_BASE);
+        const err = transportMsg ? new Error(transportMsg) : refreshError instanceof Error ? refreshError : new Error(String(refreshError));
+        processQueue(err, null);
         useAuthStore.getState().logout();
-        return Promise.reject(refreshError);
+        return Promise.reject(err);
       } finally {
         isRefreshing = false;
       }
     }
-    const message = error.response?.data?.error?.message || error.response?.data?.message || error.message || "An unexpected error occurred";
-    const apiError = new Error(message);
-    apiError.statusCode = error.response?.status;
-    return Promise.reject(apiError);
+    return rejectWithNormalizedError(error);
   }
 );
 async function login(email, password) {
@@ -28062,23 +28090,12 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$S = [
+const __iconNode$R = [
   ["rect", { width: "20", height: "5", x: "2", y: "3", rx: "1", key: "1wp1u1" }],
   ["path", { d: "M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8", key: "1s80jp" }],
   ["path", { d: "M10 12h4", key: "a56b0p" }]
 ];
-const Archive = createLucideIcon("Archive", __iconNode$S);
-/**
- * @license lucide-react v0.479.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$R = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
-];
-const ArrowRight = createLucideIcon("ArrowRight", __iconNode$R);
+const Archive = createLucideIcon("Archive", __iconNode$R);
 /**
  * @license lucide-react v0.479.0 - ISC
  *
@@ -28795,17 +28812,32 @@ const APP_ICONS = {
   files: FolderOpen,
   settings: Settings
 };
+const APP_ROUTES = {
+  home: (wsId) => `/w/${wsId}`,
+  settings: (wsId) => `/w/${wsId}/settings`,
+  inbox: (wsId) => `/w/${wsId}/inbox`,
+  files: (wsId) => `/w/${wsId}/files`,
+  whiteboard: (wsId) => `/w/${wsId}/whiteboard`
+};
 function Tab({ page, isActive }) {
-  const { setActivePage, closePage, pages } = useUIStore();
+  const { setActivePage, closePage, pages, activeWorkspaceId } = useUIStore();
+  const navigate = useNavigate();
   const Icon2 = APP_ICONS[page.appId];
   const canClose = pages.length > 1;
+  const handleTabClick = () => {
+    setActivePage(page.id);
+    if (activeWorkspaceId) {
+      const routeFn = APP_ROUTES[page.appId];
+      if (routeFn) navigate(routeFn(activeWorkspaceId));
+    }
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "button",
     {
       type: "button",
-      onClick: () => setActivePage(page.id),
+      onClick: handleTabClick,
       className: cn(
-        "group relative flex h-full max-w-[220px] min-w-[112px] items-center gap-2 border-r border-notion-border px-4 py-2 text-xs transition-colors select-none",
+        "group relative flex h-full max-w-[220px] min-w-[112px] items-center gap-2 border-r border-notion-border/50 px-4 py-2.5 text-xs transition-colors select-none",
         isActive ? "bg-notion-bg text-notion-text" : "bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text"
       ),
       children: [
@@ -28875,9 +28907,9 @@ function Titlebar({ showTabs = false }) {
       }
     )
   ] });
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "drag-region flex h-10 min-h-10 shrink-0 items-stretch border-b border-notion-border bg-notion-sidebar", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "drag-region flex h-11 min-h-11 shrink-0 items-stretch border-b border-notion-border/60 bg-notion-sidebar", children: [
     showTabs ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex shrink-0 items-center gap-1 border-r border-notion-border bg-notion-sidebar px-3 py-2", children: brand }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex shrink-0 items-center gap-1 border-r border-notion-border/50 bg-notion-sidebar px-3 py-2", children: brand }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "div",
         {
@@ -28894,7 +28926,7 @@ function Titlebar({ showTabs = false }) {
           onClick: () => addPage(),
           title: "New page",
           "aria-label": "New page",
-          className: "no-drag flex h-full min-w-[2.75rem] shrink-0 items-center justify-center border-l border-notion-border px-3 text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
+          className: "no-drag flex h-full min-w-[2.75rem] shrink-0 items-center justify-center border-l border-notion-border/50 px-3 text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text-secondary",
           children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "h-4 w-4" })
         }
       )
@@ -28902,7 +28934,7 @@ function Titlebar({ showTabs = false }) {
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex shrink-0 items-center px-3.5 py-2", children: brand }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-w-0 flex-1" })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "no-drag flex h-full shrink-0 border-l border-notion-border", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "no-drag flex h-full shrink-0 border-l border-notion-border/50", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
@@ -28962,13 +28994,13 @@ function Sidebar() {
     requestNewDocument();
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full w-full flex-col", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative flex items-center gap-2 px-4 pb-3 pt-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative flex items-center gap-2 px-4 pb-4 pt-5", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           type: "button",
           onClick: () => setWorkspaceMenuOpen(!workspaceMenuOpen),
-          className: "flex min-w-0 flex-1 items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-notion-sidebar-hover",
+          className: "flex min-w-0 flex-1 items-center gap-3 rounded-lg px-3 py-3 transition-colors hover:bg-notion-sidebar-hover",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-notion-text text-xs font-semibold text-notion-bg", children: currentWorkspace?.name?.charAt(0).toUpperCase() || "D" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "min-w-0 flex-1 truncate text-left text-sm font-medium leading-snug text-notion-text", children: currentWorkspace?.name || "My desk" }),
@@ -28982,17 +29014,17 @@ function Sidebar() {
           type: "button",
           title: "New page",
           onClick: handleNewPage,
-          className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text",
+          className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text",
           children: /* @__PURE__ */ jsxRuntimeExports.jsx(SquarePen, { className: "h-4 w-4" })
         }
       ),
-      workspaceMenuOpen && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute left-4 right-4 top-full z-50 mt-2 rounded-lg border border-notion-border bg-notion-bg py-2 shadow-lg", children: workspaces.map((ws) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      workspaceMenuOpen && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute left-4 right-4 top-full z-50 mt-2 rounded-lg border border-notion-border/50 bg-notion-bg py-2 shadow-lg shadow-black/10", children: workspaces.map((ws) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           type: "button",
           onClick: () => handleWorkspaceSwitch(ws),
           className: cn(
-            "flex w-full items-center gap-3 px-4 py-2.5 text-sm hover:bg-notion-sidebar-hover",
+            "flex w-full items-center gap-3 px-4 py-3 text-sm hover:bg-notion-sidebar-hover",
             ws.id === workspaceId && "bg-notion-sidebar"
           ),
           children: [
@@ -29003,13 +29035,13 @@ function Sidebar() {
         ws.id
       )) })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "flex flex-1 flex-col gap-1 overflow-y-auto px-4 pb-6 pt-2", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "flex flex-1 flex-col gap-1 overflow-y-auto px-4 pb-8 pt-3", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           type: "button",
           disabled: true,
-          className: "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-notion-text-secondary opacity-90",
+          className: "flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm text-notion-text-secondary opacity-90",
           title: "Coming soon",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "h-4 w-4 shrink-0 opacity-80" }),
@@ -29023,7 +29055,7 @@ function Sidebar() {
           to: `/w/${workspaceId}`,
           end: true,
           className: ({ isActive }) => cn(
-            "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+            "flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-colors",
             isActive ? "bg-notion-sidebar-hover font-medium text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"
           ),
           children: [
@@ -29037,7 +29069,7 @@ function Sidebar() {
         {
           to: `/w/${workspaceId}/projects`,
           className: ({ isActive }) => cn(
-            "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+            "flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-colors",
             isActive ? "bg-notion-sidebar-hover font-medium text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover"
           ),
           children: [
@@ -29087,7 +29119,7 @@ function AppSwitcherRail() {
     "div",
     {
       className: cn(
-        "flex w-[56px] shrink-0 flex-col items-center gap-2.5 border-r border-notion-border bg-notion-sidebar px-2 py-3.5",
+        "flex w-[56px] shrink-0 flex-col items-center gap-3 border-r border-notion-border/50 bg-notion-sidebar px-2 py-4",
         "relative z-10"
       ),
       children: APPS.map((app) => {
@@ -29224,8 +29256,8 @@ function InboxApp() {
     if (msg.unread) markRead(msg.id);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full overflow-hidden", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-80 min-w-[18rem] shrink-0 flex-col overflow-hidden border-r border-notion-border bg-notion-sidebar", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border px-4 py-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-80 min-w-[18rem] shrink-0 flex-col overflow-hidden border-r border-notion-border/50 bg-notion-sidebar", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border/50 px-5 py-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-sm font-semibold text-notion-text", children: "Inbox" }),
           unreadCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-4 min-w-[16px] items-center justify-center rounded-full bg-notion-accent px-1 text-[10px] font-semibold text-white", children: unreadCount })
@@ -29244,7 +29276,7 @@ function InboxApp() {
           }
         )
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-1 border-b border-notion-border px-3 pb-0 pt-2", children: ["all", "unread", "mentions"].map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-1 border-b border-notion-border/50 px-4 pb-0 pt-2", children: ["all", "unread", "mentions"].map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
           type: "button",
@@ -29274,7 +29306,7 @@ function InboxApp() {
             type: "button",
             onClick: () => handleSelect(msg),
             className: cn(
-              "w-full border-b border-notion-border/60 px-4 py-3 text-left transition-colors",
+              "w-full border-b border-notion-border/40 px-5 py-4 text-left transition-colors",
               isSelected ? "bg-notion-sidebar-hover" : "hover:bg-notion-sidebar-hover/60"
             ),
             children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
@@ -29286,7 +29318,7 @@ function InboxApp() {
                   children: msg.senderInitials
                 }
               ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex-1 space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex-1 space-y-2", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: cn("truncate text-sm font-medium leading-snug", msg.unread ? "text-notion-text" : "text-notion-text-secondary"), children: msg.sender }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-[11px] text-notion-text-tertiary", children: msg.timestamp })
@@ -29351,7 +29383,7 @@ const Button = reactExports.forwardRef(
             "bg-notion-red text-white hover:bg-red-600": variant === "danger"
           },
           {
-            "min-h-9 px-4 py-2 text-xs": size === "sm",
+            "min-h-9 px-4 py-2.5 text-xs": size === "sm",
             "min-h-10 px-5 py-2.5 text-sm": size === "md",
             "min-h-11 px-6 py-3 text-sm": size === "lg"
           },
@@ -29584,7 +29616,7 @@ function TreeNode({ node, depth, selectedId, expandedIds, onSelect, onToggle }) 
           "flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-sm transition-colors",
           isSelected ? "bg-notion-sidebar-hover text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text"
         ),
-        style: { paddingLeft: `${10 + depth * 16}px` },
+        style: { paddingLeft: `${16 + depth * 16}px` },
         children: [
           node.type === "folder" ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex h-3.5 w-3.5 shrink-0 items-center justify-center", children: isExpanded ? /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "h-3 w-3 text-notion-text-tertiary" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "h-3 w-3 text-notion-text-tertiary" }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-3.5 shrink-0" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { className: cn("h-3.5 w-3.5 shrink-0", node.type === "folder" ? "text-notion-orange" : getMimeColor(node.mimeType)) }),
@@ -29637,9 +29669,9 @@ function FilesApp() {
   const filteredFiles = searchQuery ? currentFiles.filter((f) => f.name.toLowerCase().includes(searchQuery.toLowerCase())) : currentFiles;
   selectedNode ? selectedNode.name : "All Files";
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full overflow-hidden", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-64 min-w-[16rem] shrink-0 flex-col overflow-hidden border-r border-notion-border bg-notion-sidebar", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border px-4 py-3", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-notion-text", children: "Files" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-64 min-w-[16rem] shrink-0 flex-col overflow-hidden border-r border-notion-border/50 bg-notion-sidebar", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border/50 px-5 py-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-semibold text-notion-text", children: "Files" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
@@ -29650,7 +29682,7 @@ function FilesApp() {
           }
         )
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto py-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto py-3", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
@@ -29660,7 +29692,7 @@ function FilesApp() {
               setSelectedFileId(null);
             },
             className: cn(
-              "flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors",
+              "flex w-full items-center gap-2 rounded-md px-4 py-2.5 text-left text-sm transition-colors",
               selectedNode === null ? "bg-notion-sidebar-hover text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text"
             ),
             children: [
@@ -29684,7 +29716,7 @@ function FilesApp() {
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 flex-col overflow-hidden bg-notion-bg", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-4 border-b border-notion-border px-5 py-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-4 border-b border-notion-border/50 px-5 py-3.5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-w-0 shrink-0 items-center gap-2 text-xs text-notion-text-secondary", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "span",
@@ -29758,11 +29790,11 @@ function FilesApp() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-notion-text-secondary", children: searchQuery ? "No files match your search" : "This folder is empty" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-notion-text-tertiary", children: searchQuery ? "Try a different search term" : "Upload files or create a new folder" })
       ] }) : viewMode === "list" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-sm", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-notion-border bg-notion-sidebar/50", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: "Name" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: "Modified" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: "Size" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "w-10 px-2 py-3" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-notion-border/50 bg-notion-sidebar/30", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: "Name" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: "Modified" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: "Size" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "w-10 px-2 py-3.5" })
         ] }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: filteredFiles.map((file) => {
           const Icon2 = file.type === "folder" ? Folder : getMimeIcon(file.mimeType);
@@ -29772,7 +29804,7 @@ function FilesApp() {
             {
               onClick: () => handleSelectNode(file),
               className: cn(
-                "group cursor-pointer border-b border-notion-border/40 transition-colors",
+                "group cursor-pointer border-b border-notion-border/30 transition-colors",
                 isSelected ? "bg-notion-sidebar-hover" : "hover:bg-notion-sidebar/60"
               ),
               children: [
@@ -29938,8 +29970,8 @@ function DocumentApp() {
     editorRef.current?.focus();
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full overflow-hidden", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-64 min-w-[16rem] shrink-0 flex-col overflow-hidden border-r border-notion-border bg-notion-sidebar", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border px-4 py-3", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-64 min-w-[16rem] shrink-0 flex-col overflow-hidden border-r border-notion-border/50 bg-notion-sidebar", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border/50 px-5 py-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-semibold text-notion-text", children: "Documents" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
@@ -29952,13 +29984,13 @@ function DocumentApp() {
           }
         )
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto py-2", children: docs.map((doc) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto py-3", children: docs.map((doc) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           type: "button",
           onClick: () => handleSelectDoc(doc),
           className: cn(
-            "group flex w-full items-center gap-2.5 px-4 py-2.5 text-left transition-colors",
+            "group flex w-full items-center gap-3 px-5 py-3 text-left transition-colors",
             doc.id === selectedDocId ? "bg-notion-sidebar-hover text-notion-text" : "text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text"
           ),
           children: [
@@ -29979,7 +30011,7 @@ function DocumentApp() {
       )) })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 flex-col overflow-hidden bg-notion-bg", children: selectedDoc && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-h-10 items-center gap-1 border-b border-notion-border bg-notion-sidebar px-4 py-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-h-10 items-center gap-1 border-b border-notion-border/50 bg-notion-sidebar px-5 py-2.5", children: [
         TOOLBAR_ACTIONS.map(({ cmd, icon: Icon2, title }) => /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
@@ -30145,7 +30177,7 @@ function AppShell() {
               sidebarOpen ? "w-[248px]" : "w-0"
             ),
             "aria-hidden": !sidebarOpen,
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-full w-[248px] shrink-0 flex-col border-r border-notion-border bg-notion-sidebar", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sidebar, {}) })
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-full w-[248px] shrink-0 flex-col border-r border-notion-border/60 bg-notion-sidebar", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sidebar, {}) })
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "relative flex flex-1 flex-col overflow-hidden", children: [
@@ -30161,7 +30193,7 @@ function AppShell() {
 }
 const Input = reactExports.forwardRef(
   ({ className, label, error, id, ...props }, ref) => {
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2", children: [
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2.5", children: [
       label && /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: id, className: "text-xs font-medium leading-snug text-notion-text-secondary", children: label }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "input",
@@ -30169,7 +30201,7 @@ const Input = reactExports.forwardRef(
           ref,
           id,
           className: cn(
-            "min-h-9 w-full rounded-md border bg-notion-bg px-3 py-2 text-sm leading-snug text-notion-text",
+            "min-h-10 w-full rounded-md border bg-notion-bg px-4 py-2.5 text-sm leading-snug text-notion-text",
             "placeholder:text-notion-text-tertiary",
             "focus:outline-none focus:ring-2 focus:ring-notion-accent focus:border-transparent",
             "transition-colors",
@@ -30211,12 +30243,12 @@ function LoginPage() {
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-screen flex-col", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Titlebar, {}),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 items-center justify-center bg-gradient-to-b from-notion-sidebar to-notion-bg px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-sm rounded-xl border border-notion-border/80 bg-notion-bg/95 p-8 shadow-lg shadow-neutral-900/[0.06] ring-1 ring-black/[0.03] backdrop-blur-sm", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 text-center", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 items-center justify-center bg-gradient-to-b from-notion-sidebar to-notion-bg px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-sm rounded-xl border border-notion-border/80 bg-notion-bg/95 p-10 shadow-lg shadow-neutral-900/[0.06] ring-1 ring-black/[0.03] backdrop-blur-sm", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8 text-center", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-semibold text-notion-text", children: "Welcome back" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-notion-text-secondary", children: "Log in to your DeskLink workspace" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "flex flex-col gap-5", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "flex flex-col gap-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           Input,
           {
@@ -30280,12 +30312,12 @@ function RegisterPage() {
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-screen flex-col", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Titlebar, {}),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 items-center justify-center bg-gradient-to-b from-notion-sidebar to-notion-bg px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-sm rounded-xl border border-notion-border/80 bg-notion-bg/95 p-8 shadow-lg shadow-neutral-900/[0.06] ring-1 ring-black/[0.03] backdrop-blur-sm", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 text-center", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-1 items-center justify-center bg-gradient-to-b from-notion-sidebar to-notion-bg px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-sm rounded-xl border border-notion-border/80 bg-notion-bg/95 p-10 shadow-lg shadow-neutral-900/[0.06] ring-1 ring-black/[0.03] backdrop-blur-sm", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8 text-center", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-semibold text-notion-text", children: "Create your account" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-notion-text-secondary", children: "Get started with DeskLink" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "flex flex-col gap-5", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "flex flex-col gap-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           Input,
           {
@@ -34809,15 +34841,15 @@ function TaskCard({ task, isDragging, onClick }) {
       ...listeners,
       onClick,
       className: cn(
-        "cursor-pointer rounded-lg border border-notion-border/90 bg-notion-bg p-3.5 shadow-sm transition-shadow",
+        "cursor-pointer rounded-lg border border-notion-border/90 bg-notion-bg p-4 shadow-sm transition-shadow",
         "hover:shadow-md",
         isDragging && "rotate-2 shadow-lg",
         isSortDragging && "opacity-50"
       ),
       children: [
-        task.labels && task.labels.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-1.5 flex flex-wrap gap-1", children: task.labels.map((label) => /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { color: label.color, children: label.name }, label.id)) }),
+        task.labels && task.labels.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-2.5 flex flex-wrap gap-1", children: task.labels.map((label) => /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { color: label.color, children: label.name }, label.id)) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm leading-snug text-notion-text", children: task.title }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-2 flex items-center justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex items-center justify-between", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: priorityVariant$1[task.priority] || "default", children: task.priority }),
             task.dueDate && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-0.5 text-[11px] text-notion-text-tertiary", children: [
@@ -34873,7 +34905,7 @@ function KanbanColumn({
   const tasks = column.tasks || [];
   const accent = COLUMN_ACCENTS[columnIndex % COLUMN_ACCENTS.length];
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-[272px] shrink-0 flex-col", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between px-1", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-4 flex items-center justify-between px-1", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-w-0 items-center gap-2.5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: cn("h-2 w-2 shrink-0 rounded-full", accent), "aria-hidden": true }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate text-sm font-semibold text-notion-text", children: column.name }),
@@ -34893,12 +34925,12 @@ function KanbanColumn({
       {
         ref: setNodeRef,
         className: cn(
-          "flex min-h-[120px] flex-1 flex-col gap-3 rounded-xl border border-transparent bg-notion-sidebar/40 p-2 transition-colors",
+          "flex min-h-[120px] flex-1 flex-col gap-3 rounded-xl border border-transparent bg-notion-sidebar/40 p-3 transition-colors",
           isOver && "border-notion-accent/25 bg-notion-accent/5"
         ),
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(SortableContext, { items: tasks.map((t) => t.id), strategy: verticalListSortingStrategy, children: tasks.map((task) => /* @__PURE__ */ jsxRuntimeExports.jsx(TaskCard, { task, onClick: () => onTaskClick(task.id) }, task.id)) }),
-          showNewTask && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-lg border border-notion-border bg-notion-bg p-3 shadow-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          showNewTask && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-lg border border-notion-border bg-notion-bg p-4 shadow-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             "input",
             {
               value: newTitle,
@@ -34961,7 +34993,7 @@ function TaskDetailPanel({ taskId, projectId, onClose }) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-y-0 right-0 z-50 flex w-96 items-center justify-center border-l border-notion-border bg-notion-bg shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-6 w-6 animate-spin rounded-full border-2 border-notion-accent border-t-transparent" }) });
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-y-0 right-0 z-50 flex w-96 flex-col border-l border-notion-border bg-notion-bg shadow-lg", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border px-5 py-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-notion-border px-6 py-5", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-medium text-notion-text-secondary", children: "Task details" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -34982,7 +35014,7 @@ function TaskDetailPanel({ taskId, projectId, onClose }) {
         )
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 space-y-6 overflow-y-auto px-6 py-6", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 space-y-7 overflow-y-auto px-6 py-7", children: [
       editingTitle ? /* @__PURE__ */ jsxRuntimeExports.jsx(
         "input",
         {
@@ -35011,8 +35043,8 @@ function TaskDetailPanel({ taskId, projectId, onClose }) {
           children: task.title
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex w-20 items-center gap-1.5 text-xs text-notion-text-secondary", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Flag, { className: "h-3.5 w-3.5" }),
             "Priority"
@@ -35108,7 +35140,7 @@ function TaskDetailPanel({ taskId, projectId, onClose }) {
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-0.5 text-sm text-notion-text-secondary", children: comment.content })
           ] })
         ] }, comment.id)) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-5 flex gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "input",
             {
@@ -35118,7 +35150,7 @@ function TaskDetailPanel({ taskId, projectId, onClose }) {
                 if (e.key === "Enter" && commentText.trim()) commentMutation.mutate();
               },
               placeholder: "Write a comment...",
-              className: "flex-1 rounded border border-notion-border px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-notion-accent"
+              className: "flex-1 rounded border border-notion-border px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-notion-accent"
             }
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -35373,7 +35405,7 @@ function ListView({ projectId }) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex h-full items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-6 w-6 animate-spin rounded-full border-2 border-notion-accent border-t-transparent" }) });
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full flex-col", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 items-center justify-between border-b border-notion-border px-8 py-3", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex shrink-0 items-center justify-between border-b border-notion-border px-8 py-3.5", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-notion-text-secondary", children: "Sort by:" }),
         ["priority", "dueDate", "title"].map((s) => /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -35405,14 +35437,14 @@ function ListView({ projectId }) {
       }
     ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-b border-notion-border text-left", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "px-8 py-3 text-xs font-medium text-notion-text-secondary", children: "Title" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "w-24 px-3 py-3 text-xs font-medium text-notion-text-secondary", children: "Priority" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "w-24 px-3 py-3 text-xs font-medium text-notion-text-secondary", children: "Status" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "w-28 px-3 py-3 text-xs font-medium text-notion-text-secondary", children: "Due date" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "w-16 px-3 py-3 text-xs font-medium text-notion-text-secondary", children: "Assignee" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "px-8 py-3.5 text-xs font-medium text-notion-text-secondary", children: "Title" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "w-24 px-3 py-3.5 text-xs font-medium text-notion-text-secondary", children: "Priority" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "w-24 px-3 py-3.5 text-xs font-medium text-notion-text-secondary", children: "Status" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "w-28 px-3 py-3.5 text-xs font-medium text-notion-text-secondary", children: "Due date" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "w-16 px-3 py-3.5 text-xs font-medium text-notion-text-secondary", children: "Assignee" })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("tbody", { children: [
-        showNewTask && /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { className: "border-b border-notion-border", children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: 5, className: "px-8 py-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        showNewTask && /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { className: "border-b border-notion-border", children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: 5, className: "px-8 py-3.5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "input",
           {
             value: newTitle,
@@ -35435,14 +35467,14 @@ function ListView({ projectId }) {
             onClick: () => setSelectedTaskId(task.id),
             className: "cursor-pointer border-b border-notion-border hover:bg-notion-sidebar-hover/50 transition-colors",
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-8 py-3 text-sm text-notion-text", children: task.title }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-3 py-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: priorityVariant[task.priority], children: task.priority }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-3 py-3 text-xs text-notion-text-secondary", children: task.status }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-3 py-3 text-xs text-notion-text-secondary", children: task.dueDate ? new Date(task.dueDate).toLocaleDateString("en-US", {
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-8 py-3.5 text-sm text-notion-text", children: task.title }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-3 py-3.5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: priorityVariant[task.priority], children: task.priority }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-3 py-3.5 text-xs text-notion-text-secondary", children: task.status }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-3 py-3.5 text-xs text-notion-text-secondary", children: task.dueDate ? new Date(task.dueDate).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric"
               }) : "—" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-3 py-3", children: task.assignee && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "px-3 py-3.5", children: task.assignee && /* @__PURE__ */ jsxRuntimeExports.jsx(
                 Avatar,
                 {
                   name: task.assignee.displayName ?? task.assignee.name,
@@ -35662,7 +35694,7 @@ function ProjectDetailPage() {
     enabled: !!projectId
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex h-full flex-col", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "shrink-0 border-b border-notion-border bg-notion-bg px-8 pb-4 pt-10 md:px-12", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "shrink-0 border-b border-notion-border bg-notion-bg px-8 pb-6 pt-10 md:px-12", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-notion-sidebar text-lg font-semibold text-notion-text", children: (project?.name || "P").charAt(0).toUpperCase() }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex-1", children: [
@@ -35677,7 +35709,7 @@ function ProjectDetailPage() {
           title: tabHint[tab.key],
           onClick: () => setActiveTab(tab.key),
           className: cn(
-            "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-all",
+            "flex items-center gap-2 rounded-md px-4 py-2.5 text-sm transition-all",
             activeTab === tab.key ? "bg-notion-bg font-medium text-notion-text shadow-sm" : "text-notion-text-secondary hover:text-notion-text"
           ),
           children: [
@@ -35944,7 +35976,7 @@ function WorkspaceSettingsPage() {
               type: "button",
               onClick: () => setThemePreference(value),
               className: cn(
-                "flex w-full flex-col items-start gap-0.5 rounded-lg border px-4 py-3 text-left transition-colors",
+                "flex w-full flex-col items-start gap-1.5 rounded-lg border px-5 py-4 text-left transition-colors",
                 selected ? "border-notion-accent bg-notion-sidebar ring-1 ring-notion-accent" : "border-notion-border bg-notion-bg hover:bg-notion-sidebar"
               ),
               children: [
@@ -36109,19 +36141,9 @@ function HomeDashboardPage() {
   const hour = (/* @__PURE__ */ new Date()).getHours();
   const greeting = greetingForHour(hour);
   const name = user?.displayName?.split(/\s+/)[0];
-  const base = `/w/${workspaceId ?? ""}`;
   reactExports.useEffect(() => {
     saveTodos(todos);
   }, [todos]);
-  const quickLinks = reactExports.useMemo(
-    () => [
-      { title: "Inbox", href: `${base}/inbox`, desc: "Mentions and updates" },
-      { title: "Files", href: `${base}/files`, desc: "Browse and upload" },
-      { title: "Planner", href: `${base}/projects`, desc: "Boards and tasks" },
-      { title: "Whiteboard", href: `${base}/whiteboard`, desc: "Sketch and plan" }
-    ],
-    [base]
-  );
   const addTodo = () => {
     const t = newTodo.trim();
     if (!t) return;
@@ -36151,14 +36173,14 @@ function HomeDashboardPage() {
           /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "h-3.5 w-3.5" }),
           "Pick up where you left off"
         ] }),
-        recentVisits.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-xl border border-dashed border-notion-border bg-notion-sidebar/40 px-5 py-8 text-center text-sm text-notion-text-secondary", children: "As you open Inbox, Files, and Planner, shortcuts will appear here." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-4 overflow-x-auto pb-2 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden", children: recentVisits.map((v) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        recentVisits.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-xl border border-dashed border-notion-border/50 bg-notion-sidebar/30 px-5 py-8 text-center text-sm text-notion-text-secondary", children: "As you open Inbox, Files, and Planner, shortcuts will appear here." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-3 overflow-x-auto pb-2 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden", children: recentVisits.map((v) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
           Link,
           {
             to: v.href,
-            className: "group flex min-w-[10.5rem] max-w-[12rem] flex-col rounded-xl border border-notion-border bg-notion-bg p-4 shadow-sm transition-all hover:border-notion-text-tertiary/40 hover:shadow-md",
+            className: "group flex min-h-[5rem] min-w-[9rem] max-w-[10rem] flex-col justify-between rounded-xl bg-notion-sidebar/60 p-4 transition-all hover:bg-notion-sidebar-hover",
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "line-clamp-2 text-sm font-medium leading-snug text-notion-text group-hover:text-notion-accent", children: v.title }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mt-2 text-xs text-notion-text-tertiary", children: new Date(v.visitedAt).toLocaleDateString(void 0, {
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate text-sm font-medium text-notion-text group-hover:text-notion-accent", children: v.title }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mt-3 text-[11px] text-notion-text-tertiary", children: new Date(v.visitedAt).toLocaleDateString(void 0, {
                 month: "short",
                 day: "numeric"
               }) })
@@ -36168,17 +36190,17 @@ function HomeDashboardPage() {
         )) })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-8 md:grid-cols-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "rounded-xl border border-notion-border bg-notion-bg p-6 shadow-sm", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "rounded-xl bg-notion-sidebar/50 p-6", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(SquareCheckBig, { className: "h-3.5 w-3.5" }),
             "On your desk today"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
-            todos.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-notion-text-secondary", children: "No tasks yet — add one below." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
+            todos.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "py-2 text-sm text-notion-text-secondary", children: "No tasks yet — add one below." }),
             todos.map((t) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "div",
               {
-                className: "flex items-start gap-3 rounded-lg border border-transparent px-2 py-2 transition-colors hover:bg-notion-sidebar/60",
+                className: "flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-notion-sidebar-hover/60",
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "button",
@@ -36187,7 +36209,7 @@ function HomeDashboardPage() {
                       onClick: () => toggleTodo(t.id),
                       className: cn(
                         "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border",
-                        t.done ? "border-notion-accent bg-notion-accent text-white" : "border-notion-border bg-notion-bg"
+                        t.done ? "border-notion-accent bg-notion-accent text-white" : "border-notion-border bg-transparent"
                       ),
                       "aria-label": t.done ? "Mark incomplete" : "Mark done",
                       children: t.done && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] leading-none", children: "✓" })
@@ -36209,7 +36231,7 @@ function HomeDashboardPage() {
                       type: "button",
                       onClick: () => removeTodo(t.id),
                       className: "shrink-0 text-xs text-notion-text-tertiary hover:text-notion-red",
-                      children: "Remove"
+                      children: "✕"
                     }
                   )
                 ]
@@ -36217,7 +36239,7 @@ function HomeDashboardPage() {
               t.id
             ))
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex items-center gap-2 border-t border-notion-border/40 pt-4", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "input",
               {
@@ -36226,44 +36248,26 @@ function HomeDashboardPage() {
                 onChange: (e) => setNewTodo(e.target.value),
                 onKeyDown: (e) => e.key === "Enter" && addTodo(),
                 placeholder: "Add a task…",
-                className: "min-w-0 flex-1 rounded-lg border border-notion-border bg-notion-sidebar px-3 py-2 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:border-notion-accent focus:outline-none"
+                className: "min-w-0 flex-1 bg-transparent px-1 py-1.5 text-sm text-notion-text placeholder:text-notion-text-tertiary focus:outline-none"
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", size: "sm", onClick: addTodo, children: "Add" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { type: "button", size: "sm", variant: "ghost", onClick: addTodo, className: "shrink-0 text-xs", children: "Add" })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "rounded-xl border border-notion-border bg-notion-bg p-6 shadow-sm", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "rounded-xl bg-notion-sidebar/50 p-6", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { className: "h-3.5 w-3.5" }),
             "Today on the calendar"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-4", children: MOCK_SCHEDULE.map((ev) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex gap-4 border-b border-notion-border/80 pb-4 last:border-0 last:pb-0", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-5", children: MOCK_SCHEDULE.map((ev) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex gap-4 border-b border-notion-border/40 pb-5 last:border-0 last:pb-0", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-16 shrink-0 text-xs font-medium tabular-nums text-notion-accent", children: ev.time }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-notion-text", children: ev.title }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-0.5 text-xs text-notion-text-tertiary", children: ev.place })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-xs text-notion-text-tertiary", children: ev.place })
             ] })
           ] }, ev.id)) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-xs text-notion-text-tertiary", children: "Connect your planner calendar later for live events." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-5 text-xs text-notion-text-tertiary", children: "Connect your planner calendar later for live events." })
         ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mb-4 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary", children: "Jump in" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid gap-3 sm:grid-cols-2", children: quickLinks.map((q) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          Link,
-          {
-            to: q.href,
-            className: "flex items-center justify-between gap-3 rounded-xl border border-notion-border bg-notion-sidebar/50 px-4 py-4 transition-colors hover:bg-notion-sidebar-hover",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-notion-text", children: q.title }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-0.5 text-xs text-notion-text-tertiary", children: q.desc })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "h-4 w-4 shrink-0 text-notion-text-tertiary" })
-            ]
-          },
-          q.href
-        )) })
       ] })
     ] })
   ] });

@@ -41,15 +41,15 @@ export function RegisterPage() {
       <Titlebar />
 
       <div className="flex flex-1 items-center justify-center bg-gradient-to-b from-notion-sidebar to-notion-bg px-4">
-        <div className="w-full max-w-sm rounded-xl border border-notion-border/80 bg-notion-bg/95 p-8 shadow-lg shadow-neutral-900/[0.06] ring-1 ring-black/[0.03] backdrop-blur-sm">
-          <div className="mb-6 text-center">
+        <div className="w-full max-w-sm rounded-xl border border-notion-border/80 bg-notion-bg/95 p-10 shadow-lg shadow-neutral-900/[0.06] ring-1 ring-black/[0.03] backdrop-blur-sm">
+          <div className="mb-8 text-center">
             <h1 className="text-xl font-semibold text-notion-text">Create your account</h1>
             <p className="mt-1 text-sm text-notion-text-secondary">
               Get started with DeskLink
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <Input
               id="name"
               label="Name"

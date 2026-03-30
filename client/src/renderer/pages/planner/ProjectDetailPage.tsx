@@ -34,7 +34,7 @@ export function ProjectDetailPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="shrink-0 border-b border-notion-border bg-notion-bg px-8 pb-4 pt-10 md:px-12">
+      <div className="shrink-0 border-b border-notion-border bg-notion-bg px-8 pb-6 pt-10 md:px-12">
         <div className="flex items-start gap-3">
           <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-notion-sidebar text-lg font-semibold text-notion-text">
             {(project?.name || 'P').charAt(0).toUpperCase()}
@@ -58,7 +58,7 @@ export function ProjectDetailPage() {
                 title={tabHint[tab.key]}
                 onClick={() => setActiveTab(tab.key)}
                 className={cn(
-                  'flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-all',
+                  'flex items-center gap-2 rounded-md px-4 py-2.5 text-sm transition-all',
                   activeTab === tab.key
                     ? 'bg-notion-bg font-medium text-notion-text shadow-sm'
                     : 'text-notion-text-secondary hover:text-notion-text'

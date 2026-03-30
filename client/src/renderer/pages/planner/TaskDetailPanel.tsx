@@ -78,7 +78,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
   return (
     <div className="fixed inset-y-0 right-0 z-50 flex w-96 flex-col border-l border-notion-border bg-notion-bg shadow-lg">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-notion-border px-5 py-4">
+      <div className="flex items-center justify-between border-b border-notion-border px-6 py-5">
         <span className="text-xs font-medium text-notion-text-secondary">Task details</span>
         <div className="flex items-center gap-1">
           <button
@@ -97,7 +97,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
       </div>
 
       {/* Content */}
-      <div className="flex-1 space-y-6 overflow-y-auto px-6 py-6">
+      <div className="flex-1 space-y-7 overflow-y-auto px-6 py-7">
         {/* Title */}
         {editingTitle ? (
           <input
@@ -128,9 +128,9 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
         )}
 
         {/* Properties */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5">
           {/* Priority */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <span className="flex w-20 items-center gap-1.5 text-xs text-notion-text-secondary">
               <Flag className="h-3.5 w-3.5" />
               Priority
@@ -250,7 +250,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
           </div>
 
           {/* New comment */}
-          <div className="mt-4 flex gap-2">
+          <div className="mt-5 flex gap-2">
             <input
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
@@ -258,7 +258,7 @@ export function TaskDetailPanel({ taskId, projectId, onClose }: TaskDetailPanelP
                 if (e.key === 'Enter' && commentText.trim()) commentMutation.mutate()
               }}
               placeholder="Write a comment..."
-              className="flex-1 rounded border border-notion-border px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-notion-accent"
+              className="flex-1 rounded border border-notion-border px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-notion-accent"
             />
             <button
               onClick={() => commentMutation.mutate()}

@@ -27,7 +27,7 @@ export function WorkspaceSettingsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-8 py-10 md:px-12 md:py-12">
+    <div className="mx-auto max-w-2xl px-10 py-12 md:px-16 md:py-14">
       <div className="mb-10 flex items-center gap-5">
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-notion-sidebar">
           <Settings className="h-5 w-5 text-notion-text-secondary" />
@@ -55,7 +55,7 @@ export function WorkspaceSettingsPage() {
                   type="button"
                   onClick={() => setThemePreference(value)}
                   className={cn(
-                    'flex w-full flex-col items-start gap-0.5 rounded-lg border px-4 py-3 text-left transition-colors',
+                    'flex w-full flex-col items-start gap-1.5 rounded-lg border px-5 py-4 text-left transition-colors',
                     selected
                       ? 'border-notion-accent bg-notion-sidebar ring-1 ring-notion-accent'
                       : 'border-notion-border bg-notion-bg hover:bg-notion-sidebar'

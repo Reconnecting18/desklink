@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NavLink, useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { LayoutDashboard, ChevronDown, Search, Home, SquarePen } from 'lucide-react'
+import { LayoutDashboard, ChevronDown, Search, Home } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useUIStore } from '@/stores/uiStore'
 import { listWorkspaces, type Workspace } from '@/api/workspaces'
@@ -9,7 +9,7 @@ import { listWorkspaces, type Workspace } from '@/api/workspaces'
 export function Sidebar() {
   const { workspaceId } = useParams()
   const navigate = useNavigate()
-  const { setActiveWorkspaceId, openOrFocusApp, requestNewDocument } = useUIStore()
+  const { setActiveWorkspaceId } = useUIStore()
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false)
 
   const { data: workspaces = [] } = useQuery({
@@ -25,18 +25,13 @@ export function Sidebar() {
     setWorkspaceMenuOpen(false)
   }
 
-  const handleNewPage = () => {
-    openOrFocusApp('documents')
-    requestNewDocument()
-  }
-
   return (
     <div className="flex h-full w-full flex-col">
-      <div className="relative flex items-center gap-2 px-4 pb-3 pt-4">
+      <div className="relative flex items-center gap-2 px-4 pb-4 pt-5">
         <button
           type="button"
           onClick={() => setWorkspaceMenuOpen(!workspaceMenuOpen)}
-          className="flex min-w-0 flex-1 items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-notion-sidebar-hover"
+          className="flex min-w-0 flex-1 items-center gap-3 rounded-lg px-3 py-3 transition-colors hover:bg-notion-sidebar-hover"
         >
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-notion-text text-xs font-semibold text-notion-bg">
             {currentWorkspace?.name?.charAt(0).toUpperCase() || 'D'}
@@ -46,24 +41,16 @@ export function Sidebar() {
           </span>
           <ChevronDown className="h-4 w-4 shrink-0 text-notion-text-secondary" />
         </button>
-        <button
-          type="button"
-          title="New page"
-          onClick={handleNewPage}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
-        >
-          <SquarePen className="h-4 w-4" />
-        </button>
 
         {workspaceMenuOpen && (
-          <div className="absolute left-4 right-4 top-full z-50 mt-2 rounded-lg border border-notion-border bg-notion-bg py-2 shadow-lg">
+          <div className="absolute left-4 right-4 top-full z-50 mt-2 rounded-lg border border-notion-border/50 bg-notion-bg py-2 shadow-lg shadow-black/10">
             {workspaces.map((ws: Workspace) => (
               <button
                 key={ws.id}
                 type="button"
                 onClick={() => handleWorkspaceSwitch(ws)}
                 className={cn(
-                  'flex w-full items-center gap-3 px-4 py-2.5 text-sm hover:bg-notion-sidebar-hover',
+                  'flex w-full items-center gap-3 px-4 py-3 text-sm hover:bg-notion-sidebar-hover',
                   ws.id === workspaceId && 'bg-notion-sidebar'
                 )}
               >
@@ -77,11 +64,11 @@ export function Sidebar() {
         )}
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-4 pb-6 pt-2">
+      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-4 pb-8 pt-3">
         <button
           type="button"
           disabled
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-notion-text-secondary opacity-90"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm text-notion-text-secondary opacity-90"
           title="Coming soon"
         >
           <Search className="h-4 w-4 shrink-0 opacity-80" />
@@ -93,7 +80,7 @@ export function Sidebar() {
           end
           className={({ isActive }) =>
             cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors',
+              'flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-colors',
               isActive
                 ? 'bg-notion-sidebar-hover font-medium text-notion-text'
                 : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'
@@ -108,7 +95,7 @@ export function Sidebar() {
           to={`/w/${workspaceId}/projects`}
           className={({ isActive }) =>
             cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors',
+              'flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-colors',
               isActive
                 ? 'bg-notion-sidebar-hover font-medium text-notion-text'
                 : 'text-notion-text-secondary hover:bg-notion-sidebar-hover'

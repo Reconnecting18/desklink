@@ -42,7 +42,7 @@ export function TaskCard({ task, isDragging, onClick }: TaskCardProps) {
       {...listeners}
       onClick={onClick}
       className={cn(
-        'cursor-pointer rounded-lg border border-notion-border/90 bg-notion-bg p-3.5 shadow-sm transition-shadow',
+        'cursor-pointer rounded-lg border border-notion-border/90 bg-notion-bg p-4 shadow-sm transition-shadow',
         'hover:shadow-md',
         isDragging && 'rotate-2 shadow-lg',
         isSortDragging && 'opacity-50'
@@ -50,7 +50,7 @@ export function TaskCard({ task, isDragging, onClick }: TaskCardProps) {
     >
       {/* Labels */}
       {task.labels && task.labels.length > 0 && (
-        <div className="mb-1.5 flex flex-wrap gap-1">
+        <div className="mb-2.5 flex flex-wrap gap-1">
           {task.labels.map((label) => (
             <Badge key={label.id} color={label.color}>
               {label.name}
@@ -63,7 +63,7 @@ export function TaskCard({ task, isDragging, onClick }: TaskCardProps) {
       <p className="text-sm leading-snug text-notion-text">{task.title}</p>
 
       {/* Meta row */}
-      <div className="mt-2 flex items-center justify-between">
+      <div className="mt-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Badge variant={priorityVariant[task.priority] || 'default'}>
             {task.priority}

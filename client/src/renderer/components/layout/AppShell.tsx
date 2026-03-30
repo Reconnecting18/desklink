@@ -124,7 +124,7 @@ export function AppShell() {
             )}
             aria-hidden={!sidebarOpen}
           >
-            <div className="flex h-full w-[248px] shrink-0 flex-col border-r border-notion-border bg-notion-sidebar">
+            <div className="flex h-full w-[248px] shrink-0 flex-col border-r border-notion-border/60 bg-notion-sidebar">
               <Sidebar />
             </div>
           </div>
