@@ -1,8 +1,29 @@
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 
+const DEFAULT_API_BASE = 'http://127.0.0.1:3000/api'
+
+function normalizeApiBase(raw: string | undefined): string {
+  const trimmed = (raw ?? '').trim().replace(/\/+$/, '')
+  return trimmed || DEFAULT_API_BASE
+}
+
 /** API origin for REST calls (refresh uses raw axios to avoid interceptor loops). */
-export const API_BASE = 'http://localhost:3000/api'
+export const API_BASE = normalizeApiBase(import.meta.env.VITE_API_BASE_URL)
+
+function transportErrorMessage(error: unknown, base: string): string | null {
+  if (!isAxiosError(error)) return null
+  if (error.response) return null
+  const code = error.code
+  const isTransportFailure =
+    code === 'ERR_NETWORK' ||
+    code === 'ECONNREFUSED' ||
+    code === 'ECONNRESET' ||
+    code === 'ETIMEDOUT' ||
+    error.message === 'Network Error'
+  if (!isTransportFailure) return null
+  return `Cannot reach the DeskLink API at ${base}. Start the API from the repo root with npm run dev, or set VITE_API_BASE_URL if it uses a different port.`
+}
 
 const apiClient = axios.create({
   baseURL: API_BASE,
@@ -38,6 +59,27 @@ function processQueue(error: unknown, token: string | null = null) {
   failedQueue = []
 }
 
+function rejectWithNormalizedError(error: unknown): Promise<never> {
+  const transportMsg = transportErrorMessage(error, API_BASE)
+  if (transportMsg) {
+    return Promise.reject(new Error(transportMsg))
+  }
+  if (isAxiosError(error)) {
+    const message =
+      error.response?.data?.error?.message ||
+      error.response?.data?.message ||
+      error.message ||
+      'An unexpected error occurred'
+    const apiError = new Error(message)
+    ;(apiError as { statusCode?: number }).statusCode = error.response?.status
+    return Promise.reject(apiError)
+  }
+  if (error instanceof Error) {
+    return Promise.reject(error)
+  }
+  return Promise.reject(new Error(String(error)))
+}
+
 apiClient.interceptors.response.use(
   (response) => {
     const body = response.data
@@ -46,7 +88,7 @@ apiClient.interceptors.response.use(
         return body.data
       }
       const err = new Error(body.error?.message || 'Request failed')
-      ;(err as any).statusCode = body.error?.statusCode || response.status
+      ;(err as { statusCode?: number }).statusCode = body.error?.statusCode || response.status
       throw err
     }
     return body
@@ -87,23 +129,21 @@ apiClient.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newToken}`
         return apiClient(originalRequest)
       } catch (refreshError) {
-        processQueue(refreshError, null)
+        const transportMsg = transportErrorMessage(refreshError, API_BASE)
+        const err = transportMsg
+          ? new Error(transportMsg)
+          : refreshError instanceof Error
+            ? refreshError
+            : new Error(String(refreshError))
+        processQueue(err, null)
         useAuthStore.getState().logout()
-        return Promise.reject(refreshError)
+        return Promise.reject(err)
       } finally {
         isRefreshing = false
       }
     }
 
-    // Extract error message from response
-    const message =
-      error.response?.data?.error?.message ||
-      error.response?.data?.message ||
-      error.message ||
-      'An unexpected error occurred'
-    const apiError = new Error(message)
-    ;(apiError as any).statusCode = error.response?.status
-    return Promise.reject(apiError)
+    return rejectWithNormalizedError(error)
   }
 )
 

@@ -68,6 +68,15 @@ npm run dev
 
 The API will be running at `http://localhost:3000`.
 
+### Desktop client (Electron)
+
+The app in `client/` calls the REST API over HTTP. For local development you need **two processes**:
+
+1. Start the API from the **repository root** (`npm run dev`). Ensure PostgreSQL (and Redis, if required) are running as above.
+2. In another terminal, run the desktop client: `cd client && npm install && npm run dev`.
+
+If the API listens on a non-default port, set `VITE_API_BASE_URL` in `client/.env` (see [`client/.env.example`](client/.env.example)), for example `VITE_API_BASE_URL=http://127.0.0.1:4000/api`.
+
 ### Demo Credentials
 
 After seeding:
