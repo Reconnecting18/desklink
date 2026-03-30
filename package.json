@@ -9,6 +9,8 @@
     "start": "node dist/index.js",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
+    "sync:projects": "node --enable-source-maps --import tsx ./scripts/sync-github-projects.ts",
+    "typecheck:scripts": "tsc -p tsconfig.scripts.json --noEmit",
     "db:migrate": "prisma migrate dev --config prisma/prisma.config.ts",
     "db:generate": "prisma generate --config prisma/prisma.config.ts",
     "db:seed": "tsx prisma/seed.ts",

@@ -1,0 +1,55 @@
+name: Sync GitHub Projects
+
+on:
+  issues:
+    types: [closed, reopened, transferred]
+  pull_request:
+    types: [closed]
+  schedule:
+    - cron: "23 3 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Sync mode ("dry-run" or "apply")'
+        required: false
+        default: "apply"
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+  repository-projects: write
+
+concurrency:
+  group: sync-projects
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run project sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_OWNER: ${{ vars.PROJECT_OWNER }}
+          PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          STATUS_FIELD_NAME: ${{ vars.PROJECT_STATUS_FIELD_NAME }}
+          DONE_OPTION_NAME: ${{ vars.PROJECT_DONE_OPTION_NAME }}
+          UPDATED_SINCE_DAYS: ${{ vars.PROJECT_UPDATED_SINCE_DAYS }}
+          SYNC_MODE: ${{ github.event.inputs.mode || vars.PROJECT_SYNC_MODE || 'apply' }}
+        run: node --enable-source-maps --import tsx ./scripts/sync-github-projects.ts
+

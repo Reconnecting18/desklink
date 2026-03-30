@@ -40,7 +40,7 @@ function BoardCard({ item }: { item: BoardItem }) {
       </div>
 
       {/* Info */}
-      <div className="flex items-start justify-between gap-3 px-4 py-4">
+      <div className="flex items-start justify-between gap-3 p-4">
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-medium leading-snug text-notion-text">{item.name}</p>
           <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-notion-text-tertiary">
@@ -75,7 +75,7 @@ export function WhiteboardApp() {
   return (
     <div className="flex h-full flex-col overflow-hidden bg-notion-bg">
       {/* Header */}
-      <div className="flex shrink-0 items-center justify-between border-b border-notion-border px-10 py-5">
+      <div className="flex shrink-0 items-center justify-between border-b border-notion-border px-12 py-5">
         <div className="flex items-center gap-3">
           <Icon className="h-6 w-6 text-notion-text-secondary" />
           <h1 className="text-xl font-semibold tracking-tight text-notion-text">
@@ -89,14 +89,14 @@ export function WhiteboardApp() {
       </div>
 
       {/* Tab bar */}
-      <div className="flex shrink-0 gap-1 border-b border-notion-border px-10">
+      <div className="flex shrink-0 gap-2 border-b border-notion-border px-12">
         {(['whiteboards', 'mockups'] as WhiteboardTab[]).map((tab) => (
           <button
             key={tab}
             type="button"
             onClick={() => setActiveTab(tab)}
             className={cn(
-              'flex items-center gap-2.5 px-4 py-3 text-sm font-medium capitalize transition-colors',
+              'flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium capitalize transition-colors',
               activeTab === tab
                 ? 'border-b-2 border-notion-accent text-notion-accent'
                 : 'mb-[2px] text-notion-text-secondary hover:text-notion-text'
@@ -113,7 +113,7 @@ export function WhiteboardApp() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-10 py-10">
+      <div className="flex-1 overflow-y-auto px-12 py-10">
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-4 py-28 text-center">
             <Icon className="h-12 w-12 text-notion-text-tertiary" />
@@ -127,7 +127,7 @@ export function WhiteboardApp() {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {items.map((item) => (
               <BoardCard key={item.id} item={item} />
             ))}
