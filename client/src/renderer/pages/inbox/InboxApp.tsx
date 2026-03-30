@@ -131,9 +131,9 @@ export function InboxApp() {
   return (
     <div className="flex h-full overflow-hidden">
       {/* Left panel — message list */}
-      <div className="flex w-80 min-w-[18rem] shrink-0 flex-col overflow-hidden border-r border-notion-border bg-notion-sidebar">
+      <div className="flex w-80 min-w-[18rem] shrink-0 flex-col overflow-hidden border-r border-notion-border/50 bg-notion-sidebar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-notion-border px-4 py-4">
+        <div className="flex items-center justify-between border-b border-notion-border/50 px-5 py-4">
           <div className="flex items-center gap-2">
             <h2 className="text-sm font-semibold text-notion-text">Inbox</h2>
             {unreadCount > 0 && (
@@ -156,7 +156,7 @@ export function InboxApp() {
         </div>
 
         {/* Filter tabs */}
-        <div className="flex gap-1 border-b border-notion-border px-3 pb-0 pt-2">
+        <div className="flex gap-2 border-b border-notion-border/50 px-4 pb-0 pt-2">
           {(['all', 'unread', 'mentions'] as FilterTab[]).map((tab) => (
             <button
               key={tab}
@@ -192,13 +192,13 @@ export function InboxApp() {
                   type="button"
                   onClick={() => handleSelect(msg)}
                   className={cn(
-                    'w-full border-b border-notion-border/60 px-4 py-3 text-left transition-colors',
+                    'w-full border-b border-notion-border/40 px-4 py-3 text-left transition-colors',
                     isSelected
                       ? 'bg-notion-sidebar-hover'
                       : 'hover:bg-notion-sidebar-hover/60'
                   )}
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-3 pr-1">
                     {/* Avatar */}
                     <div
                       className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white"
@@ -207,8 +207,8 @@ export function InboxApp() {
                       {msg.senderInitials}
                     </div>
 
-                    <div className="min-w-0 flex-1 space-y-1.5">
-                      <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0 flex-1 space-y-2">
+                      <div className="flex items-center justify-between gap-3 pr-2">
                         <span className={cn('truncate text-sm font-medium leading-snug', msg.unread ? 'text-notion-text' : 'text-notion-text-secondary')}>
                           {msg.sender}
                         </span>
@@ -242,7 +242,7 @@ export function InboxApp() {
         {selected ? (
           <>
             {/* Detail header */}
-            <div className="border-b border-notion-border px-10 py-7">
+            <div className="border-b border-notion-border p-6">
               <div className="flex items-start gap-4">
                 <div
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
@@ -261,9 +261,15 @@ export function InboxApp() {
             </div>
 
             {/* Detail body */}
-            <div className="flex-1 overflow-y-auto px-10 py-10">
-              <div className="max-w-2xl border-l-2 border-notion-accent/20 py-1 pl-6">
-                <p className="whitespace-pre-line text-sm leading-[1.65] text-notion-text">{selected.body}</p>
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="max-w-2xl border-l-2 border-notion-accent/20 py-1 pl-4">
+                <div className="space-y-1 text-sm leading-[1.65] text-notion-text">
+                  {selected.body.split('\n').map((line, i) => (
+                    <p key={i} className={line.startsWith('- ') ? 'pl-4' : undefined}>
+                      {line || '\u00A0'}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
           </>

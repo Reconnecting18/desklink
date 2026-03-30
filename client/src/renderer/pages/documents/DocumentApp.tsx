@@ -138,29 +138,29 @@ export function DocumentApp() {
   return (
     <div className="flex h-full overflow-hidden">
       {/* Left panel — document list */}
-      <div className="flex w-64 min-w-[16rem] shrink-0 flex-col overflow-hidden border-r border-notion-border bg-notion-sidebar">
+      <div className="flex w-64 min-w-[16rem] shrink-0 flex-col overflow-hidden border-r border-notion-border/50 bg-notion-sidebar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-notion-border px-4 py-3">
+        <div className="flex items-center justify-between border-b border-notion-border/50 px-3 py-2">
           <span className="text-sm font-semibold text-notion-text">Documents</span>
           <button
             type="button"
             onClick={handleNewDoc}
             title="New document"
-            className="flex h-9 w-9 items-center justify-center rounded-md text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
           >
             <Plus className="h-4 w-4" />
           </button>
         </div>
 
         {/* Doc list */}
-        <div className="flex-1 overflow-y-auto py-2">
+        <div className="flex-1 space-y-0.5 overflow-y-auto py-2">
           {docs.map((doc) => (
             <button
               key={doc.id}
               type="button"
               onClick={() => handleSelectDoc(doc)}
               className={cn(
-                'group flex w-full items-center gap-2.5 px-4 py-2.5 text-left transition-colors',
+                'group flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left transition-colors',
                 doc.id === selectedDocId
                   ? 'bg-notion-sidebar-hover text-notion-text'
                   : 'text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text'
@@ -185,7 +185,7 @@ export function DocumentApp() {
         {selectedDoc && (
           <>
             {/* Formatting toolbar */}
-            <div className="flex min-h-10 items-center gap-1 border-b border-notion-border bg-notion-sidebar px-4 py-2">
+            <div className="flex min-h-10 items-center gap-1 border-b border-notion-border/50 bg-notion-sidebar px-5 py-2.5">
               {TOOLBAR_ACTIONS.map(({ cmd, icon: Icon, title }) => (
                 <button
                   key={cmd}
@@ -215,7 +215,7 @@ export function DocumentApp() {
 
             {/* Editor area */}
             <div className="flex-1 overflow-y-auto">
-              <div className="mx-auto max-w-3xl px-10 py-12 md:px-16 md:py-14">
+              <div className="mx-auto max-w-3xl px-14 py-14 md:px-20 md:py-16">
                 {/* Editable title */}
                 <div
                   ref={titleRef}
