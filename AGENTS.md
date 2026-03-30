@@ -196,6 +196,23 @@ type(scope): short description
 - Link issues in commit body: `Closes #123` when applicable.
 - After CI: summarize pass/fail and smallest next fix if failing.
 
+### GitHub Projects sync automation
+
+This repo includes a lightweight GitHub Action to keep a GitHub **Project (v2)** board up to date when
+issues are closed (including when closed via PR merge keywords). The workflow runs on issue/PR close
+events and nightly, and updates the project item `Status` to `Done` for matching closed issues.
+
+Configuration is via repository **Variables**:
+
+- `PROJECT_OWNER`: GitHub username or org login that owns the project
+- `PROJECT_NUMBER`: Project number (as shown in the project URL)
+- `PROJECT_STATUS_FIELD_NAME` (optional, default `Status`)
+- `PROJECT_DONE_OPTION_NAME` (optional, default `Done`)
+- `PROJECT_UPDATED_SINCE_DAYS` (optional, default `30`)
+- `PROJECT_SYNC_MODE` (optional, `dry-run` or `apply`, default `apply`)
+
+Script entrypoint: `npm run sync:projects` (see `scripts/sync-github-projects.ts`).
+
 ---
 
 ## Code review checklist
