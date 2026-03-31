@@ -165,7 +165,7 @@ export function AppSwitcherRail() {
           <nav
             aria-label="Apps"
             className={cn(
-              'absolute left-3 top-3 bottom-3 z-40 flex flex-col items-center gap-2 overflow-y-auto rounded-xl border border-notion-border/60 bg-notion-sidebar px-1 py-3 shadow-xl shadow-black/25',
+              'absolute left-3 top-3 bottom-3 z-40 flex flex-col items-center gap-2 overflow-y-auto rounded-xl border border-notion-border/60 bg-notion-sidebar p-[5px] shadow-xl shadow-black/25',
               !isExiting && 'desklink-rail-float',
               isExiting && 'desklink-rail-float-exit'
             )}
@@ -180,7 +180,7 @@ export function AppSwitcherRail() {
 
   return (
     <nav
-      className="flex h-full shrink-0 flex-col items-center gap-2 border-r border-notion-border/60 bg-notion-sidebar px-1 py-2"
+      className="flex h-full shrink-0 flex-col items-center gap-2 border-r border-notion-border/60 bg-notion-sidebar p-[5px]"
       style={{ width: RAIL_ICON_W }}
       aria-label="Apps"
     >

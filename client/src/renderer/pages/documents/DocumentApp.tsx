@@ -140,7 +140,7 @@ export function DocumentApp() {
       {/* Left panel — document list */}
       <div className="flex w-64 min-w-[16rem] shrink-0 flex-col overflow-hidden border-r border-notion-border/50 bg-notion-sidebar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-notion-border/50 px-3 py-2">
+        <div className="flex items-center justify-between border-b border-notion-border/50 p-[5px]">
           <span className="text-sm font-semibold text-notion-text">Documents</span>
           <button
             type="button"
@@ -153,7 +153,7 @@ export function DocumentApp() {
         </div>
 
         {/* Doc list */}
-        <div className="flex-1 space-y-0.5 overflow-y-auto py-2">
+        <div className="m-[5px] flex-1 space-y-0.5 overflow-y-auto p-[5px]">
           {docs.map((doc) => (
             <button
               key={doc.id}
@@ -214,7 +214,7 @@ export function DocumentApp() {
             </div>
 
             {/* Editor area */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto p-[5px]">
               <div className="mx-auto max-w-3xl px-14 py-14 md:px-20 md:py-16">
                 {/* Editable title */}
                 <div

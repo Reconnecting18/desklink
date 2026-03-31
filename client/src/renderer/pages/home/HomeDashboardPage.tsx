@@ -96,7 +96,7 @@ export function HomeDashboardPage() {
         </div>
       </header>
 
-      <div className="flex flex-col gap-6 items-center h-[300px] w-[1100px]">
+      <div className="flex w-full flex-col gap-6">
         {/* Recently visited */}
         <section>
           <h2 className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary">

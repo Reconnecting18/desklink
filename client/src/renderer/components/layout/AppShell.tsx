@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { cn } from '@/lib/cn'
 import { useQuery } from '@tanstack/react-query'
 import { Titlebar } from './Titlebar'
 import { AppSwitcherRail } from './AppSwitcherRail'
@@ -108,13 +107,8 @@ export function AppShell() {
       {/* Window chrome: brand + tabs + new tab + window controls (single row) */}
       <Titlebar showTabs />
 
-      {/* Body row: rail + home sidebar flush; gap before main only on home/settings (full-bleed apps handle their own gutters) */}
-      <div
-        className={cn(
-          'flex min-h-0 flex-1 overflow-hidden',
-          activeApp === 'home' || activeApp === 'settings' ? 'gap-5 md:gap-6' : 'gap-0'
-        )}
-      >
+      {/* Body row: rail + main content, no gap (apps handle their own internal gutters) */}
+      <div className="flex min-h-0 flex-1 overflow-hidden gap-0 p-[5px]">
         <div className="flex h-full min-h-0 shrink-0">
           <AppSwitcherRail />
         </div>
@@ -122,14 +116,18 @@ export function AppShell() {
         {/* Main content area — strictly contained, no overflow bleed */}
         <main className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
           {(activeApp === 'home' || activeApp === 'settings') && (
-            <div className="min-w-0 flex-1 overflow-y-auto overflow-x-hidden pl-3 pr-5 pt-3 md:pl-5 md:pr-8 md:pt-4">
+            <div className="min-w-0 flex-1 overflow-y-auto overflow-x-hidden p-[5px]">
               <Outlet />
             </div>
           )}
-          {activeApp === 'inbox' && <InboxApp />}
-          {activeApp === 'documents' && <DocumentApp />}
-          {activeApp === 'whiteboard' && <WhiteboardApp />}
-          {activeApp === 'files' && <FilesApp />}
+          {(activeApp === 'inbox' || activeApp === 'documents' || activeApp === 'whiteboard' || activeApp === 'files') && (
+            <div className="flex min-w-0 flex-1 flex-col overflow-hidden p-[5px]">
+              {activeApp === 'inbox' && <InboxApp />}
+              {activeApp === 'documents' && <DocumentApp />}
+              {activeApp === 'whiteboard' && <WhiteboardApp />}
+              {activeApp === 'files' && <FilesApp />}
+            </div>
+          )}
         </main>
       </div>
     </div>

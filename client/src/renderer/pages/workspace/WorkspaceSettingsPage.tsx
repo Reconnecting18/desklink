@@ -83,7 +83,7 @@ export function WorkspaceSettingsPage() {
                 </>
               ) : null}
             </p>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3 p-[5px]">
               <Button type="button" variant="secondary" onClick={handleSignOut}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Sign out

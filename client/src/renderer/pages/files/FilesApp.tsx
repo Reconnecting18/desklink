@@ -227,7 +227,7 @@ export function FilesApp() {
       {/* Left panel — directory tree */}
       <div className="flex w-64 min-w-[16rem] shrink-0 flex-col overflow-hidden border-r border-notion-border/50 bg-notion-sidebar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-notion-border/50 px-3 py-2">
+        <div className="flex items-center justify-between border-b border-notion-border/50 p-[5px]">
           <span className="text-sm font-semibold text-notion-text">Files</span>
           <button
             type="button"
@@ -308,7 +308,7 @@ export function FilesApp() {
             <button
               type="button"
               title="Upload files"
-              className="flex h-9 items-center gap-2 rounded-md border border-notion-border bg-notion-sidebar px-4 text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
+              className="flex h-9 items-center gap-2 rounded-md border border-notion-border bg-notion-sidebar p-[5px] text-sm text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
             >
               <Upload className="h-3 w-3" />
               Upload
@@ -345,7 +345,7 @@ export function FilesApp() {
         </div>
 
         {/* File listing */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto p-[5px]">
           {filteredFiles.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-2 py-20 text-center">
               <Folder className="h-10 w-10 text-notion-text-tertiary" />

@@ -133,7 +133,7 @@ export function InboxApp() {
       {/* Left panel — message list */}
       <div className="flex w-80 min-w-[18rem] shrink-0 flex-col overflow-hidden border-r border-notion-border/50 bg-notion-sidebar">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-notion-border/50 px-5 py-4">
+        <div className="flex items-center justify-between border-b border-notion-border/50 py-[3px] px-[5px]">
           <div className="flex items-center gap-2">
             <h2 className="text-sm font-semibold text-notion-text">Inbox</h2>
             {unreadCount > 0 && (
@@ -198,7 +198,7 @@ export function InboxApp() {
                       : 'hover:bg-notion-sidebar-hover/60'
                   )}
                 >
-                  <div className="flex items-start gap-3 pr-1">
+                  <div className="flex items-start gap-3 p-[5px]">
                     {/* Avatar */}
                     <div
                       className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white"
@@ -238,12 +238,12 @@ export function InboxApp() {
       </div>
 
       {/* Right panel — message detail */}
-      <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-notion-bg pt-2 md:pt-3">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-notion-bg">
         {selected ? (
           <>
             {/* Detail header */}
-            <div className="border-b border-notion-border p-6">
-              <div className="flex items-start gap-4">
+            <div className="border-b border-notion-border p-[5px]">
+              <div className="flex items-start gap-4 p-[5px]">
                 <div
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
                   style={{ backgroundColor: selected.senderColor }}
@@ -261,7 +261,7 @@ export function InboxApp() {
             </div>
 
             {/* Detail body */}
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-[5px]">
               <div className="max-w-2xl border-l-2 border-notion-accent/20 py-1 pl-4">
                 <div className="space-y-1 text-sm leading-[1.65] text-notion-text">
                   {selected.body.split('\n').map((line, i) => (

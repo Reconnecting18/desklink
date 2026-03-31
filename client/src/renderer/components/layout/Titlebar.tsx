@@ -55,7 +55,7 @@ function Tab({ page, isActive }: { page: PageTab; isActive: boolean }) {
       type="button"
       onClick={handleTabClick}
       className={cn(
-        'group relative flex h-full max-w-[220px] min-w-[100px] items-center gap-1.5 overflow-hidden border-r border-notion-border/50 px-[5px] py-2 text-xs transition-colors select-none',
+        'group relative flex h-full max-w-[220px] min-w-[100px] items-center gap-1.5 overflow-hidden border-r border-notion-border/50 px-[5px] py-[5px] text-xs transition-colors select-none',
         isActive
           ? 'bg-notion-bg text-notion-text'
           : 'bg-notion-sidebar text-notion-text-secondary hover:bg-notion-sidebar-hover hover:text-notion-text'
