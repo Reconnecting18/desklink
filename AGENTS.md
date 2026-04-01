@@ -24,7 +24,7 @@ Canonical project instructions for Cursor and developers. User-facing API catalo
 
 ## Project overview
 
-DeskLink is a unified productivity manager API (workspaces, planner, whiteboard, mockups, documents, files, AI). **Backend:** Express + TypeScript + Prisma (PostgreSQL). **Desktop:** Electron app under `client/` (React renderer, secure preload). There is **no** Python or SQLAlchemy service in this repository.
+DeskLink is a unified productivity manager API (workspaces, planner, whiteboard, mockups, documents, files, AI). **Backend:** Express + TypeScript + Prisma (SQLite). **Desktop:** Electron app under `client/` (React renderer, secure preload). There is **no** Python or SQLAlchemy service in this repository. The app has zero infrastructure dependencies — no Docker or external database required to run.
 
 ---
 
@@ -76,9 +76,12 @@ Each feature module lives in `src/modules/<name>/`:
 
 ### Database
 
-- Prisma 7: `prisma/schema.prisma`; connection config in `prisma/prisma.config.ts` (URL not embedded in schema file).
-- Client singleton: `src/config/database.ts`.
+- **SQLite** via Prisma 7 + `@prisma/adapter-better-sqlite3`. No external database server needed.
+- Schema: `prisma/schema.prisma`; connection config in `prisma/prisma.config.ts`.
+- DB file: `prisma/dev.db` (gitignored). `DATABASE_URL=file:./dev.db` in `.env`.
+- Client singleton: `src/config/database.ts` (resolves the DB path relative to `prisma/`).
 - After schema changes: `npx prisma generate` and `npm run db:migrate`.
+- SQLite has no native enums or JSON columns. Enums are stored as `String` with valid-value comments in the schema. JSON data is stored as `String`; services handle `JSON.stringify`/`JSON.parse` at the Prisma boundary.
 
 ---
 
@@ -134,7 +137,7 @@ Preload exposes `window.api.*` (minimize, maximize, close, isMaximized, onMaximi
 
 - Validated at startup: `src/config/index.ts`.
 - Copy `.env.example` → `.env`.
-- Docker Compose: PostgreSQL + Redis (see README).
+- Docker Compose: Redis only (PostgreSQL service commented out). Docker is optional — only needed if you use Redis features.
 
 ---
 

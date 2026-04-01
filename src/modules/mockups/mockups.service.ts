@@ -2,6 +2,15 @@ import { prisma } from '../../config/database';
 import { NotFoundError } from '../../shared/errors';
 import type { CreateMockupInput, UpdateMockupInput, CreateScreenInput, UpdateScreenInput } from './mockups.schema';
 
+function parseJson(value: string | null | undefined): any {
+  if (value == null) return null;
+  try { return JSON.parse(value); } catch { return value; }
+}
+
+function withParsedElements<T extends { elements: string }>(screen: T): T & { elements: any } {
+  return { ...screen, elements: parseJson(screen.elements) };
+}
+
 // Mockups
 export async function createMockup(workspaceId: string, input: CreateMockupInput) {
   return prisma.mockup.create({
@@ -23,7 +32,10 @@ export async function getMockup(mockupId: string) {
     include: { screens: { orderBy: { sortOrder: 'asc' }, include: { annotations: true } } },
   });
   if (!mockup) throw new NotFoundError('Mockup');
-  return mockup;
+  return {
+    ...mockup,
+    screens: mockup.screens.map(withParsedElements),
+  };
 }
 
 export async function updateMockup(mockupId: string, input: UpdateMockupInput) {
@@ -39,16 +51,17 @@ export async function deleteMockup(mockupId: string) {
 // Screens
 export async function createScreen(mockupId: string, input: CreateScreenInput) {
   await getMockup(mockupId);
-  return prisma.mockupScreen.create({
+  const screen = await prisma.mockupScreen.create({
     data: {
       mockupId,
       name: input.name,
       width: input.width ?? 375,
       height: input.height ?? 812,
       sortOrder: input.sortOrder ?? 0,
-      elements: input.elements ?? [],
+      elements: JSON.stringify(input.elements ?? []),
     },
   });
+  return withParsedElements(screen);
 }
 
 export async function getScreen(screenId: string) {
@@ -57,21 +70,22 @@ export async function getScreen(screenId: string) {
     include: { annotations: true },
   });
   if (!screen) throw new NotFoundError('Screen');
-  return screen;
+  return withParsedElements(screen);
 }
 
 export async function updateScreen(screenId: string, input: UpdateScreenInput) {
   await getScreen(screenId);
-  return prisma.mockupScreen.update({
+  const screen = await prisma.mockupScreen.update({
     where: { id: screenId },
     data: {
       ...(input.name !== undefined ? { name: input.name } : {}),
       ...(input.width !== undefined ? { width: input.width } : {}),
       ...(input.height !== undefined ? { height: input.height } : {}),
       ...(input.sortOrder !== undefined ? { sortOrder: input.sortOrder } : {}),
-      ...(input.elements !== undefined ? { elements: input.elements } : {}),
+      ...(input.elements !== undefined ? { elements: JSON.stringify(input.elements) } : {}),
     },
   });
+  return withParsedElements(screen);
 }
 
 export async function deleteScreen(screenId: string) {

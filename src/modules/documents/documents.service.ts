@@ -1,28 +1,38 @@
 import { prisma } from '../../config/database';
 import { NotFoundError } from '../../shared/errors';
 import type { CreateDocumentInput, UpdateDocumentInput } from './documents.schema';
-import type { DocumentType } from '@prisma/client';
+
+function parseJson(value: string | null | undefined): any {
+  if (value == null) return null;
+  try { return JSON.parse(value); } catch { return value; }
+}
+
+function withParsedContent<T extends { content: string }>(doc: T): T & { content: any } {
+  return { ...doc, content: parseJson(doc.content) };
+}
 
 export async function createDocument(workspaceId: string, input: CreateDocumentInput) {
-  const defaultContent = getDefaultContent(input.type as DocumentType);
-  return prisma.document.create({
+  const defaultContent = getDefaultContent(input.type);
+  const doc = await prisma.document.create({
     data: {
       title: input.title,
-      type: input.type as DocumentType,
+      type: input.type,
       workspaceId,
-      content: input.content ?? defaultContent,
+      content: JSON.stringify(input.content ?? defaultContent),
     },
   });
+  return withParsedContent(doc);
 }
 
 export async function listDocuments(workspaceId: string, type?: string) {
-  return prisma.document.findMany({
+  const docs = await prisma.document.findMany({
     where: {
       workspaceId,
-      ...(type ? { type: type as DocumentType } : {}),
+      ...(type ? { type } : {}),
     },
     orderBy: { updatedAt: 'desc' },
   });
+  return docs.map(withParsedContent);
 }
 
 export async function getDocument(documentId: string) {
@@ -31,15 +41,23 @@ export async function getDocument(documentId: string) {
     include: { versions: { orderBy: { version: 'desc' }, take: 5 }, collaborators: true },
   });
   if (!doc) throw new NotFoundError('Document');
-  return doc;
+  return {
+    ...doc,
+    content: parseJson(doc.content),
+    versions: doc.versions.map((v) => ({ ...v, content: parseJson(v.content) })),
+  };
 }
 
 export async function updateDocument(documentId: string, input: UpdateDocumentInput) {
   await getDocument(documentId);
-  return prisma.document.update({
+  const data: Record<string, unknown> = {};
+  if (input.title !== undefined) data.title = input.title;
+  if (input.content !== undefined) data.content = JSON.stringify(input.content);
+  const doc = await prisma.document.update({
     where: { id: documentId },
-    data: input,
+    data,
   });
+  return withParsedContent(doc);
 }
 
 export async function deleteDocument(documentId: string) {
@@ -48,29 +66,32 @@ export async function deleteDocument(documentId: string) {
 }
 
 export async function createVersion(documentId: string, createdBy: string) {
-  const doc = await getDocument(documentId);
+  const doc = await prisma.document.findUnique({ where: { id: documentId } });
+  if (!doc) throw new NotFoundError('Document');
   const latestVersion = await prisma.documentVersion.findFirst({
     where: { documentId },
     orderBy: { version: 'desc' },
   });
   const newVersion = (latestVersion?.version ?? 0) + 1;
 
-  return prisma.documentVersion.create({
+  const ver = await prisma.documentVersion.create({
     data: {
       documentId,
       version: newVersion,
-      content: doc.content as any,
+      content: doc.content,
       createdBy,
     },
   });
+  return { ...ver, content: parseJson(ver.content) };
 }
 
 export async function listVersions(documentId: string) {
   await getDocument(documentId);
-  return prisma.documentVersion.findMany({
+  const versions = await prisma.documentVersion.findMany({
     where: { documentId },
     orderBy: { version: 'desc' },
   });
+  return versions.map((v) => ({ ...v, content: parseJson(v.content) }));
 }
 
 export async function getVersion(documentId: string, version: number) {
@@ -78,15 +99,19 @@ export async function getVersion(documentId: string, version: number) {
     where: { documentId_version: { documentId, version } },
   });
   if (!ver) throw new NotFoundError('Document version');
-  return ver;
+  return { ...ver, content: parseJson(ver.content) };
 }
 
 export async function restoreVersion(documentId: string, version: number) {
-  const ver = await getVersion(documentId, version);
-  return prisma.document.update({
-    where: { id: documentId },
-    data: { content: ver.content as any },
+  const ver = await prisma.documentVersion.findUnique({
+    where: { documentId_version: { documentId, version } },
   });
+  if (!ver) throw new NotFoundError('Document version');
+  const doc = await prisma.document.update({
+    where: { id: documentId },
+    data: { content: ver.content },
+  });
+  return withParsedContent(doc);
 }
 
 export async function addCollaborator(
@@ -114,7 +139,7 @@ export async function exportDocument(documentId: string, format: string) {
   }
 
   if (format === 'html' && doc.type === 'DOCUMENT') {
-    const content = doc.content as any;
+    const content = doc.content;
     const blocks = content.blocks || [];
     const html = blocks
       .map((block: any) => {
@@ -137,7 +162,9 @@ export async function exportDocument(documentId: string, format: string) {
   return { format: 'json', data: doc.content };
 }
 
-function getDefaultContent(type: DocumentType) {
+type DocumentTypeValue = 'DOCUMENT' | 'SPREADSHEET' | 'PRESENTATION';
+
+function getDefaultContent(type: DocumentTypeValue | string) {
   switch (type) {
     case 'DOCUMENT':
       return { blocks: [{ type: 'paragraph', content: '' }] };
@@ -145,5 +172,7 @@ function getDefaultContent(type: DocumentType) {
       return { sheets: [{ name: 'Sheet 1', rows: {} }] };
     case 'PRESENTATION':
       return { slides: [{ elements: [{ type: 'title', content: 'Untitled Presentation' }] }] };
+    default:
+      return {};
   }
 }

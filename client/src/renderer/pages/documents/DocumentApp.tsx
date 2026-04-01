@@ -10,40 +10,20 @@ import {
   List,
   Code,
   Trash2,
-  MoreHorizontal
+  MoreHorizontal,
+  AlertCircle
 } from 'lucide-react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { cn } from '@/lib/cn'
+import { useAuthStore } from '@/stores/authStore'
 import { useUIStore } from '@/stores/uiStore'
-
-interface Doc {
-  id: string
-  title: string
-  content: string
-  updatedAt: string
-}
-
-const INITIAL_DOCS: Doc[] = [
-  {
-    id: 'doc-1',
-    title: 'Welcome to Documents',
-    content: `<h1>Welcome to Documents</h1><p>This is your rich text workspace. Click anywhere to start editing.</p><p>Use the toolbar above to format your text with <strong>bold</strong>, <em>italic</em>, headings, lists, and more.</p><h2>Getting Started</h2><ul><li>Click the <strong>+ New Document</strong> button to create a new doc</li><li>Select any document from the sidebar to open it</li><li>Use the formatting toolbar to style your content</li></ul><p>Your documents are saved automatically as you type.</p>`,
-    updatedAt: 'Just now'
-  },
-  {
-    id: 'doc-2',
-    title: 'Meeting Notes — Q2 Planning',
-    content: `<h1>Meeting Notes — Q2 Planning</h1><p><em>Date: March 27, 2026 · Attendees: Alex, Jordan, Sam</em></p><h2>Agenda</h2><ul><li>Review Q1 outcomes</li><li>Set Q2 priorities</li><li>Assign owners</li></ul><h2>Key Decisions</h2><p>The team agreed to focus on three core initiatives this quarter:</p><ol><li>Launch the new onboarding flow</li><li>Improve performance on the dashboard</li><li>Ship the mobile app beta</li></ol><h2>Action Items</h2><ul><li><strong>Alex</strong> — Draft onboarding spec by April 3</li><li><strong>Jordan</strong> — Performance audit by April 5</li><li><strong>Sam</strong> — Mobile beta plan by April 7</li></ul>`,
-    updatedAt: '2 hours ago'
-  },
-  {
-    id: 'doc-3',
-    title: 'Product Spec: Auth Flow',
-    content: `<h1>Product Spec: Auth Flow</h1><p>This document outlines the authentication flow for DeskLink v1.0.</p><h2>Overview</h2><p>Users can sign up and log in using email/password. JWT tokens are used for session management with refresh token rotation.</p><h2>Requirements</h2><ul><li>Email + password registration</li><li>Login with remember me option</li><li>Password reset via email</li><li>Session timeout after 30 days of inactivity</li></ul><h2>Technical Notes</h2><p>Access tokens expire after 15 minutes. Refresh tokens are rotated on each use and expire after 30 days.</p><code>POST /auth/login\nPOST /auth/register\nPOST /auth/refresh\nPOST /auth/logout</code>`,
-    updatedAt: 'Yesterday'
-  }
-]
-
-let _nextDocId = 4
+import {
+  listDocuments,
+  createDocument,
+  updateDocument,
+  deleteDocument,
+  type Document
+} from '@/api/documents'
 
 const TOOLBAR_ACTIONS = [
   { cmd: 'bold', icon: Bold, title: 'Bold (Ctrl+B)' },
@@ -56,27 +36,101 @@ const TOOLBAR_ACTIONS = [
 ]
 
 export function DocumentApp() {
-  const { activePageId, updatePageTitle, pendingDocumentAction, clearPendingDocumentAction, activeApp } =
-    useUIStore()
-  const [docs, setDocs] = useState<Doc[]>(INITIAL_DOCS)
-  const [selectedDocId, setSelectedDocId] = useState<string>('doc-1')
+  const accessToken = useAuthStore((s) => s.accessToken)
+  const {
+    activeWorkspaceId,
+    activePageId,
+    updatePageTitle,
+    pendingDocumentAction,
+    clearPendingDocumentAction,
+    activeApp
+  } = useUIStore()
+  const queryClient = useQueryClient()
+
+  const [selectedDocId, setSelectedDocId] = useState<string | null>(null)
+  // Local HTML content keyed by doc id — populated from API on first open
+  const [localContent, setLocalContent] = useState<Record<string, string>>({})
   const editorRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLDivElement>(null)
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const selectedDoc = docs.find((d) => d.id === selectedDocId) ?? docs[0]
+  const enabled = !!accessToken && !!activeWorkspaceId
+
+  const { data: docs, isLoading, error } = useQuery({
+    queryKey: ['documents', activeWorkspaceId],
+    queryFn: () => listDocuments(activeWorkspaceId!),
+    enabled
+  })
+
+  // Auto-select first doc when list loads
+  useEffect(() => {
+    if (docs && docs.length > 0 && !selectedDocId) {
+      setSelectedDocId(docs[0].id)
+    }
+  }, [docs, selectedDocId])
+
+  const selectedDoc: Document | null = docs?.find((d) => d.id === selectedDocId) ?? null
+
+  // Seed local content from API data when a doc is first selected
+  useEffect(() => {
+    if (!selectedDoc) return
+    if (localContent[selectedDoc.id] !== undefined) return
+    const html =
+      typeof selectedDoc.content?.html === 'string' ? selectedDoc.content.html : ''
+    setLocalContent((prev) => ({ ...prev, [selectedDoc.id]: html }))
+  }, [selectedDoc, localContent])
+
+  const createMutation = useMutation({
+    mutationFn: (title: string) =>
+      createDocument(activeWorkspaceId!, {
+        title,
+        type: 'DOCUMENT',
+        content: { html: '' }
+      }),
+    onSuccess: (doc) => {
+      queryClient.invalidateQueries({ queryKey: ['documents', activeWorkspaceId] })
+      setSelectedDocId(doc.id)
+      setLocalContent((prev) => ({ ...prev, [doc.id]: '' }))
+    }
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: (docId: string) => deleteDocument(activeWorkspaceId!, docId),
+    onSuccess: (_data, docId) => {
+      queryClient.invalidateQueries({ queryKey: ['documents', activeWorkspaceId] })
+      setLocalContent((prev) => {
+        const next = { ...prev }
+        delete next[docId]
+        return next
+      })
+      if (selectedDocId === docId) setSelectedDocId(null)
+    }
+  })
+
+  const saveMutation = useMutation({
+    mutationFn: ({ docId, title, html }: { docId: string; title?: string; html?: string }) => {
+      const payload: { title?: string; content?: Record<string, unknown> } = {}
+      if (title !== undefined) payload.title = title
+      if (html !== undefined) payload.content = { html }
+      return updateDocument(activeWorkspaceId!, docId, payload)
+    }
+  })
+
+  const scheduleSave = useCallback(
+    (docId: string, title?: string, html?: string) => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
+      saveTimerRef.current = setTimeout(() => {
+        saveMutation.mutate({ docId, title, html })
+      }, 800)
+    },
+    [saveMutation]
+  )
 
   const handleNewDoc = useCallback(() => {
-    const id = `doc-${_nextDocId++}`
-    const newDoc: Doc = {
-      id,
-      title: 'Untitled',
-      content: '<h1>Untitled</h1><p></p>',
-      updatedAt: 'Just now'
-    }
-    setDocs((prev) => [newDoc, ...prev])
-    setSelectedDocId(id)
+    if (!activeWorkspaceId) return
+    createMutation.mutate('Untitled')
     if (activePageId) updatePageTitle(activePageId, 'Untitled')
-  }, [activePageId, updatePageTitle])
+  }, [activeWorkspaceId, activePageId, updatePageTitle, createMutation])
 
   useEffect(() => {
     if (activeApp !== 'documents' || pendingDocumentAction !== 'new') return
@@ -84,43 +138,28 @@ export function DocumentApp() {
     clearPendingDocumentAction()
   }, [activeApp, pendingDocumentAction, handleNewDoc, clearPendingDocumentAction])
 
-  const handleSelectDoc = (doc: Doc) => {
-    // Save current editor content before switching
-    if (editorRef.current && selectedDoc) {
-      const html = editorRef.current.innerHTML
-      setDocs((prev) =>
-        prev.map((d) => (d.id === selectedDoc.id ? { ...d, content: html, updatedAt: 'Just now' } : d))
-      )
-    }
+  const handleSelectDoc = (doc: Document) => {
     setSelectedDocId(doc.id)
   }
 
   const handleDeleteDoc = (e: React.MouseEvent, docId: string) => {
     e.stopPropagation()
-    if (docs.length <= 1) return
-    const remaining = docs.filter((d) => d.id !== docId)
-    setDocs(remaining)
-    if (selectedDocId === docId) {
-      setSelectedDocId(remaining[0].id)
-    }
+    deleteMutation.mutate(docId)
   }
 
   const handleTitleInput = useCallback(() => {
     if (!titleRef.current || !selectedDoc) return
     const newTitle = titleRef.current.innerText.trim() || 'Untitled'
-    setDocs((prev) =>
-      prev.map((d) => (d.id === selectedDoc.id ? { ...d, title: newTitle, updatedAt: 'Just now' } : d))
-    )
     if (activePageId) updatePageTitle(activePageId, newTitle)
-  }, [selectedDoc, activePageId, updatePageTitle])
+    scheduleSave(selectedDoc.id, newTitle)
+  }, [selectedDoc, activePageId, updatePageTitle, scheduleSave])
 
   const handleEditorInput = useCallback(() => {
     if (!editorRef.current || !selectedDoc) return
     const html = editorRef.current.innerHTML
-    setDocs((prev) =>
-      prev.map((d) => (d.id === selectedDoc.id ? { ...d, content: html, updatedAt: 'Just now' } : d))
-    )
-  }, [selectedDoc])
+    setLocalContent((prev) => ({ ...prev, [selectedDoc.id]: html }))
+    scheduleSave(selectedDoc.id, undefined, html)
+  }, [selectedDoc, scheduleSave])
 
   const execFormat = (cmd: string) => {
     if (cmd === 'h1') {
@@ -135,6 +174,14 @@ export function DocumentApp() {
     editorRef.current?.focus()
   }
 
+  const editorHtml = selectedDoc ? (localContent[selectedDoc.id] ?? '') : ''
+  const updatedAt = selectedDoc
+    ? new Date(selectedDoc.updatedAt).toLocaleTimeString(undefined, {
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    : ''
+
   return (
     <div className="flex h-full overflow-hidden">
       {/* Left panel — document list */}
@@ -146,7 +193,8 @@ export function DocumentApp() {
             type="button"
             onClick={handleNewDoc}
             title="New document"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
+            disabled={!activeWorkspaceId}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-notion-text-tertiary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text disabled:opacity-40"
           >
             <Plus className="h-4 w-4" />
           </button>
@@ -154,35 +202,69 @@ export function DocumentApp() {
 
         {/* Doc list */}
         <div className="m-[5px] flex-1 space-y-0.5 overflow-y-auto p-[5px]">
-          {docs.map((doc) => (
-            <button
-              key={doc.id}
-              type="button"
-              onClick={() => handleSelectDoc(doc)}
-              className={cn(
-                'group flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left transition-colors',
-                doc.id === selectedDocId
-                  ? 'bg-notion-sidebar-hover text-notion-text'
-                  : 'text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text'
-              )}
-            >
-              <FileText className="h-4 w-4 shrink-0 opacity-60" />
-              <span className="flex-1 truncate text-sm leading-snug">{doc.title}</span>
+          {isLoading ? (
+            <div className="space-y-1 py-2">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-8 animate-pulse rounded-md bg-notion-sidebar-hover" />
+              ))}
+            </div>
+          ) : error ? (
+            <div className="flex flex-col items-center gap-2 py-8 text-center">
+              <AlertCircle className="h-6 w-6 text-notion-text-tertiary" />
+              <p className="text-xs text-notion-text-tertiary">Failed to load documents</p>
+            </div>
+          ) : !docs || docs.length === 0 ? (
+            <p className="py-4 text-center text-xs text-notion-text-tertiary">
+              No documents yet — create one above
+            </p>
+          ) : (
+            docs.map((doc) => (
               <button
+                key={doc.id}
                 type="button"
-                onClick={(e) => handleDeleteDoc(e, doc.id)}
-                className="hidden h-7 w-7 shrink-0 items-center justify-center rounded-md text-notion-text-tertiary hover:text-notion-red group-hover:flex"
+                onClick={() => handleSelectDoc(doc)}
+                className={cn(
+                  'group flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left transition-colors',
+                  doc.id === selectedDocId
+                    ? 'bg-notion-sidebar-hover text-notion-text'
+                    : 'text-notion-text-secondary hover:bg-notion-sidebar-hover/60 hover:text-notion-text'
+                )}
               >
-                <Trash2 className="h-3.5 w-3.5" />
+                <FileText className="h-4 w-4 shrink-0 opacity-60" />
+                <span className="flex-1 truncate text-sm leading-snug">{doc.title}</span>
+                <button
+                  type="button"
+                  onClick={(e) => handleDeleteDoc(e, doc.id)}
+                  className="hidden h-7 w-7 shrink-0 items-center justify-center rounded-md text-notion-text-tertiary hover:text-notion-red group-hover:flex"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
               </button>
-            </button>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
       {/* Right panel — editor */}
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-notion-bg">
-        {selectedDoc && (
+        {!activeWorkspaceId ? (
+          <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
+            <FileText className="h-10 w-10 text-notion-text-tertiary" />
+            <p className="text-sm text-notion-text-secondary">No workspace selected</p>
+          </div>
+        ) : isLoading ? (
+          <div className="flex flex-1 items-center justify-center">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-notion-accent border-t-transparent" />
+          </div>
+        ) : !selectedDoc ? (
+          <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
+            <FileText className="h-10 w-10 text-notion-text-tertiary" />
+            <p className="text-sm text-notion-text-secondary">No document selected</p>
+            <p className="text-xs text-notion-text-tertiary">
+              Select a document from the sidebar or create a new one
+            </p>
+          </div>
+        ) : (
           <>
             {/* Formatting toolbar */}
             <div className="flex min-h-10 items-center gap-1 border-b border-notion-border/50 bg-notion-sidebar px-5 py-2.5">
@@ -192,7 +274,7 @@ export function DocumentApp() {
                   type="button"
                   title={title}
                   onMouseDown={(e) => {
-                    e.preventDefault() // prevent losing focus
+                    e.preventDefault()
                     execFormat(cmd)
                   }}
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-notion-text-secondary transition-colors hover:bg-notion-sidebar-hover hover:text-notion-text"
@@ -201,9 +283,7 @@ export function DocumentApp() {
                 </button>
               ))}
               <div className="ml-auto flex items-center gap-2">
-                <span className="text-xs text-notion-text-tertiary">
-                  Edited {selectedDoc.updatedAt}
-                </span>
+                <span className="text-xs text-notion-text-tertiary">Edited {updatedAt}</span>
                 <button
                   type="button"
                   className="flex h-9 w-9 items-center justify-center rounded-md text-notion-text-tertiary hover:bg-notion-sidebar-hover"
@@ -240,7 +320,6 @@ export function DocumentApp() {
                   className={cn(
                     'min-h-[400px] text-sm leading-relaxed text-notion-text outline-none',
                     'empty:before:text-notion-text-tertiary empty:before:content-["Start_writing,_or_press_//_for_commands…"]',
-                    // Prose styles for rendered HTML
                     '[&_h1]:mb-3 [&_h1]:mt-6 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-notion-text',
                     '[&_h2]:mb-2 [&_h2]:mt-5 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-notion-text',
                     '[&_p]:mb-2 [&_p]:leading-relaxed',
@@ -254,7 +333,7 @@ export function DocumentApp() {
                     '[&_code]:rounded [&_code]:bg-notion-sidebar [&_code]:px-1 [&_code]:font-mono [&_code]:text-xs'
                   )}
                   key={`body-${selectedDoc.id}`}
-                  dangerouslySetInnerHTML={{ __html: selectedDoc.content }}
+                  dangerouslySetInnerHTML={{ __html: editorHtml }}
                 />
               </div>
             </div>

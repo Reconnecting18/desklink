@@ -120,7 +120,7 @@ async function main() {
     ],
   });
 
-  // Create a whiteboard
+  // Create a whiteboard (element data is now a JSON string)
   await prisma.whiteboard.create({
     data: {
       title: 'Architecture Diagram',
@@ -129,17 +129,17 @@ async function main() {
         create: [
           {
             type: 'rect',
-            data: { x: 100, y: 100, width: 200, height: 100, fill: '#6366f1', label: 'API Server' },
+            data: JSON.stringify({ x: 100, y: 100, width: 200, height: 100, fill: '#6366f1', label: 'API Server' }),
             zIndex: 0,
           },
           {
             type: 'rect',
-            data: { x: 400, y: 100, width: 200, height: 100, fill: '#22c55e', label: 'Database' },
+            data: JSON.stringify({ x: 400, y: 100, width: 200, height: 100, fill: '#22c55e', label: 'Database' }),
             zIndex: 1,
           },
           {
             type: 'line',
-            data: { x1: 300, y1: 150, x2: 400, y2: 150, stroke: '#64748b' },
+            data: JSON.stringify({ x1: 300, y1: 150, x2: 400, y2: 150, stroke: '#64748b' }),
             zIndex: 2,
           },
         ],
@@ -147,24 +147,24 @@ async function main() {
     },
   });
 
-  // Create a document
+  // Create a document (content is now a JSON string)
   await prisma.document.create({
     data: {
       title: 'Project Requirements',
       type: 'DOCUMENT',
       workspaceId: workspace.id,
-      content: {
+      content: JSON.stringify({
         blocks: [
           { type: 'heading', content: 'DeskLink Requirements', level: 1 },
           { type: 'paragraph', content: 'DeskLink is a unified productivity platform combining whiteboard, mockups, planner, AI, documents, and file sync.' },
           { type: 'heading', content: 'Core Features', level: 2 },
           { type: 'list', items: ['Whiteboard with real-time collaboration', 'Mockup/wireframe builder', 'Task planner with kanban boards', 'AI-powered content generation', 'Document management (Word/Excel/PowerPoint)', 'File sync with versioning'] },
         ],
-      },
+      }),
     },
   });
 
-  // Create a mockup
+  // Create a mockup (screen elements are now JSON strings)
   await prisma.mockup.create({
     data: {
       title: 'Dashboard Wireframe',
@@ -177,24 +177,24 @@ async function main() {
             width: 1440,
             height: 900,
             sortOrder: 0,
-            elements: [
+            elements: JSON.stringify([
               { type: 'header', x: 0, y: 0, width: 1440, height: 64, content: 'DeskLink' },
               { type: 'sidebar', x: 0, y: 64, width: 240, height: 836, content: 'Navigation' },
               { type: 'card', x: 260, y: 84, width: 360, height: 200, content: 'Recent Projects' },
               { type: 'card', x: 640, y: 84, width: 360, height: 200, content: 'Recent Documents' },
-            ],
+            ]),
           },
           {
             name: 'Task Board',
             width: 1440,
             height: 900,
             sortOrder: 1,
-            elements: [
+            elements: JSON.stringify([
               { type: 'header', x: 0, y: 0, width: 1440, height: 64, content: 'DeskLink' },
               { type: 'column', x: 20, y: 84, width: 340, height: 796, content: 'To Do' },
               { type: 'column', x: 380, y: 84, width: 340, height: 796, content: 'In Progress' },
               { type: 'column', x: 740, y: 84, width: 340, height: 796, content: 'Done' },
-            ],
+            ]),
           },
         ],
       },

@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
 }
 
 // ─── AUTH & USERS ─────────────────────────────────────────
@@ -14,7 +14,7 @@ model User {
   passwordHash String
   displayName  String
   avatarUrl    String?
-  role         Role     @default(MEMBER)
+  role         String   @default("MEMBER") // "ADMIN" | "MEMBER" | "VIEWER"
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -26,12 +26,6 @@ model User {
   fileVersions        FileVersion[]
   whiteboardCollabs   WhiteboardCollaborator[]
   documentCollabs     DocumentCollaborator[]
-}
-
-enum Role {
-  ADMIN
-  MEMBER
-  VIEWER
 }
 
 // ─── WORKSPACES ───────────────────────────────────────────
@@ -57,7 +51,7 @@ model WorkspaceMember {
   id          String   @id @default(uuid())
   userId      String
   workspaceId String
-  role        Role     @default(MEMBER)
+  role        String   @default("MEMBER") // "ADMIN" | "MEMBER" | "VIEWER"
   joinedAt    DateTime @default(now())
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -85,7 +79,7 @@ model WhiteboardElement {
   id           String   @id @default(uuid())
   whiteboardId String
   type         String   // "rect", "ellipse", "line", "text", "freehand", "image", "sticky"
-  data         Json     // position, size, style, points, content
+  data         String   // JSON string: position, size, style, points, content
   zIndex       Int      @default(0)
   lockedBy     String?  // userId if locked for editing
   createdAt    DateTime @default(now())
@@ -130,7 +124,7 @@ model MockupScreen {
   width     Int      @default(375)
   height    Int      @default(812)
   sortOrder Int      @default(0)
-  elements  Json     @default("[]") // UI components tree
+  elements  String   @default("[]") // JSON string: UI components tree
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -197,7 +191,7 @@ model Task {
   title       String
   description String?
   status      String    @default("todo")
-  priority    Priority  @default(MEDIUM)
+  priority    String    @default("MEDIUM") // "LOW" | "MEDIUM" | "HIGH" | "URGENT"
   dueDate     DateTime?
   projectId   String
   columnId    String?
@@ -216,13 +210,6 @@ model Task {
 
   @@index([projectId])
   @@index([columnId])
-}
-
-enum Priority {
-  LOW
-  MEDIUM
-  HIGH
-  URGENT
 }
 
 model TaskLabel {
@@ -266,13 +253,13 @@ model Comment {
 // ─── DOCUMENTS (Word, Excel, PowerPoint) ──────────────────
 
 model Document {
-  id          String       @id @default(uuid())
+  id          String   @id @default(uuid())
   title       String
-  type        DocumentType
+  type        String   // "DOCUMENT" | "SPREADSHEET" | "PRESENTATION"
   workspaceId String
-  content     Json         @default("{}")
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  content     String   @default("{}") // JSON string
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   workspace     Workspace              @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   collaborators DocumentCollaborator[]
@@ -281,17 +268,11 @@ model Document {
   @@index([workspaceId, type])
 }
 
-enum DocumentType {
-  DOCUMENT     // Word-like
-  SPREADSHEET  // Excel-like
-  PRESENTATION // PowerPoint-like
-}
-
 model DocumentVersion {
   id         String   @id @default(uuid())
   documentId String
   version    Int
-  content    Json
+  content    String   // JSON string
   createdBy  String
   createdAt  DateTime @default(now())
 
@@ -356,8 +337,8 @@ model FileVersion {
 model AiRequest {
   id          String   @id @default(uuid())
   type        String   // "summarize" | "generate" | "suggest"
-  input       Json
-  output      Json?
+  input       String   // JSON string
+  output      String?  // JSON string
   status      String   @default("pending") // "pending" | "completed" | "failed"
   workspaceId String?
   userId      String

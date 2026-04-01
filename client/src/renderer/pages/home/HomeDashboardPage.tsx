@@ -34,11 +34,7 @@ function saveTodos(todos: HomeTodo[]) {
   localStorage.setItem(TODOS_STORAGE, JSON.stringify(todos))
 }
 
-const MOCK_SCHEDULE = [
-  { id: '1', time: '9:00 AM', title: 'Team standup', place: 'Office' },
-  { id: '2', time: '2:00 PM', title: 'Design review', place: 'Zoom' },
-  { id: '3', time: '4:30 PM', title: 'Sprint planning', place: 'Conf room B' }
-]
+// TODO: wire to /workspaces/:workspaceId/projects/:projectId/events filtered to today
 
 function greetingForHour(h: number): string {
   if (h < 12) return 'Good morning'
@@ -202,22 +198,13 @@ export function HomeDashboardPage() {
               <Calendar className="h-3.5 w-3.5" />
               Today on the calendar
             </h2>
-            <ul className="space-y-3">
-              {MOCK_SCHEDULE.map((ev) => (
-                <li key={ev.id} className="flex gap-3 border-b border-notion-border/40 pb-3 last:border-0 last:pb-0">
-                  <span className="w-16 shrink-0 text-xs font-medium tabular-nums text-notion-accent">
-                    {ev.time}
-                  </span>
-                  <div className="min-w-0 flex-1 space-y-0.5">
-                    <p className="text-sm font-medium text-notion-text">{ev.title}</p>
-                    <p className="text-xs text-notion-text-tertiary">{ev.place}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-5 text-xs text-notion-text-tertiary">
-              Connect your planner calendar later for live events.
-            </p>
+            <div className="flex flex-col items-center justify-center gap-2 py-6 text-center">
+              <Calendar className="h-7 w-7 text-notion-text-tertiary" />
+              <p className="text-sm text-notion-text-secondary">No events today</p>
+              <p className="text-xs text-notion-text-tertiary">
+                Open Planner to add calendar events to your projects
+              </p>
+            </div>
           </section>
         </div>
 

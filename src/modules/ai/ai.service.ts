@@ -18,6 +18,17 @@ function getProvider(): AIProvider {
   return provider;
 }
 
+function parseJson(value: string | null | undefined): any {
+  if (value == null) return null;
+  try { return JSON.parse(value); } catch { return value; }
+}
+
+function withParsedAiFields<T extends { input: string; output: string | null }>(
+  req: T
+): T & { input: any; output: any } {
+  return { ...req, input: parseJson(req.input), output: parseJson(req.output) };
+}
+
 export async function summarize(userId: string, input: SummarizeInput) {
   const startTime = Date.now();
   const aiProvider = getProvider();
@@ -25,7 +36,7 @@ export async function summarize(userId: string, input: SummarizeInput) {
   const request = await prisma.aiRequest.create({
     data: {
       type: 'summarize',
-      input: input as any,
+      input: JSON.stringify(input),
       status: 'pending',
       userId,
       workspaceId: input.workspaceId,
@@ -41,7 +52,7 @@ export async function summarize(userId: string, input: SummarizeInput) {
     const durationMs = Date.now() - startTime;
     await prisma.aiRequest.update({
       where: { id: request.id },
-      data: { output: { summary } as any, status: 'completed', durationMs },
+      data: { output: JSON.stringify({ summary }), status: 'completed', durationMs },
     });
 
     return { summary, requestId: request.id };
@@ -61,7 +72,7 @@ export async function generate(userId: string, input: GenerateInput) {
   const request = await prisma.aiRequest.create({
     data: {
       type: 'generate',
-      input: input as any,
+      input: JSON.stringify(input),
       status: 'pending',
       userId,
       workspaceId: input.workspaceId,
@@ -77,7 +88,7 @@ export async function generate(userId: string, input: GenerateInput) {
     const durationMs = Date.now() - startTime;
     await prisma.aiRequest.update({
       where: { id: request.id },
-      data: { output: { content } as any, status: 'completed', durationMs },
+      data: { output: JSON.stringify({ content }), status: 'completed', durationMs },
     });
 
     return { content, requestId: request.id };
@@ -97,7 +108,7 @@ export async function suggest(userId: string, input: SuggestInput) {
   const request = await prisma.aiRequest.create({
     data: {
       type: 'suggest',
-      input: input as any,
+      input: JSON.stringify(input),
       status: 'pending',
       userId,
       workspaceId: input.workspaceId,
@@ -113,7 +124,7 @@ export async function suggest(userId: string, input: SuggestInput) {
     const durationMs = Date.now() - startTime;
     await prisma.aiRequest.update({
       where: { id: request.id },
-      data: { output: { suggestions } as any, status: 'completed', durationMs },
+      data: { output: JSON.stringify({ suggestions }), status: 'completed', durationMs },
     });
 
     return { suggestions, requestId: request.id };
@@ -127,9 +138,10 @@ export async function suggest(userId: string, input: SuggestInput) {
 }
 
 export async function getHistory(userId: string) {
-  return prisma.aiRequest.findMany({
+  const requests = await prisma.aiRequest.findMany({
     where: { userId },
     orderBy: { createdAt: 'desc' },
     take: 50,
   });
+  return requests.map(withParsedAiFields);
 }

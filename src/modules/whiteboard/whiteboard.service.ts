@@ -2,6 +2,15 @@ import { prisma } from '../../config/database';
 import { NotFoundError } from '../../shared/errors';
 import type { CreateWhiteboardInput, UpdateWhiteboardInput, CreateElementInput, UpdateElementInput } from './whiteboard.schema';
 
+function parseJson(value: string | null | undefined): any {
+  if (value == null) return null;
+  try { return JSON.parse(value); } catch { return value; }
+}
+
+function withParsedData<T extends { data: string }>(el: T): T & { data: any } {
+  return { ...el, data: parseJson(el.data) };
+}
+
 // Whiteboards
 export async function createWhiteboard(workspaceId: string, input: CreateWhiteboardInput) {
   return prisma.whiteboard.create({
@@ -22,7 +31,10 @@ export async function getWhiteboard(whiteboardId: string) {
     include: { elements: { orderBy: { zIndex: 'asc' } }, collaborators: true },
   });
   if (!wb) throw new NotFoundError('Whiteboard');
-  return wb;
+  return {
+    ...wb,
+    elements: wb.elements.map(withParsedData),
+  };
 }
 
 export async function updateWhiteboard(whiteboardId: string, input: UpdateWhiteboardInput) {
@@ -41,26 +53,28 @@ export async function deleteWhiteboard(whiteboardId: string) {
 // Elements
 export async function createElement(whiteboardId: string, input: CreateElementInput) {
   await getWhiteboard(whiteboardId);
-  return prisma.whiteboardElement.create({
+  const el = await prisma.whiteboardElement.create({
     data: {
       whiteboardId,
       type: input.type,
-      data: input.data as any,
+      data: JSON.stringify(input.data),
       zIndex: input.zIndex ?? 0,
     },
   });
+  return withParsedData(el);
 }
 
 export async function updateElement(elementId: string, input: UpdateElementInput) {
   const element = await prisma.whiteboardElement.findUnique({ where: { id: elementId } });
   if (!element) throw new NotFoundError('Element');
-  return prisma.whiteboardElement.update({
+  const el = await prisma.whiteboardElement.update({
     where: { id: elementId },
     data: {
-      ...(input.data !== undefined ? { data: input.data as any } : {}),
+      ...(input.data !== undefined ? { data: JSON.stringify(input.data) } : {}),
       ...(input.zIndex !== undefined ? { zIndex: input.zIndex } : {}),
     },
   });
+  return withParsedData(el);
 }
 
 export async function deleteElement(elementId: string) {
