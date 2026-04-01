@@ -6,7 +6,7 @@ import { AppSwitcherRail } from './AppSwitcherRail'
 import { useUIStore, type AppId } from '@/stores/uiStore'
 import { useAuthStore } from '@/stores/authStore'
 import { listWorkspaces } from '@/api/workspaces'
-import { getMe } from '@/api/auth'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { InboxApp } from '@/pages/inbox/InboxApp'
 import { WhiteboardApp } from '@/pages/whiteboard/WhiteboardApp'
 import { FilesApp } from '@/pages/files/FilesApp'
@@ -47,17 +47,9 @@ export function AppShell() {
   const location = useLocation()
   const { workspaceId } = useParams<{ workspaceId: string }>()
   const { activeWorkspaceId, setActiveWorkspaceId, activeApp, setActiveApp, pushRecentVisit } = useUIStore()
-  const { setUser, accessToken } = useAuthStore()
+  const { accessToken } = useAuthStore()
 
-  // Load user profile
-  useQuery({
-    queryKey: ['me'],
-    queryFn: getMe,
-    enabled: !!accessToken,
-    meta: {
-      onSuccess: (data: any) => setUser(data)
-    }
-  })
+  useCurrentUser()
 
   // Load workspaces and redirect to first if needed
   const { data: workspaces } = useQuery({

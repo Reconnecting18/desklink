@@ -1,10 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { Clock, Calendar, CheckSquare, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useAuthStore } from '@/stores/authStore'
 import { useUIStore } from '@/stores/uiStore'
 import { Button } from '@/components/ui/Button'
+import {
+  listWorkspaceEventsInRange,
+  localDateKey,
+  localDayRangeIsoStrings
+} from '@/api/workspaceEvents'
 
 const TAGLINES = [
   'Clear a little space on your desk today.',
@@ -34,7 +40,13 @@ function saveTodos(todos: HomeTodo[]) {
   localStorage.setItem(TODOS_STORAGE, JSON.stringify(todos))
 }
 
-// TODO: wire to /workspaces/:workspaceId/projects/:projectId/events filtered to today
+function formatEventTime(ev: { startTime: string; endTime: string; allDay: boolean }): string {
+  if (ev.allDay) return 'All day'
+  const s = new Date(ev.startTime)
+  const e = new Date(ev.endTime)
+  const opts: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit' }
+  return `${s.toLocaleTimeString(undefined, opts)} – ${e.toLocaleTimeString(undefined, opts)}`
+}
 
 function greetingForHour(h: number): string {
   if (h < 12) return 'Good morning'
@@ -46,10 +58,21 @@ export function HomeDashboardPage() {
   const { workspaceId } = useParams<{ workspaceId: string }>()
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
+  const accessToken = useAuthStore((s) => s.accessToken)
   const { recentVisits, openOrFocusApp } = useUIStore()
   const [todos, setTodos] = useState<HomeTodo[]>(loadTodos)
   const [newTodo, setNewTodo] = useState('')
   const [tagline] = useState(() => TAGLINES[Math.floor(Math.random() * TAGLINES.length)])
+
+  const todayKey = useMemo(() => localDateKey(), [])
+  const { startDate, endDate } = useMemo(() => localDayRangeIsoStrings(), [])
+
+  const eventsQuery = useQuery({
+    queryKey: ['workspace-events-today', workspaceId, todayKey],
+    queryFn: () => listWorkspaceEventsInRange(workspaceId!, startDate, endDate),
+    enabled: !!workspaceId && !!accessToken,
+    staleTime: 60_000
+  })
 
   const hour = new Date().getHours()
   const greeting = greetingForHour(hour)
@@ -192,19 +215,64 @@ export function HomeDashboardPage() {
             </div>
           </section>
 
-          {/* Schedule */}
+          {/* Schedule — real planner events for this workspace (local day) */}
           <section className="rounded-xl bg-notion-sidebar/50 p-5 md:p-6">
             <h2 className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-notion-text-tertiary">
               <Calendar className="h-3.5 w-3.5" />
               Today on the calendar
             </h2>
-            <div className="flex flex-col items-center justify-center gap-2 py-6 text-center">
-              <Calendar className="h-7 w-7 text-notion-text-tertiary" />
-              <p className="text-sm text-notion-text-secondary">No events today</p>
-              <p className="text-xs text-notion-text-tertiary">
-                Open Planner to add calendar events to your projects
-              </p>
-            </div>
+            {eventsQuery.isLoading && (
+              <div className="space-y-3 py-2">
+                {[1, 2].map((i) => (
+                  <div key={i} className="h-14 animate-pulse rounded-lg bg-notion-border/30" />
+                ))}
+              </div>
+            )}
+            {eventsQuery.isError && (
+              <div className="py-4 text-center">
+                <p className="text-sm text-notion-red">Could not load today&apos;s events</p>
+                <p className="mt-1 text-xs text-notion-text-tertiary">
+                  {(eventsQuery.error as Error)?.message ?? 'Unknown error'}
+                </p>
+              </div>
+            )}
+            {eventsQuery.isSuccess && eventsQuery.data.length === 0 && (
+              <div className="flex flex-col items-center justify-center gap-2 py-6 text-center">
+                <Calendar className="h-7 w-7 text-notion-text-tertiary" />
+                <p className="text-sm text-notion-text-secondary">No events today</p>
+                <p className="text-xs text-notion-text-tertiary">
+                  Open Planner to add calendar events to your projects
+                </p>
+              </div>
+            )}
+            {eventsQuery.isSuccess && eventsQuery.data.length > 0 && (
+              <ul className="space-y-3">
+                {eventsQuery.data.map((ev) => (
+                  <li
+                    key={ev.id}
+                    className="flex gap-3 border-b border-notion-border/40 pb-3 last:border-0 last:pb-0"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (workspaceId) {
+                          navigate(`/w/${workspaceId}/projects/${ev.projectId}`)
+                        }
+                      }}
+                      className="min-w-0 flex-1 text-left"
+                    >
+                      <p className="text-sm font-medium text-notion-text hover:text-notion-accent">
+                        {ev.title}
+                      </p>
+                      <p className="mt-0.5 text-xs text-notion-text-tertiary">{ev.projectName}</p>
+                      <p className="mt-1 text-xs text-notion-text-secondary">
+                        {formatEventTime(ev)}
+                      </p>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
         </div>
 
